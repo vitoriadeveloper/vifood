@@ -1,0 +1,37 @@
+package com.vitoriadeveloper.vifood.domain.model;
+
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+
+import java.math.BigDecimal;
+import java.util.Date;
+
+@Entity
+@Table(name = "tb_restaurantes")
+@Getter
+@Setter
+public class Restaurante {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String nome;
+
+    @Column(name = "taxa_frete")
+    private BigDecimal taxaFrete;
+
+    private Boolean ativo;
+
+    private Boolean aberto;
+
+    @Column(name = "data_cadastro")
+    private Date dataCadastro;
+
+    @Column(name = "data_atualizacao")
+    private Date dataAtualizacao;
+
+    @ManyToOne
+    private Cozinha cozinha;
+}

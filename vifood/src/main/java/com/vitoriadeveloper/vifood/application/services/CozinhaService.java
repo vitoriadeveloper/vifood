@@ -11,10 +11,10 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class CozinhaService implements ICozinhaPort {
-    private final CozinhaRepository cozinhaRepository;
+    private final CozinhaRepository repository;
 
     @Override
     public List<Cozinha> listar() {
-        return cozinhaRepository.findAll();
+        return repository.findAll();
     }
 }

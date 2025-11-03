@@ -4,6 +4,6 @@ import com.vitoriadeveloper.vifood.domain.model.Estado;
 
 import java.util.List;
 
-public interface IEstadoPort {
+public interface IEstadoUseCasePort {
     List<Estado> listar();
 }

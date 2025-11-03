@@ -22,12 +22,12 @@ public class CozinhaController {
     @GetMapping
     public ResponseEntity<List<Cozinha>> listar() {
         List<Cozinha> resultado = service.listar();
-        return ResponseEntity.ok().body(resultado);
+        return ResponseEntity.ok(resultado);
     }
 
     @GetMapping({"/{id}"})
     public ResponseEntity<Optional<Cozinha>> listarCozinhaPorId(@PathVariable Long id) {
         Optional<Cozinha> resultado = service.listarCozinhaPorId(id);
-        return ResponseEntity.ok().body(resultado);
+        return ResponseEntity.ok(resultado);
     }
 }

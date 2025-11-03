@@ -19,6 +19,6 @@ public class EstadoController {
     @GetMapping
     public ResponseEntity<List<Estado>> listar() {
         List<Estado> resultado = service.listar();
-        return ResponseEntity.ok().body(resultado);
+        return ResponseEntity.ok(resultado);
     }
 }

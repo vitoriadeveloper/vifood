@@ -8,7 +8,7 @@ import lombok.Setter;
 @Table(name = "tb_cidade")
 @Getter
 @Setter
-public class Cidade {
+public class City {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,5 +17,5 @@ public class Cidade {
     private String nome;
 
     @ManyToOne
-    private Estado estado;
+    private State state;
 }

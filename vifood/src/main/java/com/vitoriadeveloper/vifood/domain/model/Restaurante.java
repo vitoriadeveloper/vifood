@@ -33,5 +33,5 @@ public class Restaurante {
     private Date dataAtualizacao;
 
     @ManyToOne
-    private Cozinha cozinha;
+    private Kitchen kitchen;
 }

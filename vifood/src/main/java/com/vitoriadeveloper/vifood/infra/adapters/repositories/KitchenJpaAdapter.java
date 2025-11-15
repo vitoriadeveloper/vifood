@@ -1,8 +1,8 @@
 package com.vitoriadeveloper.vifood.infra.adapters.repositories;
 
-import com.vitoriadeveloper.vifood.domain.model.Cozinha;
-import com.vitoriadeveloper.vifood.domain.ports.out.ICozinhaRepositoryPort;
-import com.vitoriadeveloper.vifood.infra.repositories.CozinhaRepository;
+import com.vitoriadeveloper.vifood.domain.model.Kitchen;
+import com.vitoriadeveloper.vifood.domain.ports.out.IKitchenRepositoryPort;
+import com.vitoriadeveloper.vifood.infra.repositories.KitchenRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -11,26 +11,26 @@ import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
-public class CozinhaJpaAdapter implements ICozinhaRepositoryPort {
-    private final CozinhaRepository jpaRepository;
+public class KitchenJpaAdapter implements IKitchenRepositoryPort {
+    private final KitchenRepository jpaRepository;
 
     @Override
-    public List<Cozinha> findAll() {
+    public List<Kitchen> findAll() {
         return jpaRepository.findAll();
     }
 
     @Override
-    public Optional<Cozinha> findById(Long id) {
+    public Optional<Kitchen> findById(Long id) {
         return jpaRepository.findById(id);
     }
 
     @Override
-    public Cozinha save(Cozinha body) {
+    public Kitchen save(Kitchen body) {
         return jpaRepository.save(body);
     }
 
     @Override
-    public void delete(Long id) {
+    public void deleteById(Long id) {
         jpaRepository.deleteById(id);
     }
 

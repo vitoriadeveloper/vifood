@@ -1,6 +1,7 @@
 package com.vitoriadeveloper.vifood.infra.exceptions;
 
 import com.vitoriadeveloper.vifood.domain.exceptions.KitchenNotFoundException;
+import com.vitoriadeveloper.vifood.domain.exceptions.RestaurantNotFoundException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,5 +34,16 @@ public class ApiExceptionHandler {
                 "Não é possível excluir a cozinha porque ela está vinculada a outros registros."
         );
         return ResponseEntity.status(HttpStatus.CONFLICT).body(error);
+    }
+
+    @ExceptionHandler(RestaurantNotFoundException.class)
+    public ResponseEntity<Object> handleRestaurantNotFound(RestaurantNotFoundException e) {
+        var error = new ErrorResponse(
+                OffsetDateTime.now(),
+                HttpStatus.NOT_FOUND.value(),
+                "Restaurante não encontrado",
+                e.getMessage()
+        );
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
     }
 }

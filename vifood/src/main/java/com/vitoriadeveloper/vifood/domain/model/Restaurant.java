@@ -11,7 +11,7 @@ import java.util.Date;
 @Table(name = "tb_restaurantes")
 @Getter
 @Setter
-public class Restaurante {
+public class Restaurant {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,5 +33,6 @@ public class Restaurante {
     private Date dataAtualizacao;
 
     @ManyToOne
-    private Kitchen kitchen;
+    @JoinColumn(name = "cozinha_id")
+    private Kitchen cozinhaId;
 }

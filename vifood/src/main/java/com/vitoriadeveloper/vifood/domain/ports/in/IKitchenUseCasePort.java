@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface IKitchenUseCasePort {
+    Kitchen create(Kitchen body);
     List<Kitchen> findAll();
     Optional<Kitchen> findById(Long id);
     Kitchen updateById(Long id, Kitchen body);

@@ -8,4 +8,6 @@ import java.util.Optional;
 public interface ICozinhaRepositoryPort {
     List<Cozinha> findAll();
     Optional<Cozinha> findById(Long id);
+    Cozinha save(Cozinha body);
+    void delete(Long id);
 }

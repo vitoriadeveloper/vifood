@@ -5,10 +5,7 @@ import com.vitoriadeveloper.vifood.domain.model.Cozinha;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -29,5 +26,17 @@ public class CozinhaController {
     public ResponseEntity<Optional<Cozinha>> listarCozinhaPorId(@PathVariable Long id) {
         Optional<Cozinha> resultado = service.listarCozinhaPorId(id);
         return ResponseEntity.ok(resultado);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Cozinha> atualizar(@PathVariable Long id, @RequestBody Cozinha body) {
+        Cozinha cozinha = service.atualizar(id, body);
+        return ResponseEntity.ok().body(cozinha);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Object> deletar(@PathVariable Long id) {
+        service.deletar(id);
+        return ResponseEntity.noContent().build();
     }
 }

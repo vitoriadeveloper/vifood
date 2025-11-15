@@ -8,4 +8,6 @@ import java.util.Optional;
 public interface ICozinhaUseCasePort {
     List<Cozinha> listar();
     Optional<Cozinha> listarCozinhaPorId(Long id);
+    Cozinha atualizar(Long id, Cozinha body);
+    void deletar(Long id);
 }

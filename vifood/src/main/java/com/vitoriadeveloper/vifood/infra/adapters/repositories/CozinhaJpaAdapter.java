@@ -24,4 +24,14 @@ public class CozinhaJpaAdapter implements ICozinhaRepositoryPort {
         return jpaRepository.findById(id);
     }
 
+    @Override
+    public Cozinha save(Cozinha body) {
+        return jpaRepository.save(body);
+    }
+
+    @Override
+    public void delete(Long id) {
+        jpaRepository.deleteById(id);
+    }
+
 }

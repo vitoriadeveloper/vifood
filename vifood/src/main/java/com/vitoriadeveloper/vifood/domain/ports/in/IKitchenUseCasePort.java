@@ -1,7 +1,6 @@
 package com.vitoriadeveloper.vifood.domain.ports.in;
 
 import com.vitoriadeveloper.vifood.domain.model.Kitchen;
-
 import java.util.List;
 import java.util.Optional;
 

@@ -11,9 +11,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -32,8 +30,8 @@ public class KitchenService implements IKitchenUseCasePort {
     }
 
     @Override
-    public Optional<Kitchen> findById(Long id) {
-        return repository.findById(id);
+    public Kitchen findById(Long id) {
+        return repository.findById(id).orElseThrow(()-> new KitchenNotFoundException(id));
     }
 
     @Transactional

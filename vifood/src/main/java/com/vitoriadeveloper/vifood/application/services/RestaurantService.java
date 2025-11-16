@@ -50,7 +50,7 @@ public class RestaurantService implements IRestaurantUseCasePort {
     @Transactional
     @Override
     public Restaurant updateById(Long id, Restaurant body) throws RestaurantNotFoundException, KitchenNotFoundException {
-        var restaurantId = repository.findById(id)
+        var restaurant = repository.findById(id)
                 .orElseThrow(() -> new RestaurantNotFoundException(id));
 
         Long kitchenId = body.getCozinha().getId();

@@ -29,7 +29,7 @@ public class StatesService implements IStateUseCasePort {
 
     @Override
     public void delete(Long id) throws StateNotFoundException {
-        var stateId = repository.findById(id)
+        repository.findById(id)
                 .orElseThrow(() -> new StateNotFoundException(id));
         repository.delete(id);
     }

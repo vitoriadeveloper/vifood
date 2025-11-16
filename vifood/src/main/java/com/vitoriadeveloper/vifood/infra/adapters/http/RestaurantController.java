@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping(value = "/restaurantes", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -40,6 +41,12 @@ public class RestaurantController {
     public ResponseEntity<Restaurant> updateById(@PathVariable Long id, @RequestBody Restaurant body) {
         Restaurant result = service.updateById(id, body);
         return ResponseEntity.ok().body(result);
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<Void> updatePartial(@PathVariable Long id, @RequestBody Map<String, Object> fields) {
+        service.updatePartial(id, fields);
+        return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/{id}")

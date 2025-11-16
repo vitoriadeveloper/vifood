@@ -1,5 +1,6 @@
 package com.vitoriadeveloper.vifood.infra.exceptions;
 
+import com.vitoriadeveloper.vifood.domain.exceptions.CityNotFoundException;
 import com.vitoriadeveloper.vifood.domain.exceptions.KitchenNotFoundException;
 import com.vitoriadeveloper.vifood.domain.exceptions.RestaurantNotFoundException;
 import com.vitoriadeveloper.vifood.domain.exceptions.StateNotFoundException;
@@ -55,6 +56,17 @@ public class ApiExceptionHandler {
                 OffsetDateTime.now(),
                 HttpStatus.NOT_FOUND.value(),
                 "Estado não encontrado",
+                e.getMessage()
+        );
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+    }
+
+    @ExceptionHandler(CityNotFoundException.class)
+    public ResponseEntity<Object> handleCityNotFound(CityNotFoundException e) {
+        var error = new ErrorResponse(
+                OffsetDateTime.now(),
+                HttpStatus.NOT_FOUND.value(),
+                "Cidade não encontrada",
                 e.getMessage()
         );
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);

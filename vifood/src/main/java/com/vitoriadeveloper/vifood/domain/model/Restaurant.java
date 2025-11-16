@@ -3,6 +3,7 @@ package com.vitoriadeveloper.vifood.domain.model;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -11,6 +12,7 @@ import java.util.Date;
 @Table(name = "tb_restaurantes")
 @Getter
 @Setter
+@ToString
 public class Restaurant {
 
     @Id
@@ -34,5 +36,5 @@ public class Restaurant {
 
     @ManyToOne
     @JoinColumn(name = "cozinha_id")
-    private Kitchen cozinhaId;
+    private Kitchen cozinha;
 }

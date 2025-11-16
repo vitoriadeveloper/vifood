@@ -9,5 +9,5 @@ public interface IRestaurantRepositoryPort {
     List<Restaurant> findAll();
     Optional<Restaurant> findById(Long id);
     Restaurant save(Restaurant body);
-    void deleteById(Long id);
+    void delete(Long id);
 }

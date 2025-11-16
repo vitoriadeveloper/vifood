@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
@@ -16,5 +17,15 @@ public class StateJpaAdapter implements IStateRepositoryPort {
     @Override
     public List<State> findAll() {
         return jpaRepository.findAll();
+    }
+
+    @Override
+    public Optional<State> findById(Long id) {
+        return jpaRepository.findById(id);
+    }
+
+    @Override
+    public void delete(Long id) {
+        jpaRepository.deleteById(id);
     }
 }

@@ -1,24 +1,34 @@
 package com.vitoriadeveloper.vifood.infra.adapters.http;
 
-import com.vitoriadeveloper.vifood.application.services.StateService;
+import com.vitoriadeveloper.vifood.application.services.StatesService;
 import com.vitoriadeveloper.vifood.domain.model.State;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("estados")
+@RequestMapping("/estados")
 @RequiredArgsConstructor
 public class StateController {
-    private final StateService service;
+    private final StatesService service;
 
     @GetMapping
-    public ResponseEntity<List<State>> listar() {
+    public ResponseEntity<List<State>> findAll() {
         List<State> resultado = service.findAll();
         return ResponseEntity.ok(resultado);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<State> findById(@PathVariable Long id) {
+        State result = service.findById(id);
+        return ResponseEntity.ok(result);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        service.delete(id);
+        return ResponseEntity.noContent().build();
     }
 }

@@ -1,4 +1,4 @@
-package com.vitoriadeveloper.vifood.infra.exceptions;
+package com.vitoriadeveloper.vifood.infra.utils;
 
 import java.time.OffsetDateTime;
 

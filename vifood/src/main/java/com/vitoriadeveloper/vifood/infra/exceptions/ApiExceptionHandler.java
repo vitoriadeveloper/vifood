@@ -2,6 +2,8 @@ package com.vitoriadeveloper.vifood.infra.exceptions;
 
 import com.vitoriadeveloper.vifood.domain.exceptions.KitchenNotFoundException;
 import com.vitoriadeveloper.vifood.domain.exceptions.RestaurantNotFoundException;
+import com.vitoriadeveloper.vifood.domain.exceptions.StateNotFoundException;
+import com.vitoriadeveloper.vifood.infra.utils.ErrorResponse;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -42,6 +44,17 @@ public class ApiExceptionHandler {
                 OffsetDateTime.now(),
                 HttpStatus.NOT_FOUND.value(),
                 "Restaurante não encontrado",
+                e.getMessage()
+        );
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+    }
+
+    @ExceptionHandler(StateNotFoundException.class)
+    public ResponseEntity<Object> handleStateNotFound(StateNotFoundException e) {
+        var error = new ErrorResponse(
+                OffsetDateTime.now(),
+                HttpStatus.NOT_FOUND.value(),
+                "Estado não encontrado",
                 e.getMessage()
         );
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);

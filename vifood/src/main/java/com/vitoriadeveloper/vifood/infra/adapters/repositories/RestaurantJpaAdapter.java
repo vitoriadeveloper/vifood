@@ -30,7 +30,7 @@ public class RestaurantJpaAdapter implements IRestaurantRepositoryPort {
     }
 
     @Override
-    public void deleteById(Long id) {
+    public void delete(Long id) {
         jpaRepository.deleteById(id);
     }
 

@@ -4,6 +4,7 @@ package com.vitoriadeveloper.vifood.infra.adapters.http;
 import com.vitoriadeveloper.vifood.application.services.RestaurantService;
 import com.vitoriadeveloper.vifood.domain.model.Restaurant;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +21,7 @@ public class RestaurantController {
     @PostMapping
     public ResponseEntity<Restaurant> create(@RequestBody Restaurant body) {
         Restaurant restaurant = service.create(body);
-        return ResponseEntity.ok().body(restaurant);
+        return ResponseEntity.status(HttpStatus.CREATED).body(restaurant);
     }
 
     @GetMapping

@@ -26,4 +26,8 @@
 
 -- População da tabela tb_form_pagmto
 
-INSERT INTO tb_form_pagmto (descricao) VALUES ('credito'),('debito'),('pix'), ('dinheiro');
+--INSERT INTO tb_form_pagmto (descricao) VALUES ('credito'),('debito'),('pix'), ('dinheiro');
+
+SELECT 1;
+
+insert into tb_restaurante_form_pagmto (restaurante_id, forma_pagamento_id) values (103, 1), (103, 2), (103, 3), (108, 3), (108, 2), (108, 3);

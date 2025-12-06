@@ -2,6 +2,7 @@ package com.vitoriadeveloper.vifood.infra.adapters.http;
 
 
 import com.vitoriadeveloper.vifood.application.services.RestaurantService;
+import com.vitoriadeveloper.vifood.domain.filters.RestaurantFilter;
 import com.vitoriadeveloper.vifood.domain.model.Restaurant;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -26,8 +27,13 @@ public class RestaurantController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Restaurant>> findAll() {
-        List<Restaurant> result = service.findAll();
+    public ResponseEntity<List<Restaurant>> findAll(RestaurantFilter filters) {
+        if (filters.getTaxaFreteMax() == null && filters.getTaxaFreteMin() == null && filters.getNome() == null) {
+            List<Restaurant> result = service.findAll();
+            return ResponseEntity.ok(result);
+        }
+
+        List<Restaurant> result = service.findByFilter(filters);
         return ResponseEntity.ok(result);
     }
 

@@ -1,8 +1,10 @@
 package com.vitoriadeveloper.vifood.infra.adapters.repositories;
 
+import com.vitoriadeveloper.vifood.domain.filters.RestaurantFilter;
 import com.vitoriadeveloper.vifood.domain.model.Restaurant;
 import com.vitoriadeveloper.vifood.domain.ports.out.IRestaurantRepositoryPort;
 import com.vitoriadeveloper.vifood.infra.repositories.RestaurantRepository;
+import com.vitoriadeveloper.vifood.infra.repositories.spec.RestaurantSpecificationBuilder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -32,6 +34,12 @@ public class RestaurantJpaAdapter implements IRestaurantRepositoryPort {
     @Override
     public void delete(Long id) {
         jpaRepository.deleteById(id);
+    }
+
+    @Override
+    public List<Restaurant> findByFilter(RestaurantFilter filter) {
+        var spec = new RestaurantSpecificationBuilder(filter);
+        return jpaRepository.findAll(spec);
     }
 
 }

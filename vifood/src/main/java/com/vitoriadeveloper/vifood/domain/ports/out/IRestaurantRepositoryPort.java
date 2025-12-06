@@ -1,5 +1,6 @@
 package com.vitoriadeveloper.vifood.domain.ports.out;
 
+import com.vitoriadeveloper.vifood.domain.filters.RestaurantFilter;
 import com.vitoriadeveloper.vifood.domain.model.Restaurant;
 
 import java.util.List;
@@ -10,4 +11,6 @@ public interface IRestaurantRepositoryPort {
     Optional<Restaurant> findById(Long id);
     Restaurant save(Restaurant body);
     void delete(Long id);
+    List<Restaurant> findByFilter(RestaurantFilter filter);
+
 }

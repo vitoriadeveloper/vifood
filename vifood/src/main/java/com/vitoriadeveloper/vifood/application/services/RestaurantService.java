@@ -3,6 +3,7 @@ package com.vitoriadeveloper.vifood.application.services;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vitoriadeveloper.vifood.domain.exceptions.KitchenNotFoundException;
 import com.vitoriadeveloper.vifood.domain.exceptions.RestaurantNotFoundException;
+import com.vitoriadeveloper.vifood.domain.filters.RestaurantFilter;
 import com.vitoriadeveloper.vifood.domain.model.Restaurant;
 import com.vitoriadeveloper.vifood.domain.ports.in.IRestaurantUseCasePort;
 import com.vitoriadeveloper.vifood.domain.ports.out.IKitchenRepositoryPort;
@@ -83,14 +84,15 @@ public class RestaurantService implements IRestaurantUseCasePort {
                 throw new IllegalArgumentException("Campo inválido " + fieldName);
             }
             field.setAccessible(true);
-            try {
-                Object newValue = field.get(restaurantConverted);
 
-                ReflectionUtils.setField(field, restaurant, newValue);
-            } catch (IllegalAccessException e) {
-                throw new IllegalArgumentException("Erro ao aplicar PATCH no campo " + fieldName);
-            }
+            Object newValue = ReflectionUtils.getField(field, restaurantConverted);
+            ReflectionUtils.setField(field, restaurant, newValue);
         });
         updateById(id, restaurant);
+    }
+
+    @Override
+    public List<Restaurant> findByFilter(RestaurantFilter filter) {
+        return repository.findByFilter(filter);
     }
 }

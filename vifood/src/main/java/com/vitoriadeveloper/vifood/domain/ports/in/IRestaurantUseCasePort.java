@@ -1,6 +1,7 @@
 package com.vitoriadeveloper.vifood.domain.ports.in;
 
 import com.vitoriadeveloper.vifood.domain.exceptions.RestaurantNotFoundException;
+import com.vitoriadeveloper.vifood.domain.filters.RestaurantFilter;
 import com.vitoriadeveloper.vifood.domain.model.Restaurant;
 
 import java.util.List;
@@ -13,4 +14,6 @@ public interface IRestaurantUseCasePort {
     Restaurant updateById(Long id, Restaurant body) throws RestaurantNotFoundException;
     void deleteById(Long id);
     void updatePartial(Long id, Map<String, Object> fields);
+    List<Restaurant> findByFilter(RestaurantFilter filter);
+
 }

@@ -8,7 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping(value = "/cozinhas", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -30,8 +29,8 @@ public class KitchenController {
     }
 
     @GetMapping({"/{id}"})
-    public ResponseEntity<Optional<Kitchen>> findById(@PathVariable Long id) {
-        Optional<Kitchen> resultado = service.findById(id);
+    public ResponseEntity<Kitchen> findById(@PathVariable Long id) {
+        Kitchen resultado = service.findById(id);
         return ResponseEntity.ok(resultado);
     }
 

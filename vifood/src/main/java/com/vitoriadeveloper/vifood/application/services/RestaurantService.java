@@ -58,9 +58,18 @@ public class RestaurantService implements IRestaurantUseCasePort {
         var kitchen = kitchenRepository.findById(kitchenId)
                 .orElseThrow(() -> new KitchenNotFoundException(kitchenId));
 
-        body.setId(id);
-        body.setCozinha(kitchen);
-        return repository.save(body);
+        restaurant.setNome(body.getNome());
+        restaurant.setTaxaFrete(body.getTaxaFrete());
+        restaurant.setAtivo(body.getAtivo());
+        restaurant.setAberto(body.getAberto());
+        restaurant.setDataAtualizacao(body.getDataAtualizacao());
+        restaurant.setCozinha(kitchen);
+
+        if(body.getFormasPagamento() != null){
+            restaurant.setFormasPagamento(body.getFormasPagamento());
+        }
+
+        return repository.save(restaurant);
     }
 
     @Transactional
@@ -75,17 +84,24 @@ public class RestaurantService implements IRestaurantUseCasePort {
     @Override
     public void updatePartial(Long id, Map<String, Object> fields) {
         var restaurant = repository.findById(id).orElseThrow(() -> new RestaurantNotFoundException(id));
+        // faz conversao de tipos automatico, sem isso teria apenas object
         Restaurant restaurantConverted = objectMapper.convertValue(fields, Restaurant.class);
 
+        // percorrendo campos
         fields.forEach((fieldName, fieldValue) -> {
+            // procura dentro da classe restaurant um atributo com aquele nome exato
             Field field = ReflectionUtils.findField(Restaurant.class, fieldName);
 
             if (field == null) {
                 throw new IllegalArgumentException("Campo inválido " + fieldName);
             }
+            // permite acessar campos privados
             field.setAccessible(true);
 
+            // lê o valor convertido corretamente ex json veio "taxaFrete":12.5 -> BigDecimal(12.50)
             Object newValue = ReflectionUtils.getField(field, restaurantConverted);
+
+            // pega o valor novo e sera direto no objeto que veio do banco de forma dinamica
             ReflectionUtils.setField(field, restaurant, newValue);
         });
         updateById(id, restaurant);

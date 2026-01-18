@@ -5,10 +5,12 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -31,15 +33,21 @@ public class Restaurant {
 
     private Boolean aberto;
 
-    @Column(name = "data_cadastro")
-    private Date dataCadastro;
+    @CreationTimestamp
+    @Column(name = "data_cadastro", nullable = false, columnDefinition = "datetime")
+    private LocalDateTime dataCadastro;
 
-    @Column(name = "data_atualizacao")
-    private Date dataAtualizacao;
+    @UpdateTimestamp
+    @Column(name = "data_atualizacao", nullable = false, columnDefinition = "datetime")
+    private LocalDateTime dataAtualizacao;
 
     @ManyToOne
     @JoinColumn(name = "cozinha_id")
     private Kitchen cozinha;
+
+    @JsonIgnore
+    @Embedded
+    private Address endereco;
 
     @JsonIgnore
     @ManyToMany

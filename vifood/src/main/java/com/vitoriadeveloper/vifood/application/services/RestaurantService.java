@@ -62,11 +62,13 @@ public class RestaurantService implements IRestaurantUseCasePort {
         restaurant.setTaxaFrete(body.getTaxaFrete());
         restaurant.setAtivo(body.getAtivo());
         restaurant.setAberto(body.getAberto());
-        restaurant.setDataAtualizacao(body.getDataAtualizacao());
         restaurant.setCozinha(kitchen);
 
-        if(body.getFormasPagamento() != null){
+        if (body.getFormasPagamento() != null) {
             restaurant.setFormasPagamento(body.getFormasPagamento());
+        }
+        if (body.getEndereco() != null) {
+            restaurant.setEndereco(body.getEndereco());
         }
 
         return repository.save(restaurant);

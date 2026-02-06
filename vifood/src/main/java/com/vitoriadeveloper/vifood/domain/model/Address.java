@@ -1,9 +1,6 @@
 package com.vitoriadeveloper.vifood.domain.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Embeddable;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -26,7 +23,7 @@ public class Address {
     @Column(name = "endereco_bairro")
     private String bairro;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "endereco_cidade_id")
     private City cidade;
 }

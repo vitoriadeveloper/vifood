@@ -41,7 +41,8 @@ public class Restaurant {
     @Column(name = "data_atualizacao", nullable = false, columnDefinition = "datetime")
     private LocalDateTime dataAtualizacao;
 
-    @ManyToOne
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cozinha_id")
     private Kitchen cozinha;
 

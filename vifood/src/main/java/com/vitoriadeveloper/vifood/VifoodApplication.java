@@ -15,7 +15,7 @@ public class VifoodApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(VifoodApplication.class, args);
-		log.info("Aplicaçao iniciada com sucesso !!");
+		log.info("Aplicaçao iniciada com sucesso!");
 	}
 
 }

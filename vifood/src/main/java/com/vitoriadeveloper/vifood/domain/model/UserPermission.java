@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "tb_perssao_usu")
+@Table(name = "tb_permissao")
 @Getter
 @Setter
 public class UserPermission {

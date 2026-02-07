@@ -52,7 +52,7 @@ public class Restaurant {
 
     @JsonIgnore
     @ManyToMany
-    @JoinTable(name = "tb_restaurante_form_pagmto", joinColumns = @JoinColumn(name = "restaurante_id"),
+    @JoinTable(name = "tb_restaurante_forma_pagamento", joinColumns = @JoinColumn(name = "restaurante_id"),
     inverseJoinColumns = @JoinColumn(name = "forma_pagamento_id")
     )
     private List<PaymentMethod> formasPagamento = new ArrayList<>();

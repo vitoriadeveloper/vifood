@@ -30,4 +30,34 @@
 
 SELECT 1;
 
-insert into tb_restaurante_form_pagmto (restaurante_id, forma_pagamento_id) values (103, 1), (103, 2), (103, 3), (108, 3), (108, 2), (108, 3);
+--insert into tb_restaurante_form_pagmto (restaurante_id, forma_pagamento_id) values (103, 1), (103, 2), (103, 3), (108, 3), (108, 2), (108, 3);
+
+--INSERT INTO tb_restaurantes (
+--    nome,
+--    taxa_frete,
+--    ativo,
+--    aberto,
+--    data_cadastro,
+--    data_atualizacao,
+--    cozinha_id,
+--    endereco_cep,
+--    endereco_logradouro,
+--    endereco_numero,
+--    endereco_complemento,
+--    endereco_bairro,
+--    endereco_cidade_id
+--) VALUES (
+--    'Sabor da Bahia',
+--    5.00,
+--    true,
+--    true,
+--    NOW(),
+--    NOW(),
+--    91,
+--    '01001-000',
+--    'Rua das Laranjeiras',
+--    '123',
+--    'Apto 45',
+--    'Centro',
+--    9
+--);

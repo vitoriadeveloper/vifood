@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "tb_estado")
+@Table(name = "tb_estados")
 @Getter
 @Setter
 public class State {

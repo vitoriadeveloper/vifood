@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "tb_form_pagmto")
+@Table(name = "tb_formas_pagamento")
 @Getter
 @Setter
 public class PaymentMethod {
@@ -15,4 +15,6 @@ public class PaymentMethod {
     private Long id;
 
     private String descricao;
+
+    private String sigla;
 }

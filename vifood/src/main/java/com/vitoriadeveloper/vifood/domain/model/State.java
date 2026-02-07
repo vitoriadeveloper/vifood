@@ -15,4 +15,5 @@ public class State {
     private Long id;
 
     private String nome;
+
 }

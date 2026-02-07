@@ -16,5 +16,4 @@ public class PaymentMethod {
 
     private String descricao;
 
-    private String sigla;
 }

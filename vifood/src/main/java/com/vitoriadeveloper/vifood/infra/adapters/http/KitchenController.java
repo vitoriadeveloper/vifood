@@ -15,34 +15,28 @@ import java.util.List;
 public class KitchenController {
     private final KitchenService service;
 
-
     @PostMapping
-    public ResponseEntity<Kitchen> create(@RequestBody Kitchen body) {
-        Kitchen kitchen = service.create(body);
-        return ResponseEntity.ok().body(kitchen);
+    public Kitchen create(@RequestBody Kitchen body) {
+        return service.create(body);
     }
 
     @GetMapping
-    public ResponseEntity<List<Kitchen>> findAll() {
-        List<Kitchen> resultado = service.findAll();
-        return ResponseEntity.ok(resultado);
+    public List<Kitchen> findAll() {
+        return  service.findAll();
     }
 
     @GetMapping({"/{id}"})
-    public ResponseEntity<Kitchen> findById(@PathVariable Long id) {
-        Kitchen resultado = service.findById(id);
-        return ResponseEntity.ok(resultado);
+    public Kitchen findById(@PathVariable Long id) {
+        return service.findById(id);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Kitchen> updateById(@PathVariable Long id, @RequestBody Kitchen body) {
-        Kitchen kitchen = service.updateById(id, body);
-        return ResponseEntity.ok().body(kitchen);
+    public Kitchen updateById(@PathVariable Long id, @RequestBody Kitchen body) {
+        return service.updateById(id, body);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Object> deleteById(@PathVariable Long id) {
+    public void deleteById(@PathVariable Long id) {
         service.deleteById(id);
-        return ResponseEntity.noContent().build();
     }
 }

@@ -15,20 +15,17 @@ public class CityController {
     private final CityService service;
 
     @GetMapping
-    public ResponseEntity<List<City>> findAll() {
-        List<City> resultado = service.findAll();
-        return ResponseEntity.ok(resultado);
+    public List<City> findAll() {
+        return service.findAll();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<City> findById(@PathVariable Long id) {
-        City result = service.findById(id);
-        return ResponseEntity.ok(result);
+    public City findById(@PathVariable Long id) {
+        return service.findById(id);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
+    public void delete(@PathVariable Long id) {
         service.delete(id);
-        return ResponseEntity.noContent().build();
     }
 }

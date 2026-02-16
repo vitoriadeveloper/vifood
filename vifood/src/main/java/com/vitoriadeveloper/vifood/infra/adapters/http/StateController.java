@@ -3,7 +3,6 @@ package com.vitoriadeveloper.vifood.infra.adapters.http;
 import com.vitoriadeveloper.vifood.application.services.StatesService;
 import com.vitoriadeveloper.vifood.domain.model.State;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,20 +14,17 @@ public class StateController {
     private final StatesService service;
 
     @GetMapping
-    public ResponseEntity<List<State>> findAll() {
-        List<State> resultado = service.findAll();
-        return ResponseEntity.ok(resultado);
+    public List<State> findAll() {
+        return service.findAll();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<State> findById(@PathVariable Long id) {
-        State result = service.findById(id);
-        return ResponseEntity.ok(result);
+    public State findById(@PathVariable Long id) {
+        return service.findById(id);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
+    public void delete(@PathVariable Long id) {
         service.delete(id);
-        return ResponseEntity.noContent().build();
     }
 }

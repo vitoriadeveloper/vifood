@@ -19,7 +19,7 @@ public class Order {
     private Long id;
 
     @Column(name = "id_cliente", nullable = false)
-    private Integer clienteId;
+    private Long clienteId;
 
     @Column(name = "data_pedido", nullable = false)
     private Date dataPedido;
@@ -36,4 +36,15 @@ public class Order {
             orphanRemoval = true
     )
     private List<OrderItem> itens = new ArrayList<>();
+
+    @ManyToOne
+    @JoinColumn(name = "restaurante_id", nullable = false)
+    private Restaurant restaurante;
+
+    @ManyToOne
+    @JoinColumn(name = "id_cliente", insertable = false, updatable = false)
+    private User cliente;
+
+    @Embedded
+    private Address enderecoEntrega;
 }

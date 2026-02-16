@@ -28,4 +28,8 @@ public class OrderItem {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_pedido", nullable = false)
     private Order pedido;
+
+    @ManyToOne
+    @JoinColumn(name = "id_produto", nullable = false)
+    private Product produto;
 }

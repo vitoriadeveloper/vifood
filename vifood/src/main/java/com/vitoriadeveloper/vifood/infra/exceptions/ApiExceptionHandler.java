@@ -3,15 +3,19 @@ package com.vitoriadeveloper.vifood.infra.exceptions;
 import com.vitoriadeveloper.vifood.domain.exceptions.*;
 import com.vitoriadeveloper.vifood.infra.utils.ErrorResponse;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.time.OffsetDateTime;
 
 @RestControllerAdvice
-public class ApiExceptionHandler {
+public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(KitchenNotFoundException.class)
     public ResponseEntity<Object> handleKitchenNotFound(KitchenNotFoundException e) {
@@ -79,4 +83,17 @@ public class ApiExceptionHandler {
         );
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }
+
+    @Override
+    protected ResponseEntity<Object> handleExceptionInternal(
+            Exception ex, Object body, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
+        var error = new ErrorResponse(
+                OffsetDateTime.now(),
+                status.value(),
+                status.toString(),
+                ex.getMessage()
+        );
+        return ResponseEntity.status(status).body(error);
+    }
+
 }

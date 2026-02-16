@@ -7,7 +7,6 @@ import com.vitoriadeveloper.vifood.domain.model.Restaurant;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,43 +20,38 @@ public class RestaurantController {
 
 
     @PostMapping
-    public ResponseEntity<Restaurant> create(@RequestBody Restaurant body) {
-        Restaurant restaurant = service.create(body);
-        return ResponseEntity.status(HttpStatus.CREATED).body(restaurant);
+    public Restaurant create(@RequestBody Restaurant body) {
+        return service.create(body);
     }
 
     @GetMapping
-    public ResponseEntity<List<Restaurant>> findAll(RestaurantFilter filters) {
+    public List<Restaurant> findAll(RestaurantFilter filters) {
         if (filters.getTaxaFreteMax() == null && filters.getTaxaFreteMin() == null && filters.getNome() == null) {
-            List<Restaurant> result = service.findAll();
-            return ResponseEntity.ok(result);
+            return service.findAll();
         }
 
-        List<Restaurant> result = service.findByFilter(filters);
-        return ResponseEntity.ok(result);
+        return service.findByFilter(filters);
     }
 
     @GetMapping({"/{id}"})
-    public ResponseEntity<Restaurant> findById(@PathVariable Long id) {
-        Restaurant result = service.findById(id);
-        return ResponseEntity.ok(result);
+    public Restaurant findById(@PathVariable Long id) {
+        return service.findById(id);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Restaurant> updateById(@PathVariable Long id, @RequestBody Restaurant body) {
-        Restaurant result = service.updateById(id, body);
-        return ResponseEntity.ok().body(result);
+    public Restaurant updateById(@PathVariable Long id, @RequestBody Restaurant body) {
+        return service.updateById(id, body);
     }
 
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     @PatchMapping("/{id}")
-    public ResponseEntity<Void> updatePartial(@PathVariable Long id, @RequestBody Map<String, Object> fields) {
+    public void updatePartial(@PathVariable Long id, @RequestBody Map<String, Object> fields) {
         service.updatePartial(id, fields);
-        return ResponseEntity.ok().build();
     }
 
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{id}")
-    public ResponseEntity<Object> deleteById(@PathVariable Long id) {
+    public void deleteById(@PathVariable Long id) {
         service.deleteById(id);
-        return ResponseEntity.noContent().build();
     }
 }

@@ -27,4 +27,9 @@ public class CityController {
     public void delete(@PathVariable Long id) {
         service.delete(id);
     }
+
+    @PutMapping("/{id}")
+    public void updateById(@PathVariable Long id, @RequestBody City city) {
+        service.updateById(id, city);
+    }
 }

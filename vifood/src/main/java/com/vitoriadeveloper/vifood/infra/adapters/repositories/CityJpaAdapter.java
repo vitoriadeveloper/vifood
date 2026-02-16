@@ -28,4 +28,9 @@ public class CityJpaAdapter implements ICityRepositoryPort {
     public void delete(Long id) {
         jpaRepository.deleteById(id);
     }
+
+    @Override
+    public void save(City city) {
+        jpaRepository.save(city);
+    }
 }

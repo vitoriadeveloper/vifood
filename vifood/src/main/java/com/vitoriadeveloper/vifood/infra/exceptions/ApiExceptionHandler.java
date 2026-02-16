@@ -1,9 +1,6 @@
 package com.vitoriadeveloper.vifood.infra.exceptions;
 
-import com.vitoriadeveloper.vifood.domain.exceptions.CityNotFoundException;
-import com.vitoriadeveloper.vifood.domain.exceptions.KitchenNotFoundException;
-import com.vitoriadeveloper.vifood.domain.exceptions.RestaurantNotFoundException;
-import com.vitoriadeveloper.vifood.domain.exceptions.StateNotFoundException;
+import com.vitoriadeveloper.vifood.domain.exceptions.*;
 import com.vitoriadeveloper.vifood.infra.utils.ErrorResponse;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
@@ -70,5 +67,16 @@ public class ApiExceptionHandler {
                 e.getMessage()
         );
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+    }
+
+    @ExceptionHandler(InvalidStateReferenceException.class)
+    public ResponseEntity<Object> handleInvalidStateReference(InvalidStateReferenceException e) {
+        var error = new ErrorResponse(
+                OffsetDateTime.now(),
+                HttpStatus.BAD_REQUEST.value(),
+                "Referência de estado inválida",
+                e.getMessage()
+        );
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }
 }

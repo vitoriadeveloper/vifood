@@ -19,7 +19,7 @@ public class Order {
     private Long id;
 
     @Column(name = "id_cliente", nullable = false)
-    private Long clienteId;
+    private Integer clienteId;
 
     @Column(name = "data_pedido", nullable = false)
     private Date dataPedido;
@@ -38,7 +38,6 @@ public class Order {
     private List<OrderItem> itens = new ArrayList<>();
 
     @ManyToOne
-    @JoinColumn(name = "restaurante_id", nullable = false)
     private Restaurant restaurante;
 
     @ManyToOne

@@ -4,6 +4,7 @@ package com.vitoriadeveloper.vifood.infra.adapters.http;
 import com.vitoriadeveloper.vifood.application.services.RestaurantService;
 import com.vitoriadeveloper.vifood.domain.filters.RestaurantFilter;
 import com.vitoriadeveloper.vifood.domain.model.Restaurant;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -20,7 +21,7 @@ public class RestaurantController {
 
 
     @PostMapping
-    public Restaurant create(@RequestBody Restaurant body) {
+    public Restaurant create(@RequestBody @Valid Restaurant body) {
         return service.create(body);
     }
 

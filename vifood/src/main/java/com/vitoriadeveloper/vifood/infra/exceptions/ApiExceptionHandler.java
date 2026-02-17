@@ -1,6 +1,8 @@
 package com.vitoriadeveloper.vifood.infra.exceptions;
 
+import com.fasterxml.jackson.databind.exc.IgnoredPropertyException;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
+import com.fasterxml.jackson.databind.exc.PropertyBindingException;
 import com.vitoriadeveloper.vifood.domain.exceptions.*;
 import com.vitoriadeveloper.vifood.infra.utils.ErrorResponse;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -12,12 +14,15 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.time.OffsetDateTime;
 
 @RestControllerAdvice
 public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
+
+    private Throwable rootCause;
 
     @ExceptionHandler(KitchenNotFoundException.class)
     public ResponseEntity<Object> handleKitchenNotFound(KitchenNotFoundException e) {
@@ -124,6 +129,18 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
                     invalidEx.getTargetType().getSimpleName()
             );
         }
+        else if (rootCause instanceof PropertyBindingException){
+
+            String path = ((IgnoredPropertyException) rootCause).getPath().stream()
+                    .map(ref -> ref.getFieldName())
+                    .reduce((a, b) -> a + "." + b)
+                    .orElse("");
+
+            detail = String.format(
+                    "A propriedade '%s' não é reconhecida. Verifique se o nome está correto ou se ela foi uma propriedade ignorada.",
+                    path
+            );
+        }
 
         var error = new ErrorResponse(
                 OffsetDateTime.now(),
@@ -134,5 +151,25 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
         return ResponseEntity.status(status).body(error);
     }
+
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    protected ResponseEntity<Object> handleMethodArgumentTypeMismatch(MethodArgumentTypeMismatchException ex, WebRequest request) {
+        String detail = String.format(
+                "O parâmetro de URL '%s' recebeu o valor '%s', que é incompatível com o tipo '%s'.",
+                ex.getName(),
+                ex.getValue(),
+                ex.getRequiredType() != null ? ex.getRequiredType().getSimpleName() : "desconecido"
+        );
+
+        var error = new ErrorResponse(
+                OffsetDateTime.now(),
+                HttpStatus.BAD_REQUEST.value(),
+                "Parâmetro de URL inválido",
+                detail
+        );
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+    }
+
 
 }

@@ -1,5 +1,6 @@
 package com.vitoriadeveloper.vifood.application.services;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vitoriadeveloper.vifood.domain.exceptions.KitchenNotFoundException;
 import com.vitoriadeveloper.vifood.domain.exceptions.RestaurantNotFoundException;
@@ -85,6 +86,7 @@ public class RestaurantService implements IRestaurantUseCasePort {
     @Transactional
     @Override
     public void updatePartial(Long id, Map<String, Object> fields) {
+        objectMapper.configure(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES, true);
         var restaurant = repository.findById(id).orElseThrow(() -> new RestaurantNotFoundException(id));
         // faz conversao de tipos automatico, sem isso teria apenas object
         Restaurant restaurantConverted = objectMapper.convertValue(fields, Restaurant.class);

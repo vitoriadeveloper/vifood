@@ -1,5 +1,6 @@
 package com.vitoriadeveloper.vifood.infra.exceptions;
 
+import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.vitoriadeveloper.vifood.domain.exceptions.*;
 import com.vitoriadeveloper.vifood.infra.utils.ErrorResponse;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -7,6 +8,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
@@ -57,8 +59,8 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
                 OffsetDateTime.now(),
                 HttpStatus.NOT_FOUND.value(),
                 "Estado não encontrado",
-                e.getMessage()
-        );
+                e.getMessage());
+
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
     }
 
@@ -92,7 +94,44 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
                 status.value(),
                 status.toString(),
                 ex.getMessage()
+
         );
+        return ResponseEntity.status(status).body(error);
+    }
+
+    @Override
+    protected ResponseEntity<Object> handleHttpMessageNotReadable(
+            HttpMessageNotReadableException ex,
+            HttpHeaders headers,
+            HttpStatusCode status,
+            WebRequest request) {
+
+        String detail = "O corpo da requisição contém um formato inválido. Verifique os dados enviados.";
+
+        Throwable rootCause = ex.getCause();
+
+        if (rootCause instanceof InvalidFormatException invalidEx) {
+
+            String path = invalidEx.getPath().stream()
+                    .map(ref -> ref.getFieldName())
+                    .reduce((a, b) -> a + "." + b)
+                    .orElse("");
+
+            detail = String.format(
+                    "A propriedade '%s' recebeu o valor '%s', que é incompatível com o tipo '%s'.",
+                    path,
+                    invalidEx.getValue(),
+                    invalidEx.getTargetType().getSimpleName()
+            );
+        }
+
+        var error = new ErrorResponse(
+                OffsetDateTime.now(),
+                status.value(),
+                "Formato de entrada inválido",
+                detail
+        );
+
         return ResponseEntity.status(status).body(error);
     }
 

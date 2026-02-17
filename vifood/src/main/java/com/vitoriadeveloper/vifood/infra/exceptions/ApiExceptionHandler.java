@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
@@ -171,5 +172,27 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }
 
+  @Override
+        protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
+
+
+        var error = new ErrorResponse(
+                    OffsetDateTime.now(),
+                    status.value(),
+                    "Erro de validação",
+                "Um ou mais campos estão inválidos. Faça o preenchimento correto e tente novamente."
+        );
+
+      ex.getBindingResult().getFieldErrors().forEach(fieldError -> {
+          String message = String.format(
+                  "O campo '%s' %s",
+                  fieldError.getField(),
+                  fieldError.getDefaultMessage()
+          );
+          error.error(message);
+        });
+
+        return ResponseEntity.status(status).body(error);
+    }
 
 }

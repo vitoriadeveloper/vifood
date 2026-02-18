@@ -31,7 +31,9 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
                 OffsetDateTime.now(),
                 HttpStatus.NOT_FOUND.value(),
                 "Cozinha não encontrada",
-                e.getMessage()
+                e.getMessage(),
+                null
+
         );
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
@@ -43,7 +45,8 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
                 OffsetDateTime.now(),
                 HttpStatus.CONFLICT.value(),
                 "Entidade está em uso",
-                "Não é possível excluir a cozinha porque ela está vinculada a outros registros."
+                "Não é possível excluir a cozinha porque ela está vinculada a outros registros.",
+                null
         );
         return ResponseEntity.status(HttpStatus.CONFLICT).body(error);
     }
@@ -54,7 +57,8 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
                 OffsetDateTime.now(),
                 HttpStatus.NOT_FOUND.value(),
                 "Restaurante não encontrado",
-                e.getMessage()
+                e.getMessage(),
+                null
         );
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
     }
@@ -65,7 +69,8 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
                 OffsetDateTime.now(),
                 HttpStatus.NOT_FOUND.value(),
                 "Estado não encontrado",
-                e.getMessage());
+                e.getMessage(),
+                null);
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
     }
@@ -76,7 +81,8 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
                 OffsetDateTime.now(),
                 HttpStatus.NOT_FOUND.value(),
                 "Cidade não encontrada",
-                e.getMessage()
+                e.getMessage(),
+                null
         );
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
     }
@@ -87,7 +93,8 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
                 OffsetDateTime.now(),
                 HttpStatus.BAD_REQUEST.value(),
                 "Referência de estado inválida",
-                e.getMessage()
+                e.getMessage(),
+                null
         );
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }
@@ -99,7 +106,8 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
                 OffsetDateTime.now(),
                 status.value(),
                 status.toString(),
-                ex.getMessage()
+                ex.getMessage(),
+                null
 
         );
         return ResponseEntity.status(status).body(error);
@@ -147,7 +155,8 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
                 OffsetDateTime.now(),
                 status.value(),
                 "Formato de entrada inválido",
-                detail
+                detail,
+                null
         );
 
         return ResponseEntity.status(status).body(error);
@@ -166,7 +175,8 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
                 OffsetDateTime.now(),
                 HttpStatus.BAD_REQUEST.value(),
                 "Parâmetro de URL inválido",
-                detail
+                detail,
+                null
         );
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
@@ -175,22 +185,22 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
   @Override
         protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
 
+      var fields = ex.getBindingResult().getFieldErrors().stream()
+              .map(fieldError -> new ErrorResponse.Field(
+                      fieldError.getField(),
+                      fieldError.getDefaultMessage()
+              ))
+              .toList();
 
         var error = new ErrorResponse(
                     OffsetDateTime.now(),
                     status.value(),
                     "Erro de validação",
-                "Um ou mais campos estão inválidos. Faça o preenchimento correto e tente novamente."
+                "Um ou mais campos estão inválidos. Faça o preenchimento correto e tente novamente.",
+                fields
         );
 
-      ex.getBindingResult().getFieldErrors().forEach(fieldError -> {
-          String message = String.format(
-                  "O campo '%s' %s",
-                  fieldError.getField(),
-                  fieldError.getDefaultMessage()
-          );
-          error.error(message);
-        });
+
 
         return ResponseEntity.status(status).body(error);
     }

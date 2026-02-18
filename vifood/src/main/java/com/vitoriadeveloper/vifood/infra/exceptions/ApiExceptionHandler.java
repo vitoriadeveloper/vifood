@@ -5,6 +5,9 @@ import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.fasterxml.jackson.databind.exc.PropertyBindingException;
 import com.vitoriadeveloper.vifood.domain.exceptions.*;
 import com.vitoriadeveloper.vifood.infra.utils.ErrorResponse;
+import lombok.AllArgsConstructor;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -19,11 +22,13 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.time.OffsetDateTime;
+import java.util.stream.Collectors;
 
 @RestControllerAdvice
+@AllArgsConstructor
 public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
-    private Throwable rootCause;
+    private final MessageSource messageSource;
 
     @ExceptionHandler(KitchenNotFoundException.class)
     public ResponseEntity<Object> handleKitchenNotFound(KitchenNotFoundException e) {
@@ -137,8 +142,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
                     invalidEx.getValue(),
                     invalidEx.getTargetType().getSimpleName()
             );
-        }
-        else if (rootCause instanceof PropertyBindingException){
+        } else if (rootCause instanceof PropertyBindingException) {
 
             String path = ((IgnoredPropertyException) rootCause).getPath().stream()
                     .map(ref -> ref.getFieldName())
@@ -182,24 +186,25 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }
 
-  @Override
-        protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
+    @Override
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
+        var fields = ex.getBindingResult().getFieldErrors().stream()
+                .map(fieldError -> {
+                    String message = messageSource.getMessage(fieldError, LocaleContextHolder.getLocale());
+                    return ErrorResponse.Field.builder()
+                            .name(fieldError.getField())
+                            .userMessage(message)
+                            .build();
 
-      var fields = ex.getBindingResult().getFieldErrors().stream()
-              .map(fieldError -> new ErrorResponse.Field(
-                      fieldError.getField(),
-                      fieldError.getDefaultMessage()
-              ))
-              .toList();
+                }).collect(Collectors.toList());
 
         var error = new ErrorResponse(
-                    OffsetDateTime.now(),
-                    status.value(),
-                    "Erro de validação",
+                OffsetDateTime.now(),
+                status.value(),
+                "Erro de validação",
                 "Um ou mais campos estão inválidos. Faça o preenchimento correto e tente novamente.",
                 fields
         );
-
 
 
         return ResponseEntity.status(status).body(error);

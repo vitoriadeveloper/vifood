@@ -5,6 +5,8 @@ import com.vitoriadeveloper.vifood.infra.validation.Groups;
 import jakarta.persistence.*;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
+import jakarta.validation.groups.ConvertGroup;
+import jakarta.validation.groups.Default;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -27,10 +29,10 @@ public class Restaurant {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(groups = Groups.RestaurantRegister.class)
+    @NotBlank
     private String nome;
 
-    @PositiveOrZero(groups = Groups.RestaurantRegister.class)
+    @PositiveOrZero
     @Column(name = "taxa_frete")
     private BigDecimal taxaFrete;
 
@@ -47,7 +49,8 @@ public class Restaurant {
     private LocalDateTime dataAtualizacao;
 
     @Valid
-    @NotNull(groups = Groups.RestaurantRegister.class)
+    @ConvertGroup(from = Default.class, to = Groups.CozinhaId.class)
+    @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cozinha_id")
     private Kitchen cozinha;

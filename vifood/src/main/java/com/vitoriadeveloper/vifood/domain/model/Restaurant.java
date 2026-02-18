@@ -1,8 +1,10 @@
 package com.vitoriadeveloper.vifood.domain.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.vitoriadeveloper.vifood.infra.validation.Groups;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -25,9 +27,10 @@ public class Restaurant {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
+    @NotBlank(groups = Groups.RestaurantRegister.class)
     private String nome;
 
+    @PositiveOrZero(groups = Groups.RestaurantRegister.class)
     @Column(name = "taxa_frete")
     private BigDecimal taxaFrete;
 
@@ -43,7 +46,8 @@ public class Restaurant {
     @Column(name = "data_atualizacao", nullable = false, columnDefinition = "datetime")
     private LocalDateTime dataAtualizacao;
 
-    @JsonIgnore
+    @Valid
+    @NotNull(groups = Groups.RestaurantRegister.class)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cozinha_id")
     private Kitchen cozinha;

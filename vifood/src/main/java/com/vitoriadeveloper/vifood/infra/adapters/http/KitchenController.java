@@ -4,6 +4,7 @@ import com.vitoriadeveloper.vifood.application.services.KitchenService;
 import com.vitoriadeveloper.vifood.domain.model.Kitchen;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,7 +16,7 @@ public class KitchenController {
     private final KitchenService service;
 
     @PostMapping
-    public Kitchen create(@RequestBody Kitchen body) {
+    public Kitchen create(@RequestBody @Validated Kitchen body) {
         return service.create(body);
     }
 

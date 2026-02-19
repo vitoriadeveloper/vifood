@@ -13,12 +13,13 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ReflectionUtils;
+import org.springframework.validation.annotation.Validated;
 
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
 
-
+@Validated
 @Service
 @AllArgsConstructor
 public class RestaurantService implements IRestaurantUseCasePort {

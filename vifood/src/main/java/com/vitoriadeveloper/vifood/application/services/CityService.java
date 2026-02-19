@@ -10,10 +10,12 @@ import com.vitoriadeveloper.vifood.domain.ports.out.ICityRepositoryPort;
 import com.vitoriadeveloper.vifood.domain.ports.out.IStateRepositoryPort;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
 
-
+@Validated
 @Service
 @AllArgsConstructor
 public class CityService implements ICityUseCasePort {
@@ -32,6 +34,7 @@ public class CityService implements ICityUseCasePort {
     }
 
     @Override
+    @Transactional
     public void delete(Long id) throws CityNotFoundException {
         repository.findById(id)
                 .orElseThrow(() -> new CityNotFoundException(id));
@@ -39,6 +42,7 @@ public class CityService implements ICityUseCasePort {
     }
 
     @Override
+    @Transactional
     public void updateById(Long id, City city) throws CityNotFoundException {
         City existingCity  = repository.findById(id)
                 .orElseThrow(() -> new CityNotFoundException(id));

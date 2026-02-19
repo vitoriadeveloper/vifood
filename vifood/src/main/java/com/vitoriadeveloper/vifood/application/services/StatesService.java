@@ -6,11 +6,13 @@ import com.vitoriadeveloper.vifood.domain.ports.in.IStateUseCasePort;
 import com.vitoriadeveloper.vifood.domain.ports.out.IStateRepositoryPort;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.annotation.Validated;
 
 
 import java.util.List;
 
-
+@Validated
 @Service
 @AllArgsConstructor
 public class StatesService implements IStateUseCasePort {
@@ -28,6 +30,7 @@ public class StatesService implements IStateUseCasePort {
     }
 
     @Override
+    @Transactional
     public void delete(Long id) throws StateNotFoundException {
         repository.findById(id)
                 .orElseThrow(() -> new StateNotFoundException(id));

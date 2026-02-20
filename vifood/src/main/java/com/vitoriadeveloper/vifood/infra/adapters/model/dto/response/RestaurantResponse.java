@@ -1,7 +1,7 @@
 package com.vitoriadeveloper.vifood.infra.adapters.model.dto.response;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.UUID;
 
 public record RestaurantResponse(
@@ -11,7 +11,7 @@ public record RestaurantResponse(
         Boolean ativo,
         Boolean aberto,
         KitchenResponse cozinha,
-        LocalDateTime dataCadastro,
-        LocalDateTime dataAtualizacao
+        OffsetDateTime dataCadastro,
+        OffsetDateTime dataAtualizacao
 ) {
 }

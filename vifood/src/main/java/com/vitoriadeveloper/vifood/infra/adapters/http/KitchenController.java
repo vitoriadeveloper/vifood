@@ -2,6 +2,8 @@ package com.vitoriadeveloper.vifood.infra.adapters.http;
 
 import com.vitoriadeveloper.vifood.application.services.KitchenService;
 import com.vitoriadeveloper.vifood.domain.model.Kitchen;
+import com.vitoriadeveloper.vifood.infra.adapters.model.dto.response.KitchenResponse;
+import com.vitoriadeveloper.vifood.infra.adapters.model.mapper.KitchenResponseMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
@@ -16,23 +18,26 @@ public class KitchenController {
     private final KitchenService service;
 
     @PostMapping
-    public Kitchen create(@RequestBody @Validated Kitchen body) {
-        return service.create(body);
+    public KitchenResponse create(@RequestBody @Validated Kitchen body) {
+        Kitchen kitchen = service.create(body);
+        return KitchenResponseMapper.toResponse(kitchen);
     }
 
     @GetMapping
-    public List<Kitchen> findAll() {
-        return  service.findAll();
+    public List<KitchenResponse> findAll() {
+        return KitchenResponseMapper.toCollectionResponse(service.findAll());
     }
 
     @GetMapping({"/{id}"})
-    public Kitchen findById(@PathVariable Long id) {
-        return service.findById(id);
+    public KitchenResponse findById(@PathVariable Long id) {
+        var kitchen =  service.findById(id);
+        return KitchenResponseMapper.toResponse(kitchen);
     }
 
     @PutMapping("/{id}")
-    public Kitchen updateById(@PathVariable Long id, @RequestBody Kitchen body) {
-        return service.updateById(id, body);
+    public KitchenResponse updateById(@PathVariable Long id, @RequestBody Kitchen body) {
+        var kitchen = service.updateById(id, body);
+        return KitchenResponseMapper.toResponse(kitchen);
     }
 
     @DeleteMapping("/{id}")

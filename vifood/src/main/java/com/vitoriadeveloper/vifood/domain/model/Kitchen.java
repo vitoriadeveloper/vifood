@@ -1,6 +1,5 @@
 package com.vitoriadeveloper.vifood.domain.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.vitoriadeveloper.vifood.infra.validation.Groups;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -29,7 +28,6 @@ public class Kitchen {
     @Column(nullable = false)
     private String nome;
 
-    @JsonIgnore
     @OneToMany(mappedBy = "cozinha")
     private List<Restaurant> restaurantes = new ArrayList<>();
 

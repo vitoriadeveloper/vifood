@@ -3,7 +3,10 @@ package com.vitoriadeveloper.vifood.infra.adapters.http;
 
 import com.vitoriadeveloper.vifood.application.services.RestaurantService;
 import com.vitoriadeveloper.vifood.domain.filters.RestaurantFilter;
-import com.vitoriadeveloper.vifood.domain.model.Restaurant;
+import com.vitoriadeveloper.vifood.infra.adapters.model.dto.request.RestaurantRequest;
+import com.vitoriadeveloper.vifood.infra.adapters.model.dto.response.RestaurantResponse;
+import com.vitoriadeveloper.vifood.infra.adapters.model.mapper.RestaurantResponseMapper;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -13,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Map;
 
+@Validated
 @RestController
 @RequestMapping(value = "/restaurantes", produces = MediaType.APPLICATION_JSON_VALUE)
 @RequiredArgsConstructor
@@ -21,32 +25,39 @@ public class RestaurantController {
 
 
     @PostMapping
-    public Restaurant create(@RequestBody @Validated Restaurant body) {
-        return service.create(body);
+    @ResponseStatus(HttpStatus.CREATED)
+    public RestaurantResponse create(@Valid @RequestBody RestaurantRequest body) {
+        var restaurant = RestaurantResponseMapper.toDomain(body);
+        var saved = service.create(restaurant);
+        return RestaurantResponseMapper.toResponse(saved);
     }
 
     @GetMapping
-    public List<Restaurant> findAll(RestaurantFilter filters) {
+    public List<RestaurantResponse> findAll(RestaurantFilter filters) {
         if (filters.getTaxaFreteMax() == null && filters.getTaxaFreteMin() == null && filters.getNome() == null) {
-            return service.findAll();
+            var restaurants = service.findAll();
+            return restaurants.stream().map(RestaurantResponseMapper::toResponse).toList();
         }
-
-        return service.findByFilter(filters);
+        var restaurants = service.findByFilter(filters);
+        return restaurants.stream().map(RestaurantResponseMapper::toResponse).toList();
     }
 
     @GetMapping({"/{id}"})
-    public Restaurant findById(@PathVariable Long id) {
-        return service.findById(id);
+    public RestaurantResponse findById(@PathVariable Long id) {
+        var restaurant = service.findById(id);
+        return RestaurantResponseMapper.toResponse(restaurant);
     }
 
     @PutMapping("/{id}")
-    public Restaurant updateById(@PathVariable Long id, @RequestBody Restaurant body) {
-        return service.updateById(id, body);
+    public RestaurantResponse updateById(@PathVariable Long id, @Valid @RequestBody RestaurantRequest body) {
+        var restaurant = RestaurantResponseMapper.toDomain(body);
+        var updated = service.updateById(id, restaurant);
+        return RestaurantResponseMapper.toResponse(updated);
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @PatchMapping("/{id}")
-    public void updatePartial(@PathVariable Long id, @RequestBody Map<String, Object> fields) {
+    public void updatePartial(@PathVariable Long id, @Valid @RequestBody Map<String, Object> fields) {
         service.updatePartial(id, fields);
     }
 

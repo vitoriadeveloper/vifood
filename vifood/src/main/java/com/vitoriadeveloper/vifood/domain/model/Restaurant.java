@@ -1,6 +1,5 @@
 package com.vitoriadeveloper.vifood.domain.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.vitoriadeveloper.vifood.infra.validation.Groups;
 import jakarta.persistence.*;
 import jakarta.validation.Valid;
@@ -51,15 +50,13 @@ public class Restaurant {
     @Valid
     @ConvertGroup(from = Default.class, to = Groups.CozinhaId.class)
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "cozinha_id")
     private Kitchen cozinha;
 
-    @JsonIgnore
     @Embedded
     private Address endereco;
 
-    @JsonIgnore
     @ManyToMany
     @JoinTable(name = "tb_restaurante_forma_pagamento", joinColumns = @JoinColumn(name = "restaurante_id"),
     inverseJoinColumns = @JoinColumn(name = "forma_pagamento_id")
@@ -67,6 +64,5 @@ public class Restaurant {
     private List<PaymentMethod> formasPagamento = new ArrayList<>();
 
     @OneToMany(mappedBy = "restaurante")
-    @JsonIgnore
     private List<Product> produtos = new ArrayList<>();
 }

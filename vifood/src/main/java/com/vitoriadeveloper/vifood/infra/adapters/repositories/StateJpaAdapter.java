@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
@@ -20,12 +21,12 @@ public class StateJpaAdapter implements IStateRepositoryPort {
     }
 
     @Override
-    public Optional<State> findById(Long id) {
+    public Optional<State> findById(UUID id) {
         return jpaRepository.findById(id);
     }
 
     @Override
-    public void delete(Long id) {
+    public void delete(UUID id) {
         jpaRepository.deleteById(id);
     }
 }

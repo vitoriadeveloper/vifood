@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
+import java.util.UUID;
 
 @Validated
 @Service
@@ -32,13 +33,13 @@ public class KitchenService implements IKitchenUseCasePort {
     }
 
     @Override
-    public Kitchen findById(Long id) {
+    public Kitchen findById(UUID id) {
         return repository.findById(id).orElseThrow(()-> new KitchenNotFoundException(id));
     }
 
     @Transactional
     @Override
-    public Kitchen updateById(Long id, Kitchen body) {
+    public Kitchen updateById(UUID id, Kitchen body) {
         Kitchen kitchen = repository.findById(id)
                 .orElseThrow(() -> new KitchenNotFoundException(id));
 
@@ -49,7 +50,7 @@ public class KitchenService implements IKitchenUseCasePort {
 
     @Transactional
     @Override
-    public void deleteById(Long id) {
+    public void deleteById(UUID id) {
         try {
             repository.findById(id)
                     .orElseThrow(() -> new KitchenNotFoundException(id));

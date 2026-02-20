@@ -1,6 +1,8 @@
 package com.vitoriadeveloper.vifood.infra.adapters.model.dto.response;
 
+import java.util.UUID;
+
 public record KitchenResponse(
-        Long id,
+        UUID id,
         String nome
 ){}

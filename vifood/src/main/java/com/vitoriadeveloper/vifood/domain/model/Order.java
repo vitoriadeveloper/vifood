@@ -1,7 +1,6 @@
 package com.vitoriadeveloper.vifood.domain.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,6 +9,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Table(name = "tb_pedidos")
@@ -17,13 +17,13 @@ import java.util.List;
 @Setter
 public class Order {
 
-    @NotNull
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(columnDefinition = "uuid", updatable = false, nullable = false)
+    private UUID id;
 
     @Column(name = "id_cliente", nullable = false)
-    private Integer clienteId;
+    private UUID clienteId;
 
     @Column(name = "data_pedido", nullable = false)
     private Date dataPedido;

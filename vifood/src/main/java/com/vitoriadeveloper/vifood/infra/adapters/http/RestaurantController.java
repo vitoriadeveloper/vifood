@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 @Validated
 @RestController
@@ -43,13 +44,13 @@ public class RestaurantController {
     }
 
     @GetMapping({"/{id}"})
-    public RestaurantResponse findById(@PathVariable Long id) {
+    public RestaurantResponse findById(@PathVariable UUID id) {
         var restaurant = service.findById(id);
         return RestaurantResponseMapper.toResponse(restaurant);
     }
 
     @PutMapping("/{id}")
-    public RestaurantResponse updateById(@PathVariable Long id, @Valid @RequestBody RestaurantRequest body) {
+    public RestaurantResponse updateById(@PathVariable UUID id, @Valid @RequestBody RestaurantRequest body) {
         var restaurant = RestaurantResponseMapper.toDomain(body);
         var updated = service.updateById(id, restaurant);
         return RestaurantResponseMapper.toResponse(updated);
@@ -57,13 +58,13 @@ public class RestaurantController {
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @PatchMapping("/{id}")
-    public void updatePartial(@PathVariable Long id, @Valid @RequestBody Map<String, Object> fields) {
+    public void updatePartial(@PathVariable UUID id, @Valid @RequestBody Map<String, Object> fields) {
         service.updatePartial(id, fields);
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{id}")
-    public void deleteById(@PathVariable Long id) {
+    public void deleteById(@PathVariable UUID id) {
         service.deleteById(id);
     }
 }

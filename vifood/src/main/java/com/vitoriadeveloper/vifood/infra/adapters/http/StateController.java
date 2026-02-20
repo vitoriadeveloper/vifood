@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/estados")
@@ -19,12 +20,12 @@ public class StateController {
     }
 
     @GetMapping("/{id}")
-    public State findById(@PathVariable Long id) {
+    public State findById(@PathVariable UUID id) {
         return service.findById(id);
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
+    public void delete(@PathVariable UUID id) {
         service.delete(id);
     }
 }

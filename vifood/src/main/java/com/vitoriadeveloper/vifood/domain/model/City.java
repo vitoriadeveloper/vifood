@@ -2,9 +2,10 @@ package com.vitoriadeveloper.vifood.domain.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.UUID;
 
 @Entity
 @Table(name = "tb_cidades")
@@ -12,10 +13,11 @@ import lombok.Setter;
 @Setter
 public class City {
 
-    @NotNull
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(columnDefinition = "uuid", updatable = false, nullable = false)
+    private UUID id;
 
     @NotBlank
     private String nome;

@@ -1,5 +1,5 @@
 -- File: src/main/resources/db/migration/V002_070220261947.sql
--- Alinha colunas com as entidades Java sem renomear tabelas existentes.
+-- Ajustado para banco com UUID
 
 -- =========================================================
 -- 1) Restaurantes: flags, timestamps e colunas do Address
@@ -14,11 +14,10 @@ ALTER TABLE tb_restaurantes
     ADD COLUMN IF NOT EXISTS endereco_numero VARCHAR(60),
     ADD COLUMN IF NOT EXISTS endereco_complemento VARCHAR(255),
     ADD COLUMN IF NOT EXISTS endereco_bairro VARCHAR(60),
-    ADD COLUMN IF NOT EXISTS endereco_cidade_id BIGINT;
+    ADD COLUMN IF NOT EXISTS endereco_cidade_id UUID;
 
 -- =========================================================
--- FK do endereço para tb_cidades
--- (PostgreSQL não suporta IF NOT EXISTS em CONSTRAINT)
+-- FK do endereço para tb_cidades (UUID)
 -- =========================================================
 DO $$
 BEGIN
@@ -53,11 +52,3 @@ ALTER TABLE tb_usuarios
 -- =========================================================
 ALTER TABLE tb_permissao
     ADD COLUMN IF NOT EXISTS nome VARCHAR(60);
-
--- =========================================================
--- Observação:
--- Caso queira mapear a coluna 'sigla' de tb_estados na entidade State,
--- adicione o campo:
--- private String sigla;
--- com @Column(name = "sigla")
--- =========================================================

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
@@ -20,7 +21,7 @@ public class KitchenJpaAdapter implements IKitchenRepositoryPort {
     }
 
     @Override
-    public Optional<Kitchen> findById(Long id) {
+    public Optional<Kitchen> findById(UUID id) {
         return jpaRepository.findById(id);
     }
 
@@ -30,7 +31,7 @@ public class KitchenJpaAdapter implements IKitchenRepositoryPort {
     }
 
     @Override
-    public void deleteById(Long id) {
+    public void deleteById(UUID id) {
         jpaRepository.deleteById(id);
     }
 

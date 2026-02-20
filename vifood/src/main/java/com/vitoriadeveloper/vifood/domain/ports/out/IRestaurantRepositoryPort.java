@@ -5,12 +5,13 @@ import com.vitoriadeveloper.vifood.domain.model.Restaurant;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 public interface IRestaurantRepositoryPort {
     List<Restaurant> findAll();
-    Optional<Restaurant> findById(Long id);
+    Optional<Restaurant> findById(UUID id);
     Restaurant save(Restaurant body);
-    void delete(Long id);
+    void delete(UUID id);
     List<Restaurant> findByFilter(RestaurantFilter filter);
 
 }

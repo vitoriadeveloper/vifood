@@ -1,9 +1,10 @@
 package com.vitoriadeveloper.vifood.domain.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.UUID;
 
 @Entity
 @Table(name = "tb_formas_pagamento")
@@ -11,10 +12,10 @@ import lombok.Setter;
 @Setter
 public class PaymentMethod {
 
-    @NotNull
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(columnDefinition = "uuid", updatable = false, nullable = false)
+    private UUID id;
 
     private String descricao;
 

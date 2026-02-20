@@ -6,14 +6,15 @@ import com.vitoriadeveloper.vifood.domain.model.Restaurant;
 
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 public interface IRestaurantUseCasePort {
     Restaurant create(Restaurant body);
     List<Restaurant> findAll();
-    Restaurant findById(Long id) throws RestaurantNotFoundException;
-    Restaurant updateById(Long id, Restaurant body) throws RestaurantNotFoundException;
-    void deleteById(Long id);
-    void updatePartial(Long id, Map<String, Object> fields);
+    Restaurant findById(UUID id) throws RestaurantNotFoundException;
+    Restaurant updateById(UUID id, Restaurant body) throws RestaurantNotFoundException;
+    void deleteById(UUID id);
+    void updatePartial(UUID id, Map<String, Object> fields);
     List<Restaurant> findByFilter(RestaurantFilter filter);
 
 }

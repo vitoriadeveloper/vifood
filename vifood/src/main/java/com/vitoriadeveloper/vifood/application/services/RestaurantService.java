@@ -18,6 +18,7 @@ import org.springframework.validation.annotation.Validated;
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 @Validated
 @Service
@@ -31,7 +32,7 @@ public class RestaurantService implements IRestaurantUseCasePort {
     @Transactional
     @Override
     public Restaurant create(Restaurant body) {
-        Long kitchenId = body.getCozinha().getId();
+        UUID kitchenId = body.getCozinha().getId();
         var kitchen = kitchenRepository.findById(kitchenId)
                 .orElseThrow(() -> new KitchenNotFoundException(kitchenId));
 
@@ -45,18 +46,18 @@ public class RestaurantService implements IRestaurantUseCasePort {
     }
 
     @Override
-    public Restaurant findById(Long id) throws RestaurantNotFoundException {
+    public Restaurant findById(UUID id) throws RestaurantNotFoundException {
         return repository.findById(id)
                 .orElseThrow(() -> new RestaurantNotFoundException(id));
     }
 
     @Transactional
     @Override
-    public Restaurant updateById(Long id, Restaurant body) throws RestaurantNotFoundException, KitchenNotFoundException {
+    public Restaurant updateById(UUID id, Restaurant body) throws RestaurantNotFoundException, KitchenNotFoundException {
         var restaurant = repository.findById(id)
                 .orElseThrow(() -> new RestaurantNotFoundException(id));
 
-        Long kitchenId = body.getCozinha().getId();
+        UUID kitchenId = body.getCozinha().getId();
         var kitchen = kitchenRepository.findById(kitchenId)
                 .orElseThrow(() -> new KitchenNotFoundException(kitchenId));
 
@@ -78,7 +79,7 @@ public class RestaurantService implements IRestaurantUseCasePort {
 
     @Transactional
     @Override
-    public void deleteById(Long id) {
+    public void deleteById(UUID id) {
         var restaurant = repository.findById(id)
                 .orElseThrow(() -> new RestaurantNotFoundException(id));
         repository.delete(id);
@@ -86,7 +87,7 @@ public class RestaurantService implements IRestaurantUseCasePort {
 
     @Transactional
     @Override
-    public void updatePartial(Long id, Map<String, Object> fields) {
+    public void updatePartial(UUID id, Map<String, Object> fields) {
         objectMapper.configure(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES, true);
         var restaurant = repository.findById(id).orElseThrow(() -> new RestaurantNotFoundException(id));
         // faz conversao de tipos automatico, sem isso teria apenas object

@@ -11,6 +11,7 @@ import org.springframework.validation.annotation.Validated;
 
 
 import java.util.List;
+import java.util.UUID;
 
 @Validated
 @Service
@@ -24,14 +25,14 @@ public class StatesService implements IStateUseCasePort {
     }
 
     @Override
-    public State findById(Long id)  {
+    public State findById(UUID id)  {
         return repository.findById(id)
                 .orElseThrow(() -> new StateNotFoundException(id));
     }
 
     @Override
     @Transactional
-    public void delete(Long id) throws StateNotFoundException {
+    public void delete(UUID id) throws StateNotFoundException {
         repository.findById(id)
                 .orElseThrow(() -> new StateNotFoundException(id));
         repository.delete(id);

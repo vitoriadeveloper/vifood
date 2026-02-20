@@ -10,6 +10,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping(value = "/cozinhas", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -29,19 +30,19 @@ public class KitchenController {
     }
 
     @GetMapping({"/{id}"})
-    public KitchenResponse findById(@PathVariable Long id) {
+    public KitchenResponse findById(@PathVariable UUID id) {
         var kitchen =  service.findById(id);
         return KitchenResponseMapper.toResponse(kitchen);
     }
 
     @PutMapping("/{id}")
-    public KitchenResponse updateById(@PathVariable Long id, @RequestBody Kitchen body) {
+    public KitchenResponse updateById(@PathVariable UUID id, @RequestBody Kitchen body) {
         var kitchen = service.updateById(id, body);
         return KitchenResponseMapper.toResponse(kitchen);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteById(@PathVariable Long id) {
+    public void deleteById(@PathVariable UUID id) {
         service.deleteById(id);
     }
 }

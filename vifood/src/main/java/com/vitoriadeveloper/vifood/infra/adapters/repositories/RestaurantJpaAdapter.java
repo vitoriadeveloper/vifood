@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
@@ -22,7 +23,7 @@ public class RestaurantJpaAdapter implements IRestaurantRepositoryPort {
     }
 
     @Override
-    public Optional<Restaurant> findById(Long id) {
+    public Optional<Restaurant> findById(UUID id) {
         return jpaRepository.findById(id);
     }
 
@@ -32,7 +33,7 @@ public class RestaurantJpaAdapter implements IRestaurantRepositoryPort {
     }
 
     @Override
-    public void delete(Long id) {
+    public void delete(UUID id) {
         jpaRepository.deleteById(id);
     }
 

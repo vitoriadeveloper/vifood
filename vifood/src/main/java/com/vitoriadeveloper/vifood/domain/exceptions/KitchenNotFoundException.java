@@ -1,8 +1,10 @@
 package com.vitoriadeveloper.vifood.domain.exceptions;
 
+import java.util.UUID;
+
 public class KitchenNotFoundException extends RuntimeException {
 
-    public KitchenNotFoundException(Long id) {
+    public KitchenNotFoundException(UUID id) {
         super("Cozinha de id: " + id + " não encontrada!");
     }
 }

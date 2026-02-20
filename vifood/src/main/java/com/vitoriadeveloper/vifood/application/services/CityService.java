@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
+import java.util.UUID;
 
 @Validated
 @Service
@@ -28,14 +29,14 @@ public class CityService implements ICityUseCasePort {
     }
 
     @Override
-    public City findById(Long id) {
+    public City findById(UUID id) {
         return repository.findById(id)
                 .orElseThrow(() -> new CityNotFoundException(id));
     }
 
     @Override
     @Transactional
-    public void delete(Long id) throws CityNotFoundException {
+    public void delete(UUID id) throws CityNotFoundException {
         repository.findById(id)
                 .orElseThrow(() -> new CityNotFoundException(id));
         repository.delete(id);
@@ -43,7 +44,7 @@ public class CityService implements ICityUseCasePort {
 
     @Override
     @Transactional
-    public void updateById(Long id, City city) throws CityNotFoundException {
+    public void updateById(UUID id, City city) throws CityNotFoundException {
         City existingCity  = repository.findById(id)
                 .orElseThrow(() -> new CityNotFoundException(id));
 

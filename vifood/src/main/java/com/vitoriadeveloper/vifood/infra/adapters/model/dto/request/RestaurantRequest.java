@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
 public record RestaurantRequest(
         @NotBlank
@@ -21,6 +22,6 @@ public record RestaurantRequest(
         Boolean aberto,
 
         @NotNull
-        Long cozinhaId
+        UUID cozinhaId
 ) {
 }

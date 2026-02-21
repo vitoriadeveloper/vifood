@@ -5,7 +5,7 @@ import com.vitoriadeveloper.vifood.domain.model.Restaurant;
 import com.vitoriadeveloper.vifood.infra.adapters.model.dto.request.RestaurantRequest;
 import com.vitoriadeveloper.vifood.infra.adapters.model.dto.response.RestaurantResponse;
 
-public class RestaurantResponseMapper {
+public class RestaurantMapper {
 
     public static RestaurantResponse toResponse(Restaurant restaurant) {
         return new RestaurantResponse(
@@ -14,7 +14,7 @@ public class RestaurantResponseMapper {
                 restaurant.getTaxaFrete(),
                 restaurant.getAtivo(),
                 restaurant.getAberto(),
-                KitchenResponseMapper.toResponse(restaurant.getCozinha()),
+                KitchenMapper.toResponse(restaurant.getCozinha()),
                 restaurant.getDataCadastro(),
                 restaurant.getDataAtualizacao()
         );

@@ -5,7 +5,7 @@ import com.vitoriadeveloper.vifood.infra.adapters.model.dto.response.KitchenResp
 
 import java.util.List;
 
-public class KitchenResponseMapper {
+public class KitchenMapper {
 
     public static KitchenResponse toResponse(Kitchen kitchen) {
         return new KitchenResponse(
@@ -15,6 +15,6 @@ public class KitchenResponseMapper {
     }
 
     public static List<KitchenResponse> toCollectionResponse(List<Kitchen> kitchens) {
-        return kitchens.stream().map(KitchenResponseMapper::toResponse).toList();
+        return kitchens.stream().map(KitchenMapper::toResponse).toList();
     }
 }

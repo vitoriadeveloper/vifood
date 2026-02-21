@@ -3,7 +3,7 @@ package com.vitoriadeveloper.vifood.infra.adapters.http;
 import com.vitoriadeveloper.vifood.application.services.KitchenService;
 import com.vitoriadeveloper.vifood.domain.model.Kitchen;
 import com.vitoriadeveloper.vifood.infra.adapters.model.dto.response.KitchenResponse;
-import com.vitoriadeveloper.vifood.infra.adapters.model.mapper.KitchenResponseMapper;
+import com.vitoriadeveloper.vifood.infra.adapters.model.mapper.KitchenMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
@@ -21,24 +21,24 @@ public class KitchenController {
     @PostMapping
     public KitchenResponse create(@RequestBody @Validated Kitchen body) {
         Kitchen kitchen = service.create(body);
-        return KitchenResponseMapper.toResponse(kitchen);
+        return KitchenMapper.toResponse(kitchen);
     }
 
     @GetMapping
     public List<KitchenResponse> findAll() {
-        return KitchenResponseMapper.toCollectionResponse(service.findAll());
+        return KitchenMapper.toCollectionResponse(service.findAll());
     }
 
     @GetMapping({"/{id}"})
     public KitchenResponse findById(@PathVariable UUID id) {
         var kitchen =  service.findById(id);
-        return KitchenResponseMapper.toResponse(kitchen);
+        return KitchenMapper.toResponse(kitchen);
     }
 
     @PutMapping("/{id}")
     public KitchenResponse updateById(@PathVariable UUID id, @RequestBody Kitchen body) {
         var kitchen = service.updateById(id, body);
-        return KitchenResponseMapper.toResponse(kitchen);
+        return KitchenMapper.toResponse(kitchen);
     }
 
     @DeleteMapping("/{id}")

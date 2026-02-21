@@ -5,7 +5,7 @@ import com.vitoriadeveloper.vifood.application.services.RestaurantService;
 import com.vitoriadeveloper.vifood.domain.filters.RestaurantFilter;
 import com.vitoriadeveloper.vifood.infra.adapters.model.dto.request.RestaurantRequest;
 import com.vitoriadeveloper.vifood.infra.adapters.model.dto.response.RestaurantResponse;
-import com.vitoriadeveloper.vifood.infra.adapters.model.mapper.RestaurantResponseMapper;
+import com.vitoriadeveloper.vifood.infra.adapters.model.mapper.RestaurantMapper;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -28,32 +28,32 @@ public class RestaurantController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public RestaurantResponse create(@Valid @RequestBody RestaurantRequest body) {
-        var restaurant = RestaurantResponseMapper.toDomain(body);
+        var restaurant = RestaurantMapper.toDomain(body);
         var saved = service.create(restaurant);
-        return RestaurantResponseMapper.toResponse(saved);
+        return RestaurantMapper.toResponse(saved);
     }
 
     @GetMapping
     public List<RestaurantResponse> findAll(RestaurantFilter filters) {
         if (filters.getTaxaFreteMax() == null && filters.getTaxaFreteMin() == null && filters.getNome() == null) {
             var restaurants = service.findAll();
-            return restaurants.stream().map(RestaurantResponseMapper::toResponse).toList();
+            return restaurants.stream().map(RestaurantMapper::toResponse).toList();
         }
         var restaurants = service.findByFilter(filters);
-        return restaurants.stream().map(RestaurantResponseMapper::toResponse).toList();
+        return restaurants.stream().map(RestaurantMapper::toResponse).toList();
     }
 
     @GetMapping({"/{id}"})
     public RestaurantResponse findById(@PathVariable UUID id) {
         var restaurant = service.findById(id);
-        return RestaurantResponseMapper.toResponse(restaurant);
+        return RestaurantMapper.toResponse(restaurant);
     }
 
     @PutMapping("/{id}")
     public RestaurantResponse updateById(@PathVariable UUID id, @Valid @RequestBody RestaurantRequest body) {
-        var restaurant = RestaurantResponseMapper.toDomain(body);
+        var restaurant = RestaurantMapper.toDomain(body);
         var updated = service.updateById(id, restaurant);
-        return RestaurantResponseMapper.toResponse(updated);
+        return RestaurantMapper.toResponse(updated);
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)

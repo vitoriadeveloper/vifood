@@ -50,7 +50,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
                 OffsetDateTime.now(),
                 HttpStatus.CONFLICT.value(),
                 "Entidade está em uso",
-                "Não é possível excluir a cozinha porque ela está vinculada a outros registros.",
+                e.getRootCause().getMessage() != null ? e.getRootCause().getMessage() : e.getMessage(),
                 null
         );
         return ResponseEntity.status(HttpStatus.CONFLICT).body(error);
@@ -172,7 +172,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
                 "O parâmetro de URL '%s' recebeu o valor '%s', que é incompatível com o tipo '%s'.",
                 ex.getName(),
                 ex.getValue(),
-                ex.getRequiredType() != null ? ex.getRequiredType().getSimpleName() : "desconecido"
+                ex.getRequiredType() != null ? ex.getRequiredType().getSimpleName() : "desconhecido"
         );
 
         var error = new ErrorResponse(
@@ -210,4 +210,23 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         return ResponseEntity.status(status).body(error);
     }
 
+    @ExceptionHandler(NullPointerException.class)
+    protected ResponseEntity<Object> handleNullPointerException(NullPointerException ex, WebRequest request) {
+        String detail = String.format(
+                "O '%s' recebeu o valor '%s', o que causou uma referência nula.",
+                ex.getCause(),
+                ex.getMessage(),
+                "Error de referência nula"
+        );
+
+        var error = new ErrorResponse(
+                OffsetDateTime.now(),
+                HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                "Ponto nulo identificado",
+                detail,
+                null
+        );
+
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
+    }
 }

@@ -1,10 +1,10 @@
 package com.vitoriadeveloper.vifood.infra.adapters.model.mapper;
 
 import com.vitoriadeveloper.vifood.domain.model.City;
-import com.vitoriadeveloper.vifood.domain.model.State;
 import com.vitoriadeveloper.vifood.infra.adapters.model.dto.response.CityResponse;
 
 import java.util.List;
+import java.util.UUID;
 
 public class CityMapper {
 
@@ -20,17 +20,9 @@ public class CityMapper {
         return cities.stream().map(CityMapper::toResponse).toList();
     }
 
-    public static City toDomain(CityResponse city) {
-        State domainState = new State();
-        domainState.setId(city.estado().id());
-        domainState.setNome(city.estado().nome());
-        domainState.setSigla(city.estado().sigla());
-
-        City domainCity = new City();
-        domainCity.setId(city.id());
-        domainCity.setNome(city.nome());
-        domainCity.setEstado(domainState);
-
-        return domainCity;
+    public static City toDomain(UUID cityId) {
+        City city = new City();
+        city.setId(cityId);
+        return city;
     }
 }

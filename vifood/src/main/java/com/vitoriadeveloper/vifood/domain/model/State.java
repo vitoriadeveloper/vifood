@@ -2,7 +2,9 @@ package com.vitoriadeveloper.vifood.domain.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.UUID;
@@ -20,5 +22,8 @@ public class State {
 
     @NotBlank
     private String nome;
+
+    @NotBlank
+    private String sigla;
 
 }

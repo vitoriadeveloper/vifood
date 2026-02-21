@@ -5,7 +5,6 @@ import com.vitoriadeveloper.vifood.infra.adapters.model.dto.response.StateRespon
 
 import java.util.List;
 
-import static java.util.stream.Collectors.toList;
 
 public class StateMapper {
 

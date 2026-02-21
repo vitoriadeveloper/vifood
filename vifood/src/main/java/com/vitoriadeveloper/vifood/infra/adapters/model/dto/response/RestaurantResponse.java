@@ -12,6 +12,7 @@ public record RestaurantResponse(
         Boolean aberto,
         KitchenResponse cozinha,
         OffsetDateTime dataCadastro,
-        OffsetDateTime dataAtualizacao
+        OffsetDateTime dataAtualizacao,
+        AddressResponse endereco
 ) {
 }

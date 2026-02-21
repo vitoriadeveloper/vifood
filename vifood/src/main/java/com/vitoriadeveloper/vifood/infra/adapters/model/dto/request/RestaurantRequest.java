@@ -1,5 +1,6 @@
 package com.vitoriadeveloper.vifood.infra.adapters.model.dto.request;
 
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
@@ -22,6 +23,11 @@ public record RestaurantRequest(
         Boolean aberto,
 
         @NotNull
-        UUID cozinhaId
+        UUID cozinhaId,
+
+        @NotNull
+        @Valid
+        AddressRequest endereco
+
 ) {
 }

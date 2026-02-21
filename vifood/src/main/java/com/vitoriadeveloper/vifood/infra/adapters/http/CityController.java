@@ -1,10 +1,8 @@
 package com.vitoriadeveloper.vifood.infra.adapters.http;
 
 import com.vitoriadeveloper.vifood.application.services.CityService;
-import com.vitoriadeveloper.vifood.domain.model.City;
 import com.vitoriadeveloper.vifood.infra.adapters.model.dto.response.CityResponse;
 import com.vitoriadeveloper.vifood.infra.adapters.model.mapper.CityMapper;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -36,9 +34,9 @@ public class CityController {
         service.delete(id);
     }
 
-
-    @PutMapping("/{id}")
-    public void updateById(@PathVariable UUID id, @Valid @RequestBody City city) {
-        service.updateById(id, city);
-    }
+//    // analisar necessidade desse metodo
+//    @PutMapping("/{id}")
+//    public void updateById(@PathVariable UUID id, @Valid @RequestBody City city) {
+//        service.updateById(id, city);
+//    }
 }

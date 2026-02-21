@@ -7,7 +7,7 @@ import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
 @Configuration
 public class ValidationConfig {
-
+    // Ela faz o Spring usar o MessageSource para resolver as mensagens de erro das validações.
     @Bean
     public LocalValidatorFactoryBean validator(MessageSource messageSource) {
         LocalValidatorFactoryBean bean = new LocalValidatorFactoryBean();

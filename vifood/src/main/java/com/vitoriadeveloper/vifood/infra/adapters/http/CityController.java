@@ -1,6 +1,7 @@
 package com.vitoriadeveloper.vifood.infra.adapters.http;
 
 import com.vitoriadeveloper.vifood.application.services.CityService;
+import com.vitoriadeveloper.vifood.domain.model.City;
 import com.vitoriadeveloper.vifood.infra.adapters.model.dto.response.CityResponse;
 import com.vitoriadeveloper.vifood.infra.adapters.model.mapper.CityMapper;
 import jakarta.validation.Valid;
@@ -37,8 +38,7 @@ public class CityController {
 
 
     @PutMapping("/{id}")
-    public void updateById(@PathVariable UUID id, @Valid @RequestBody CityResponse city) {
-        var cityToDomain = CityMapper.toDomain(city);
-        service.updateById(id, cityToDomain);
+    public void updateById(@PathVariable UUID id, @Valid @RequestBody City city) {
+        service.updateById(id, city);
     }
 }

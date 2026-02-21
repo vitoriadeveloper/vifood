@@ -67,4 +67,16 @@ public class RestaurantController {
     public void deleteById(@PathVariable UUID id) {
         service.deleteById(id);
     }
+
+    @PutMapping("/{id}/ativar")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void activate(@PathVariable UUID id) {
+        service.activate(id);
+    }
+
+    @PutMapping("/{id}/inativar")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void inactivate(@PathVariable UUID id) {
+        service.inactivate(id);
+    }
 }

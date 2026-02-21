@@ -16,5 +16,7 @@ public interface IRestaurantUseCasePort {
     void deleteById(UUID id);
     void updatePartial(UUID id, Map<String, Object> fields);
     List<Restaurant> findByFilter(RestaurantFilter filter);
+    void activate(UUID id);
+    void inactivate(UUID id);
 
 }

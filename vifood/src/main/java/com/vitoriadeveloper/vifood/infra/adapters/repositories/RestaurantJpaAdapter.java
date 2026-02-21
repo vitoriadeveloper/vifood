@@ -1,5 +1,6 @@
 package com.vitoriadeveloper.vifood.infra.adapters.repositories;
 
+import com.vitoriadeveloper.vifood.domain.exceptions.RestaurantNotFoundException;
 import com.vitoriadeveloper.vifood.domain.filters.RestaurantFilter;
 import com.vitoriadeveloper.vifood.domain.model.Restaurant;
 import com.vitoriadeveloper.vifood.domain.ports.out.IRestaurantRepositoryPort;
@@ -41,6 +42,22 @@ public class RestaurantJpaAdapter implements IRestaurantRepositoryPort {
     public List<Restaurant> findByFilter(RestaurantFilter filter) {
         var spec = new RestaurantSpecificationBuilder(filter);
         return jpaRepository.findAll(spec);
+    }
+
+    @Override
+    public void activate(UUID id) {
+        Restaurant restaurant = jpaRepository.findById(id)
+                .orElseThrow(() -> new RestaurantNotFoundException(id));
+        restaurant.setAtivo(true);
+        jpaRepository.save(restaurant);
+    }
+
+    @Override
+    public void inactivate(UUID id) {
+        Restaurant restaurant = jpaRepository.findById(id)
+                .orElseThrow(() -> new RestaurantNotFoundException(id));
+        restaurant.setAtivo(false);
+        jpaRepository.save(restaurant);
     }
 
 }

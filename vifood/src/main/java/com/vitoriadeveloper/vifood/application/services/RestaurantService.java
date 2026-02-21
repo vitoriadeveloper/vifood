@@ -117,4 +117,14 @@ public class RestaurantService implements IRestaurantUseCasePort {
     public List<Restaurant> findByFilter(RestaurantFilter filter) {
         return repository.findByFilter(filter);
     }
+
+    @Override
+    public void activate(UUID id) {
+        repository.activate(id);
+    }
+
+    @Override
+    public void inactivate(UUID id) {
+        repository.inactivate(id);
+    }
 }

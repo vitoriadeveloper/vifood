@@ -38,7 +38,7 @@ public class Restaurant {
     @Column(name = "taxa_frete")
     private BigDecimal taxaFrete;
 
-    private Boolean ativo;
+    private Boolean ativo = Boolean.TRUE;
 
     private Boolean aberto;
 

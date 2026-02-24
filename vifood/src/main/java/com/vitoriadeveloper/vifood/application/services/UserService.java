@@ -6,6 +6,7 @@ import com.vitoriadeveloper.vifood.domain.ports.in.IUserUseCasePort;
 import com.vitoriadeveloper.vifood.domain.ports.out.IUserRepositoryPort;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
@@ -22,11 +23,13 @@ public class UserService implements IUserUseCasePort {
         return repository.findAll();
     }
 
+    @Transactional
     @Override
     public User save(User user) {
         return repository.save(user);
     }
 
+    @Transactional
     @Override
     public User update(User user) throws UserNotFoundException {
         repository.findById(user.getId())
@@ -41,6 +44,7 @@ public class UserService implements IUserUseCasePort {
                 .orElseThrow(() -> new UserNotFoundException(id));
     }
 
+    @Transactional
     @Override
     public void delete(UUID id) throws UserNotFoundException {
         repository.findById(id)

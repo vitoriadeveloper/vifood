@@ -22,9 +22,4 @@ public interface IRestaurantUseCasePort {
     void inactivate(UUID id);
     void associatePaymentMethod(UUID restaurantId, UUID paymentMethodId);
     void disassociatePaymentMethod(UUID restaurantId, UUID paymentMethodId);
-    List<Product> findProductsByRestaurantId(UUID restaurantId) throws  RestaurantNotFoundException;
-    Product findProductById(UUID restaurantId, UUID productId) throws RestaurantNotFoundException, ProductNotFoundException;
-    Product createProduct(UUID restaurantId, Product body) throws RestaurantNotFoundException, ProductNotFoundException;
-    Product updateProductById(UUID restaurantId, UUID productId, Product body) throws RestaurantNotFoundException, ProductNotFoundException;
-    void deleteProductById(UUID restaurantId, UUID productId) throws RestaurantNotFoundException, ProductNotFoundException;
 }

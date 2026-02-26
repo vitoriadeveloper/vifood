@@ -254,5 +254,16 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
     }
 
+    @ExceptionHandler(ProductNotFoundException.class)
+    public ResponseEntity<Object> handleProductNotFound(ProductNotFoundException e) {
+        var error = new ErrorResponse(
+                OffsetDateTime.now(),
+                HttpStatus.NOT_FOUND.value(),
+                "Produto não encontrado",
+                e.getMessage(),
+                null
+        );
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+    }
 
 }

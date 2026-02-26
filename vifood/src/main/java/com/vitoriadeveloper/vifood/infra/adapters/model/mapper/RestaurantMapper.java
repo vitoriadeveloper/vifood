@@ -4,6 +4,8 @@ import com.vitoriadeveloper.vifood.domain.model.*;
 import com.vitoriadeveloper.vifood.infra.adapters.model.dto.request.RestaurantRequest;
 import com.vitoriadeveloper.vifood.infra.adapters.model.dto.response.RestaurantResponse;
 
+import java.util.List;
+
 public class RestaurantMapper {
 
     public static RestaurantResponse toResponse(Restaurant restaurant) {
@@ -18,7 +20,11 @@ public class RestaurantMapper {
                 restaurant.getDataAtualizacao(),
                 restaurant.getEndereco() != null
                         ? AddressMapper.toResponse(restaurant.getEndereco())
-                        : null
+                        : null,
+                restaurant.getFormasPagamento() != null ? restaurant.getFormasPagamento()
+                        .stream()
+                        .map(PaymentMethodMapper::toResponse)
+                        .toList() : List.of()
         );
     }
 

@@ -79,4 +79,16 @@ public class RestaurantController {
     public void inactivate(@PathVariable UUID id) {
         service.inactivate(id);
     }
+
+    @PostMapping("/{idRestaurante}/formas-pagamento")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void associatePaymentMethod(@PathVariable UUID idRestaurante, @RequestParam UUID idFormaPagamento) {
+        service.associatePaymentMethod(idRestaurante, idFormaPagamento);
+    }
+
+    @DeleteMapping("/{idRestaurante}/formas-pagamento")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void disassociatePaymentMethod(@PathVariable UUID idRestaurante, @RequestParam UUID idFormaPagamento) {
+        service.disassociatePaymentMethod(idRestaurante, idFormaPagamento);
+    }
 }

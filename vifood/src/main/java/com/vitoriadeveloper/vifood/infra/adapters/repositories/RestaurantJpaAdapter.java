@@ -1,5 +1,6 @@
 package com.vitoriadeveloper.vifood.infra.adapters.repositories;
 
+import com.vitoriadeveloper.vifood.domain.exceptions.PaymentMethodNotFoundException;
 import com.vitoriadeveloper.vifood.domain.exceptions.RestaurantNotFoundException;
 import com.vitoriadeveloper.vifood.domain.filters.RestaurantFilter;
 import com.vitoriadeveloper.vifood.domain.model.Restaurant;
@@ -17,6 +18,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class RestaurantJpaAdapter implements IRestaurantRepositoryPort {
     private final RestaurantRepository jpaRepository;
+    private final PaymentMethodJpaAdapter paymentMethodJpaAdapter;
 
     @Override
     public List<Restaurant> findAll() {
@@ -58,6 +60,29 @@ public class RestaurantJpaAdapter implements IRestaurantRepositoryPort {
                 .orElseThrow(() -> new RestaurantNotFoundException(id));
         restaurant.setAtivo(false);
         jpaRepository.save(restaurant);
+    }
+
+    @Override
+    public Restaurant associatePaymentMethod(UUID restaurantId, UUID paymentMethodId) {
+        Restaurant restaurant = jpaRepository.findById(restaurantId)
+                .orElseThrow(() -> new RestaurantNotFoundException(restaurantId));
+        var paymentMethod = paymentMethodJpaAdapter.findById(paymentMethodId);
+
+        if (!restaurant.getFormasPagamento().contains(paymentMethod)) {
+            restaurant.getFormasPagamento().add(paymentMethod);
+        }
+        return jpaRepository.save(restaurant);
+    }
+
+
+    @Override
+    public Restaurant disassociatePaymentMethod(UUID restaurantId, UUID paymentMethodId) {
+        Restaurant restaurant = jpaRepository.findById(restaurantId)
+                .orElseThrow(() -> new RestaurantNotFoundException(restaurantId));
+        var paymentMethod = paymentMethodJpaAdapter.findById(paymentMethodId);
+
+        restaurant.getFormasPagamento().remove(paymentMethod);
+        return jpaRepository.save(restaurant);
     }
 
 }

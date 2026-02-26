@@ -1,6 +1,4 @@
 package com.vitoriadeveloper.vifood.application.services;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vitoriadeveloper.vifood.domain.exceptions.CityNotFoundException;
 import com.vitoriadeveloper.vifood.domain.exceptions.KitchenNotFoundException;
 import com.vitoriadeveloper.vifood.domain.exceptions.RestaurantNotFoundException;
@@ -178,5 +176,15 @@ public class RestaurantService implements IRestaurantUseCasePort {
     @Override
     public void inactivate(UUID id) {
         repository.inactivate(id);
+    }
+
+    @Override
+    public Restaurant associatePaymentMethod(UUID restaurantId, UUID paymentMethodId) {
+        return repository.associatePaymentMethod(restaurantId, paymentMethodId);
+    }
+
+    @Override
+    public Restaurant disassociatePaymentMethod(UUID restaurantId, UUID paymentMethodId) {
+        return repository.disassociatePaymentMethod(restaurantId, paymentMethodId);
     }
 }

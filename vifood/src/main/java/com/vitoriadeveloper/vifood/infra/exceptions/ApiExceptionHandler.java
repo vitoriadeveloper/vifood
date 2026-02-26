@@ -242,5 +242,17 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
     }
 
+    @ExceptionHandler(PaymentMethodNotFoundException.class)
+    public ResponseEntity<Object> handlePaymentMethodNotFound(PaymentMethodNotFoundException e) {
+        var error = new ErrorResponse(
+                OffsetDateTime.now(),
+                HttpStatus.NOT_FOUND.value(),
+                "Metodo de pagamento não encontrado",
+                e.getMessage(),
+                null
+        );
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+    }
+
 
 }

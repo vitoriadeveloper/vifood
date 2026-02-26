@@ -179,12 +179,12 @@ public class RestaurantService implements IRestaurantUseCasePort {
     }
 
     @Override
-    public Restaurant associatePaymentMethod(UUID restaurantId, UUID paymentMethodId) {
-        return repository.associatePaymentMethod(restaurantId, paymentMethodId);
+    public void associatePaymentMethod(UUID restaurantId, UUID paymentMethodId) {
+        repository.associatePaymentMethod(restaurantId, paymentMethodId);
     }
 
     @Override
-    public Restaurant disassociatePaymentMethod(UUID restaurantId, UUID paymentMethodId) {
-        return repository.disassociatePaymentMethod(restaurantId, paymentMethodId);
+    public void disassociatePaymentMethod(UUID restaurantId, UUID paymentMethodId) {
+        repository.disassociatePaymentMethod(restaurantId, paymentMethodId);
     }
 }

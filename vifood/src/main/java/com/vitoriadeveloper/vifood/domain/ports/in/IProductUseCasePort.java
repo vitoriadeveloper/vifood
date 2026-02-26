@@ -1,0 +1,15 @@
+package com.vitoriadeveloper.vifood.domain.ports.in;
+
+import com.vitoriadeveloper.vifood.domain.exceptions.ProductNotFoundException;
+import com.vitoriadeveloper.vifood.domain.exceptions.RestaurantNotFoundException;
+import com.vitoriadeveloper.vifood.domain.model.Product;
+
+import java.util.List;
+import java.util.UUID;
+
+public interface IProductUseCasePort {
+    Product findByIdAndRestaurantId(UUID productId, UUID restaurantId) throws RestaurantNotFoundException, ProductNotFoundException;
+    List<Product> findByRestaurantId(UUID restaurantId) throws RestaurantNotFoundException;
+    Product create(Product product);
+    void delete(UUID productId, UUID restaurantId) throws RestaurantNotFoundException, ProductNotFoundException;
+}

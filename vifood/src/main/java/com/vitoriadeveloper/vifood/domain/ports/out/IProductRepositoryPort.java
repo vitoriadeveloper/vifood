@@ -13,5 +13,5 @@ public interface IProductRepositoryPort {
 
     Product save(Product product);
 
-    void delete(UUID productId,UUID restaurantId);
+    void delete(Product product);
 }

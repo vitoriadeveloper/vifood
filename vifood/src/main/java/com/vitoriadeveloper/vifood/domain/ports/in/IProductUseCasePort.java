@@ -10,6 +10,6 @@ import java.util.UUID;
 public interface IProductUseCasePort {
     Product findByIdAndRestaurantId(UUID productId, UUID restaurantId) throws RestaurantNotFoundException, ProductNotFoundException;
     List<Product> findByRestaurantId(UUID restaurantId) throws RestaurantNotFoundException;
-    Product create(Product product);
+    Product create(UUID restaurantId,Product product);
     void delete(UUID productId, UUID restaurantId) throws RestaurantNotFoundException, ProductNotFoundException;
 }

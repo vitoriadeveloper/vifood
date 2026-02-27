@@ -7,6 +7,8 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface IProductRepositoryPort {
+    Optional<Product> findById(UUID productId);
+
     Optional<Product> findByIdAndRestaurantId(UUID productId, UUID restaurantId);
 
     List<Product> findByRestaurantId(UUID restaurantId);

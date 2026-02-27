@@ -17,6 +17,11 @@ public class ProductJpaAdapter implements IProductRepositoryPort {
 
 
     @Override
+    public Optional<Product> findById(UUID productId) {
+        return repository.findById(productId);
+    }
+
+    @Override
     public Optional<Product> findByIdAndRestaurantId(UUID productId, UUID restaurantId) {
         return repository.findByIdAndRestauranteId(productId, restaurantId);
     }

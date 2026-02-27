@@ -22,6 +22,11 @@ public class ProductService implements IProductUseCasePort {
 
 
     @Override
+    public Product findById(UUID id) throws ProductNotFoundException {
+        return repository.findById(id).orElseThrow(() -> new ProductNotFoundException(id));
+    }
+
+    @Override
     public Product findByIdAndRestaurantId(UUID productId, UUID restaurantId) throws RestaurantNotFoundException, ProductNotFoundException {
         var restaurantExists = restaurantRepository.findById(restaurantId);
         if (restaurantExists.isEmpty()) {

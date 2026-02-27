@@ -1,6 +1,8 @@
 package com.vitoriadeveloper.vifood.application.services;
+
 import com.vitoriadeveloper.vifood.domain.exceptions.CityNotFoundException;
 import com.vitoriadeveloper.vifood.domain.exceptions.KitchenNotFoundException;
+import com.vitoriadeveloper.vifood.domain.exceptions.PaymentMethodNotFoundException;
 import com.vitoriadeveloper.vifood.domain.exceptions.RestaurantNotFoundException;
 import com.vitoriadeveloper.vifood.domain.filters.RestaurantFilter;
 import com.vitoriadeveloper.vifood.domain.model.Address;
@@ -26,6 +28,7 @@ public class RestaurantService implements IRestaurantUseCasePort {
     private final IRestaurantRepositoryPort repository;
     private final IKitchenRepositoryPort kitchenRepository;
     private final ICityRepositoryPort cityRepository;
+    private final PaymentMethodService paymentMethodService;
 
     @Transactional
     @Override
@@ -113,16 +116,13 @@ public class RestaurantService implements IRestaurantUseCasePort {
 
                 case "nome" -> restaurant.setNome((String) fieldValue);
 
-                case "taxaFrete" ->
-                        restaurant.setTaxaFrete(
-                                new BigDecimal(fieldValue.toString())
-                        );
+                case "taxaFrete" -> restaurant.setTaxaFrete(
+                        new BigDecimal(fieldValue.toString())
+                );
 
-                case "ativo" ->
-                        restaurant.setAtivo((Boolean) fieldValue);
+                case "ativo" -> restaurant.setAtivo((Boolean) fieldValue);
 
-                case "aberto" ->
-                        restaurant.setAberto((Boolean) fieldValue);
+                case "aberto" -> restaurant.setAberto((Boolean) fieldValue);
 
                 case "cozinhaId" -> {
                     UUID kitchenId = UUID.fromString(fieldValue.toString());
@@ -163,6 +163,7 @@ public class RestaurantService implements IRestaurantUseCasePort {
 
         repository.save(restaurant);
     }
+
     @Override
     public List<Restaurant> findByFilter(RestaurantFilter filter) {
         return repository.findByFilter(filter);
@@ -170,21 +171,40 @@ public class RestaurantService implements IRestaurantUseCasePort {
 
     @Override
     public void activate(UUID id) {
-        repository.activate(id);
+        Restaurant restaurant = repository.findById(id).orElseThrow(() -> new RestaurantNotFoundException(id));
+
+        restaurant.setAtivo(true);
+        repository.save(restaurant);
     }
 
     @Override
     public void inactivate(UUID id) {
-        repository.inactivate(id);
+        Restaurant restaurant = repository.findById(id).orElseThrow(() -> new RestaurantNotFoundException(id));
+
+        restaurant.setAtivo(false);
+        repository.save(restaurant);
     }
 
     @Override
-    public void associatePaymentMethod(UUID restaurantId, UUID paymentMethodId) {
-        repository.associatePaymentMethod(restaurantId, paymentMethodId);
+    public void associatePaymentMethod(UUID restaurantId, UUID paymentMethodId) throws PaymentMethodNotFoundException, RestaurantNotFoundException {
+        Restaurant restaurant = repository.findById(restaurantId).orElseThrow(() -> new RestaurantNotFoundException(restaurantId));
+        var paymentMethod = paymentMethodService.findById(paymentMethodId);
+
+        if (!restaurant.getFormasPagamento().contains(paymentMethod)) {
+            restaurant.getFormasPagamento().add(paymentMethod);
+        }
+
+        repository.save(restaurant);
     }
 
     @Override
-    public void disassociatePaymentMethod(UUID restaurantId, UUID paymentMethodId) {
-        repository.disassociatePaymentMethod(restaurantId, paymentMethodId);
+    public void disassociatePaymentMethod(UUID restaurantId, UUID paymentMethodId) throws PaymentMethodNotFoundException, RestaurantNotFoundException {
+        Restaurant restaurant = repository.findById(restaurantId).orElseThrow(() -> new RestaurantNotFoundException(restaurantId));
+        var paymentMethod = paymentMethodService.findById(paymentMethodId);
+
+        restaurant.getFormasPagamento().remove(paymentMethod);
+
+        repository.save(restaurant);
+
     }
 }

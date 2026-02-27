@@ -1,9 +1,8 @@
 package com.vitoriadeveloper.vifood.domain.ports.in;
 
-import com.vitoriadeveloper.vifood.domain.exceptions.ProductNotFoundException;
+import com.vitoriadeveloper.vifood.domain.exceptions.PaymentMethodNotFoundException;
 import com.vitoriadeveloper.vifood.domain.exceptions.RestaurantNotFoundException;
 import com.vitoriadeveloper.vifood.domain.filters.RestaurantFilter;
-import com.vitoriadeveloper.vifood.domain.model.Product;
 import com.vitoriadeveloper.vifood.domain.model.Restaurant;
 
 import java.util.List;
@@ -20,6 +19,6 @@ public interface IRestaurantUseCasePort {
     List<Restaurant> findByFilter(RestaurantFilter filter);
     void activate(UUID id);
     void inactivate(UUID id);
-    void associatePaymentMethod(UUID restaurantId, UUID paymentMethodId);
-    void disassociatePaymentMethod(UUID restaurantId, UUID paymentMethodId);
+    void associatePaymentMethod(UUID restaurantId, UUID paymentMethodId) throws PaymentMethodNotFoundException, RestaurantNotFoundException;
+    void disassociatePaymentMethod(UUID restaurantId, UUID paymentMethodId)throws PaymentMethodNotFoundException, RestaurantNotFoundException;
 }

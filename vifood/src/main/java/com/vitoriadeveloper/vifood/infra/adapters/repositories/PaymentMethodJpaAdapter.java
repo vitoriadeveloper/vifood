@@ -1,6 +1,5 @@
 package com.vitoriadeveloper.vifood.infra.adapters.repositories;
 
-import com.vitoriadeveloper.vifood.domain.exceptions.PaymentMethodNotFoundException;
 import com.vitoriadeveloper.vifood.domain.model.PaymentMethod;
 import com.vitoriadeveloper.vifood.domain.ports.out.IPaymentMethodRepositoryPort;
 import com.vitoriadeveloper.vifood.infra.repositories.PaymentMethodRepository;
@@ -8,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Component
@@ -20,7 +20,7 @@ public class PaymentMethodJpaAdapter implements IPaymentMethodRepositoryPort {
     }
 
     @Override
-    public PaymentMethod findById(UUID id) {
-        return jpaRepository.findById(id).orElseThrow(() -> new PaymentMethodNotFoundException(id));
+    public Optional<PaymentMethod> findById(UUID id) {
+        return jpaRepository.findById(id);
     }
 }

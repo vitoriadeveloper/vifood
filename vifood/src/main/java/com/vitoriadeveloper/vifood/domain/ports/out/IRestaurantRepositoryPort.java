@@ -13,9 +13,4 @@ public interface IRestaurantRepositoryPort {
     Restaurant save(Restaurant body);
     void delete(UUID id);
     List<Restaurant> findByFilter(RestaurantFilter filter);
-    void activate(UUID id);
-    void inactivate(UUID id);
-    void associatePaymentMethod(UUID restaurantId, UUID paymentMethodId);
-    void disassociatePaymentMethod(UUID restaurantId, UUID paymentMethodId);
-
 }

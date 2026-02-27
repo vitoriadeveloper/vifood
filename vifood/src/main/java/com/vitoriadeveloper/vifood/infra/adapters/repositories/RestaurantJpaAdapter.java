@@ -45,42 +45,4 @@ public class RestaurantJpaAdapter implements IRestaurantRepositoryPort {
         return jpaRepository.findAll(spec);
     }
 
-    @Override
-    public void activate(UUID id) {
-        Restaurant restaurant = jpaRepository.findById(id)
-                .orElseThrow(() -> new RestaurantNotFoundException(id));
-        restaurant.setAtivo(true);
-        jpaRepository.save(restaurant);
-    }
-
-    @Override
-    public void inactivate(UUID id) {
-        Restaurant restaurant = jpaRepository.findById(id)
-                .orElseThrow(() -> new RestaurantNotFoundException(id));
-        restaurant.setAtivo(false);
-        jpaRepository.save(restaurant);
-    }
-
-    @Override
-    public void associatePaymentMethod(UUID restaurantId, UUID paymentMethodId) {
-        Restaurant restaurant = jpaRepository.findById(restaurantId)
-                .orElseThrow(() -> new RestaurantNotFoundException(restaurantId));
-        var paymentMethod = paymentMethodJpaAdapter.findById(paymentMethodId);
-
-        if (!restaurant.getFormasPagamento().contains(paymentMethod)) {
-            restaurant.getFormasPagamento().add(paymentMethod);
-        }
-        jpaRepository.save(restaurant);
-    }
-
-
-    @Override
-    public void disassociatePaymentMethod(UUID restaurantId, UUID paymentMethodId) {
-        Restaurant restaurant = jpaRepository.findById(restaurantId)
-                .orElseThrow(() -> new RestaurantNotFoundException(restaurantId));
-        var paymentMethod = paymentMethodJpaAdapter.findById(paymentMethodId);
-
-        restaurant.getFormasPagamento().remove(paymentMethod);
-        jpaRepository.save(restaurant);
-    }
 }

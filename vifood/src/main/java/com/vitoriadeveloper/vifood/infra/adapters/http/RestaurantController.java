@@ -1,10 +1,14 @@
 package com.vitoriadeveloper.vifood.infra.adapters.http;
 
 
+import com.vitoriadeveloper.vifood.application.services.ProductService;
 import com.vitoriadeveloper.vifood.application.services.RestaurantService;
 import com.vitoriadeveloper.vifood.domain.filters.RestaurantFilter;
+import com.vitoriadeveloper.vifood.infra.adapters.model.dto.request.ProductRequest;
 import com.vitoriadeveloper.vifood.infra.adapters.model.dto.request.RestaurantRequest;
+import com.vitoriadeveloper.vifood.infra.adapters.model.dto.response.ProductResponse;
 import com.vitoriadeveloper.vifood.infra.adapters.model.dto.response.RestaurantResponse;
+import com.vitoriadeveloper.vifood.infra.adapters.model.mapper.ProductMapper;
 import com.vitoriadeveloper.vifood.infra.adapters.model.mapper.RestaurantMapper;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +27,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class RestaurantController {
     private final RestaurantService service;
+    private final ProductService productService;
 
 
     @PostMapping
@@ -91,4 +96,38 @@ public class RestaurantController {
     public void disassociatePaymentMethod(@PathVariable UUID idRestaurante, @RequestParam UUID idFormaPagamento) {
         service.disassociatePaymentMethod(idRestaurante, idFormaPagamento);
     }
+
+    @GetMapping("/{restauranteId}/produtos")
+    public List<ProductResponse> findProductsByRestaurantId(@PathVariable UUID restauranteId) {
+        var products = productService.findByRestaurantId(restauranteId);
+        return ProductMapper.toCollectionResponse(products);
+    }
+
+    @GetMapping("/{restauranteId}/produtos/{produtoId}")
+    public ProductResponse findProductByRestaurantId(@PathVariable UUID restauranteId, @PathVariable UUID produtoId) {
+        var products = productService.findByIdAndRestaurantId(produtoId, restauranteId);
+        return ProductMapper.toResponse(products);
+    }
+
+    @PostMapping("/{restauranteId}/produtos")
+    public ProductResponse addProductToRestaurant(@Valid @RequestBody ProductRequest product, @PathVariable UUID restauranteId) {
+        var products = ProductMapper.toDomain(product);
+        var savedProduct = productService.create(restauranteId, products);
+
+        return ProductMapper.toResponse(savedProduct);
+    }
+
+    @PutMapping("/{restauranteId}/produtos/{produtoId}")
+    public ProductResponse addProductToRestaurant(@Valid @RequestBody ProductRequest product, @PathVariable UUID produtoId, @PathVariable UUID restauranteId) {
+        var products = ProductMapper.toDomain(product);
+        var productSaved = productService.update(restauranteId, produtoId, products);
+
+        return ProductMapper.toResponse(productSaved);
+    }
+
+    @DeleteMapping("/{restauranteId}/produtos/{produtoId}")
+    public void removingProductToRestaurant(@PathVariable UUID produtoId, @PathVariable UUID restauranteId) {
+        productService.delete(produtoId, restauranteId);
+    }
+
 }

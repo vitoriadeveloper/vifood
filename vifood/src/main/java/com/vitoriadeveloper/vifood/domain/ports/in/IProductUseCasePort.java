@@ -12,4 +12,5 @@ public interface IProductUseCasePort {
     List<Product> findByRestaurantId(UUID restaurantId) throws RestaurantNotFoundException;
     Product create(UUID restaurantId,Product product);
     void delete(UUID productId, UUID restaurantId) throws RestaurantNotFoundException, ProductNotFoundException;
+    Product update(UUID restaurantId, UUID productId, Product product) throws ProductNotFoundException, RestaurantNotFoundException;
 }

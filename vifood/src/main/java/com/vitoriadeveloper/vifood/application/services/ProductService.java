@@ -50,4 +50,17 @@ public class ProductService implements IProductUseCasePort {
         Product product = repository.findByIdAndRestaurantId(productId, restaurantId).orElseThrow(() -> new ProductNotFoundException(productId, restaurantId));
         repository.delete(product);
     }
+
+    @Transactional
+    @Override
+    public Product update(UUID restaurantId, UUID productId,Product body) throws ProductNotFoundException, RestaurantNotFoundException {
+        Product product = repository.findByIdAndRestaurantId(productId,restaurantId).orElseThrow(() -> new ProductNotFoundException(productId, restaurantId));
+        product.setNome(body.getNome());
+        product.setPreco(body.getPreco());
+        product.setDescricao(body.getDescricao());
+        product.setAtivo(body.isAtivo());
+
+        return repository.save(product);
+    }
+
 }

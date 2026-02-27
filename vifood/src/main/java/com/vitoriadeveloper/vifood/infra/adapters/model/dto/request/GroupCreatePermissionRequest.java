@@ -1,6 +1,6 @@
 package com.vitoriadeveloper.vifood.infra.adapters.model.dto.request;
 
-public record GroupPermissionRequest(
+public record GroupCreatePermissionRequest(
         String nome
 ) {
 }

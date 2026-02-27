@@ -4,8 +4,8 @@ package com.vitoriadeveloper.vifood.infra.adapters.http;
 import com.vitoriadeveloper.vifood.application.services.ProductService;
 import com.vitoriadeveloper.vifood.application.services.RestaurantService;
 import com.vitoriadeveloper.vifood.domain.filters.RestaurantFilter;
-import com.vitoriadeveloper.vifood.infra.adapters.model.dto.request.ProductRequest;
-import com.vitoriadeveloper.vifood.infra.adapters.model.dto.request.RestaurantRequest;
+import com.vitoriadeveloper.vifood.infra.adapters.model.dto.request.ProductCreateRequest;
+import com.vitoriadeveloper.vifood.infra.adapters.model.dto.request.RestaurantCreateRequest;
 import com.vitoriadeveloper.vifood.infra.adapters.model.dto.response.ProductResponse;
 import com.vitoriadeveloper.vifood.infra.adapters.model.dto.response.RestaurantResponse;
 import com.vitoriadeveloper.vifood.infra.adapters.model.mapper.ProductMapper;
@@ -32,7 +32,7 @@ public class RestaurantController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public RestaurantResponse create(@Valid @RequestBody RestaurantRequest body) {
+    public RestaurantResponse create(@Valid @RequestBody RestaurantCreateRequest body) {
         var restaurant = RestaurantMapper.toDomain(body);
         var saved = service.create(restaurant);
         return RestaurantMapper.toResponse(saved);
@@ -55,7 +55,7 @@ public class RestaurantController {
     }
 
     @PutMapping("/{id}")
-    public RestaurantResponse updateById(@PathVariable UUID id, @Valid @RequestBody RestaurantRequest body) {
+    public RestaurantResponse updateById(@PathVariable UUID id, @Valid @RequestBody RestaurantCreateRequest body) {
         var restaurant = RestaurantMapper.toDomain(body);
         var updated = service.updateById(id, restaurant);
         return RestaurantMapper.toResponse(updated);
@@ -110,7 +110,7 @@ public class RestaurantController {
     }
 
     @PostMapping("/{restauranteId}/produtos")
-    public ProductResponse addProductToRestaurant(@Valid @RequestBody ProductRequest product, @PathVariable UUID restauranteId) {
+    public ProductResponse addProductToRestaurant(@Valid @RequestBody ProductCreateRequest product, @PathVariable UUID restauranteId) {
         var products = ProductMapper.toDomain(product);
         var savedProduct = productService.create(restauranteId, products);
 
@@ -118,7 +118,7 @@ public class RestaurantController {
     }
 
     @PutMapping("/{restauranteId}/produtos/{produtoId}")
-    public ProductResponse addProductToRestaurant(@Valid @RequestBody ProductRequest product, @PathVariable UUID produtoId, @PathVariable UUID restauranteId) {
+    public ProductResponse addProductToRestaurant(@Valid @RequestBody ProductCreateRequest product, @PathVariable UUID produtoId, @PathVariable UUID restauranteId) {
         var products = ProductMapper.toDomain(product);
         var productSaved = productService.update(restauranteId, produtoId, products);
 

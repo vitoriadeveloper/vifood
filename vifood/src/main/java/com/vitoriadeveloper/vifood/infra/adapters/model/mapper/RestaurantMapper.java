@@ -1,7 +1,7 @@
 package com.vitoriadeveloper.vifood.infra.adapters.model.mapper;
 
 import com.vitoriadeveloper.vifood.domain.model.*;
-import com.vitoriadeveloper.vifood.infra.adapters.model.dto.request.RestaurantRequest;
+import com.vitoriadeveloper.vifood.infra.adapters.model.dto.request.RestaurantCreateRequest;
 import com.vitoriadeveloper.vifood.infra.adapters.model.dto.response.RestaurantResponse;
 
 import java.util.List;
@@ -28,7 +28,7 @@ public class RestaurantMapper {
         );
     }
 
-    public static Restaurant toDomain(RestaurantRequest request) {
+    public static Restaurant toDomain(RestaurantCreateRequest request) {
         var kitchen = new Kitchen();
         kitchen.setId(request.cozinhaId());
 
@@ -45,7 +45,7 @@ public class RestaurantMapper {
         return restaurant;
     }
 
-    private static Address getAddress(RestaurantRequest request) {
+    private static Address getAddress(RestaurantCreateRequest request) {
 
         Address address = new Address();
         address.setCep(request.endereco().cep());

@@ -1,7 +1,7 @@
 package com.vitoriadeveloper.vifood.infra.adapters.model.mapper;
 
 import com.vitoriadeveloper.vifood.domain.model.User;
-import com.vitoriadeveloper.vifood.infra.adapters.model.dto.request.UserRequest;
+import com.vitoriadeveloper.vifood.infra.adapters.model.dto.request.UserCreateRequest;
 import com.vitoriadeveloper.vifood.infra.adapters.model.dto.response.UserResponse;
 
 public class UserMapper {
@@ -16,7 +16,7 @@ public class UserMapper {
     }
 
 
-    public static User toDomain(UserRequest request) {
+    public static User toDomain(UserCreateRequest request) {
         User user = new User();
         user.setNome(request.nome());
         user.setSenha(request.senha());

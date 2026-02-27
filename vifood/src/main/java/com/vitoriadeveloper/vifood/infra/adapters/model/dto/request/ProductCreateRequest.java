@@ -3,22 +3,16 @@ package com.vitoriadeveloper.vifood.infra.adapters.model.dto.request;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
-import java.util.UUID;
+import java.math.BigDecimal;
 
-public record AddressRequest(
+public record ProductCreateRequest(
         @NotBlank
-        String cep,
-
-        String logradouro,
+        String nome,
 
         @NotBlank
-        String numero,
-
-        String complemento,
-
-        String bairro,
+        String descricao,
 
         @NotNull
-        UUID cidadeId
+        BigDecimal preco
 ) {
 }

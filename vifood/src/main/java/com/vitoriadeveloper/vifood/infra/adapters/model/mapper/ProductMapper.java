@@ -1,7 +1,7 @@
 package com.vitoriadeveloper.vifood.infra.adapters.model.mapper;
 
 import com.vitoriadeveloper.vifood.domain.model.Product;
-import com.vitoriadeveloper.vifood.infra.adapters.model.dto.request.ProductRequest;
+import com.vitoriadeveloper.vifood.infra.adapters.model.dto.request.ProductCreateRequest;
 import com.vitoriadeveloper.vifood.infra.adapters.model.dto.response.ProductResponse;
 import com.vitoriadeveloper.vifood.infra.adapters.model.dto.response.RestaurantSummaryResponse;
 
@@ -20,7 +20,7 @@ public class ProductMapper {
         );
     }
 
-    public static Product toDomain(ProductRequest request) {
+    public static Product toDomain(ProductCreateRequest request) {
         Product product = new Product();
 
         product.setNome(request.nome());

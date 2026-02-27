@@ -8,7 +8,7 @@ import jakarta.validation.constraints.PositiveOrZero;
 import java.math.BigDecimal;
 import java.util.UUID;
 
-public record RestaurantRequest(
+public record RestaurantCreateRequest(
         @NotBlank
         String nome,
 
@@ -27,7 +27,7 @@ public record RestaurantRequest(
 
         @NotNull
         @Valid
-        AddressRequest endereco
+        AddressCreateRequest endereco
 
 ) {
 }

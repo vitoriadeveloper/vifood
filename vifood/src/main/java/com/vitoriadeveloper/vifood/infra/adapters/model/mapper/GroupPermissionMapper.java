@@ -1,14 +1,14 @@
 package com.vitoriadeveloper.vifood.infra.adapters.model.mapper;
 
 import com.vitoriadeveloper.vifood.domain.model.GroupPermission;
-import com.vitoriadeveloper.vifood.infra.adapters.model.dto.request.GroupPermissionRequest;
+import com.vitoriadeveloper.vifood.infra.adapters.model.dto.request.GroupCreatePermissionRequest;
 import com.vitoriadeveloper.vifood.infra.adapters.model.dto.response.GroupPermissionResponse;
 
 import java.util.List;
 
 public class GroupPermissionMapper {
 
-    public static GroupPermission toDomain(GroupPermissionRequest request) {
+    public static GroupPermission toDomain(GroupCreatePermissionRequest request) {
         GroupPermission groupPermission = new GroupPermission();
         groupPermission.setNome(request.nome());
 

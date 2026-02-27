@@ -1,7 +1,7 @@
 package com.vitoriadeveloper.vifood.infra.adapters.http;
 
 import com.vitoriadeveloper.vifood.application.services.UserService;
-import com.vitoriadeveloper.vifood.infra.adapters.model.dto.request.UserRequest;
+import com.vitoriadeveloper.vifood.infra.adapters.model.dto.request.UserCreateRequest;
 import com.vitoriadeveloper.vifood.infra.adapters.model.dto.response.UserResponse;
 import com.vitoriadeveloper.vifood.infra.adapters.model.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +27,7 @@ public class UserController {
     }
 
     @PostMapping
-    public UserResponse create(@Validated @RequestBody UserRequest request) {
+    public UserResponse create(@Validated @RequestBody UserCreateRequest request) {
         var user = UserMapper.toDomain(request);
         var userSaved = service.save(user);
         return UserMapper.toResponse(userSaved);

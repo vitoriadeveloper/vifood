@@ -2,7 +2,7 @@ package com.vitoriadeveloper.vifood.infra.adapters.http;
 
 
 import com.vitoriadeveloper.vifood.application.services.GroupPermissionService;
-import com.vitoriadeveloper.vifood.infra.adapters.model.dto.request.GroupPermissionRequest;
+import com.vitoriadeveloper.vifood.infra.adapters.model.dto.request.GroupCreatePermissionRequest;
 import com.vitoriadeveloper.vifood.infra.adapters.model.dto.response.GroupPermissionResponse;
 import com.vitoriadeveloper.vifood.infra.adapters.model.mapper.GroupPermissionMapper;
 import jakarta.validation.Valid;
@@ -40,14 +40,14 @@ public class GroupPermissionController {
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void updateById(@PathVariable UUID id, @Valid @RequestBody GroupPermissionRequest request) {
+    public void updateById(@PathVariable UUID id, @Valid @RequestBody GroupCreatePermissionRequest request) {
         var role = GroupPermissionMapper.toDomain(request);
         service.updateById(id, role);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public GroupPermissionResponse create(@Valid @RequestBody GroupPermissionRequest request) {
+    public GroupPermissionResponse create(@Valid @RequestBody GroupCreatePermissionRequest request) {
         var role = GroupPermissionMapper.toDomain(request);
         var createdRole = service.save(role);
         return GroupPermissionMapper.toResponse(createdRole);

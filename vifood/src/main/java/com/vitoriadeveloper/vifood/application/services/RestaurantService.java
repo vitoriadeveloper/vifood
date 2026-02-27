@@ -173,7 +173,7 @@ public class RestaurantService implements IRestaurantUseCasePort {
     public void activate(UUID id) {
         Restaurant restaurant = repository.findById(id).orElseThrow(() -> new RestaurantNotFoundException(id));
 
-        restaurant.setAtivo(true);
+        restaurant.active();
         repository.save(restaurant);
     }
 
@@ -181,7 +181,7 @@ public class RestaurantService implements IRestaurantUseCasePort {
     public void inactivate(UUID id) {
         Restaurant restaurant = repository.findById(id).orElseThrow(() -> new RestaurantNotFoundException(id));
 
-        restaurant.setAtivo(false);
+        restaurant.inactive();
         repository.save(restaurant);
     }
 
@@ -212,7 +212,7 @@ public class RestaurantService implements IRestaurantUseCasePort {
     public void closeRestaurant(UUID restaurantId) {
         Restaurant restaurant = repository.findById(restaurantId).orElseThrow(() -> new RestaurantNotFoundException(restaurantId));
 
-        restaurant.setAberto(false);
+        restaurant.close();
 
         repository.save(restaurant);
     }
@@ -221,7 +221,7 @@ public class RestaurantService implements IRestaurantUseCasePort {
     public void openRestaurant(UUID restaurantId) {
         Restaurant restaurant = repository.findById(restaurantId).orElseThrow(() -> new RestaurantNotFoundException(restaurantId));
 
-        restaurant.setAberto(true);
+        restaurant.open();
 
         repository.save(restaurant);
     }

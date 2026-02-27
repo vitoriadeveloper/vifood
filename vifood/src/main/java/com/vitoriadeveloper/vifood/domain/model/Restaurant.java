@@ -1,5 +1,6 @@
 package com.vitoriadeveloper.vifood.domain.model;
 
+import com.vitoriadeveloper.vifood.domain.exceptions.BusinessException;
 import com.vitoriadeveloper.vifood.infra.validation.Groups;
 import jakarta.persistence.*;
 import jakarta.validation.Valid;
@@ -13,7 +14,6 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -62,10 +62,29 @@ public class Restaurant {
 
     @ManyToMany
     @JoinTable(name = "tb_restaurante_forma_pagamento", joinColumns = @JoinColumn(name = "restaurante_id"),
-    inverseJoinColumns = @JoinColumn(name = "forma_pagamento_id")
+            inverseJoinColumns = @JoinColumn(name = "forma_pagamento_id")
     )
     private List<PaymentMethod> formasPagamento = new ArrayList<>();
 
     @OneToMany(mappedBy = "restaurante")
     private List<Product> produtos = new ArrayList<>();
+
+    public void open() {
+        if (!this.ativo) {
+            throw new BusinessException("Restaurante inativo não pode abrir");
+        }
+        this.aberto = true;
+    }
+
+    public void close() {
+        this.aberto = false;
+    }
+
+    public void inactive(){
+        this.ativo = false;
+    }
+
+    public void active(){
+        this.ativo = true;
+    }
 }

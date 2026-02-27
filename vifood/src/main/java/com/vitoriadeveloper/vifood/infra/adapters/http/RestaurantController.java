@@ -5,7 +5,9 @@ import com.vitoriadeveloper.vifood.application.services.ProductService;
 import com.vitoriadeveloper.vifood.application.services.RestaurantService;
 import com.vitoriadeveloper.vifood.domain.filters.RestaurantFilter;
 import com.vitoriadeveloper.vifood.infra.adapters.model.dto.request.ProductCreateRequest;
+import com.vitoriadeveloper.vifood.infra.adapters.model.dto.request.ProductUpdateRequest;
 import com.vitoriadeveloper.vifood.infra.adapters.model.dto.request.RestaurantCreateRequest;
+import com.vitoriadeveloper.vifood.infra.adapters.model.dto.request.RestaurantUpdateRequest;
 import com.vitoriadeveloper.vifood.infra.adapters.model.dto.response.ProductResponse;
 import com.vitoriadeveloper.vifood.infra.adapters.model.dto.response.RestaurantResponse;
 import com.vitoriadeveloper.vifood.infra.adapters.model.mapper.ProductMapper;
@@ -55,9 +57,12 @@ public class RestaurantController {
     }
 
     @PutMapping("/{id}")
-    public RestaurantResponse updateById(@PathVariable UUID id, @Valid @RequestBody RestaurantCreateRequest body) {
-        var restaurant = RestaurantMapper.toDomain(body);
+    public RestaurantResponse updateById(@PathVariable UUID id, @Valid @RequestBody RestaurantUpdateRequest body) {
+        var restaurant = service.findById(id);
+
+        RestaurantMapper.merge(body, restaurant);
         var updated = service.updateById(id, restaurant);
+
         return RestaurantMapper.toResponse(updated);
     }
 
@@ -118,9 +123,12 @@ public class RestaurantController {
     }
 
     @PutMapping("/{restauranteId}/produtos/{produtoId}")
-    public ProductResponse addProductToRestaurant(@Valid @RequestBody ProductCreateRequest product, @PathVariable UUID produtoId, @PathVariable UUID restauranteId) {
-        var products = ProductMapper.toDomain(product);
-        var productSaved = productService.update(restauranteId, produtoId, products);
+    public ProductResponse updateProduct(@Valid @RequestBody ProductUpdateRequest body, @PathVariable UUID produtoId, @PathVariable UUID restauranteId) {
+        var product = productService.findById(produtoId);
+
+        ProductMapper.merge(body, product);
+
+        var productSaved = productService.update(restauranteId, produtoId, product);
 
         return ProductMapper.toResponse(productSaved);
     }

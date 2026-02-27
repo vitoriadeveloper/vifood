@@ -2,6 +2,7 @@ package com.vitoriadeveloper.vifood.domain.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -34,9 +35,9 @@ public class Product {
     @Column(nullable = false)
     private BigDecimal preco;
 
-    @NotBlank
+    @NotNull
     @Column(nullable = false)
-    private boolean ativo;
+    private boolean ativo = Boolean.TRUE;
 
     @ManyToOne
     @JoinColumn(nullable = false, name = "restaurante_id")

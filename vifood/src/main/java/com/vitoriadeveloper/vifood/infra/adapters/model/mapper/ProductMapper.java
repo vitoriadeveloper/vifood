@@ -2,6 +2,7 @@ package com.vitoriadeveloper.vifood.infra.adapters.model.mapper;
 
 import com.vitoriadeveloper.vifood.domain.model.Product;
 import com.vitoriadeveloper.vifood.infra.adapters.model.dto.request.ProductCreateRequest;
+import com.vitoriadeveloper.vifood.infra.adapters.model.dto.request.ProductUpdateRequest;
 import com.vitoriadeveloper.vifood.infra.adapters.model.dto.response.ProductResponse;
 import com.vitoriadeveloper.vifood.infra.adapters.model.dto.response.RestaurantSummaryResponse;
 
@@ -35,5 +36,22 @@ public class ProductMapper {
                 .stream()
                 .map(ProductMapper::toResponse)
                 .toList();
+    }
+
+    public static void merge(
+            ProductUpdateRequest request,
+            Product product
+    ){
+        if(request.nome() != null){
+            product.setNome(request.nome());
+        }
+
+        if(request.descricao() != null){
+            product.setDescricao(request.descricao());
+        }
+
+        if(request.preco() != null){
+            product.setPreco(request.preco());
+        }
     }
 }

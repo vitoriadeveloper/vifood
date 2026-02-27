@@ -1,7 +1,9 @@
 package com.vitoriadeveloper.vifood.infra.adapters.model.mapper;
 
 import com.vitoriadeveloper.vifood.domain.model.*;
+import com.vitoriadeveloper.vifood.infra.adapters.model.dto.request.AddressUpdateRequest;
 import com.vitoriadeveloper.vifood.infra.adapters.model.dto.request.RestaurantCreateRequest;
+import com.vitoriadeveloper.vifood.infra.adapters.model.dto.request.RestaurantUpdateRequest;
 import com.vitoriadeveloper.vifood.infra.adapters.model.dto.response.RestaurantResponse;
 
 import java.util.List;
@@ -61,5 +63,71 @@ public class RestaurantMapper {
         }
 
         return address;
+    }
+
+    public static void merge(
+            RestaurantUpdateRequest request,
+            Restaurant restaurant
+    ) {
+
+        if (request.nome() != null) {
+            restaurant.setNome(request.nome());
+        }
+
+        if (request.taxaFrete() != null) {
+            restaurant.setTaxaFrete(request.taxaFrete());
+        }
+
+        if (request.ativo() != null) {
+            restaurant.setAtivo(request.ativo());
+        }
+
+        if (request.aberto() != null) {
+            restaurant.setAberto(request.aberto());
+        }
+
+        if (request.cozinhaId() != null) {
+            var kitchen = new Kitchen();
+            kitchen.setId(request.cozinhaId());
+            restaurant.setCozinha(kitchen);
+        }
+
+        if (request.endereco() != null) {
+            mergeAddress(request.endereco(), restaurant);
+        }
+    }
+
+    private static void mergeAddress(
+            AddressUpdateRequest request,
+            Restaurant restaurant
+    ) {
+
+        Address address = restaurant.getEndereco();
+
+        if (address == null) {
+            address = new Address();
+            restaurant.setEndereco(address);
+        }
+
+        if (request.cep() != null)
+            address.setCep(request.cep());
+
+        if (request.logradouro() != null)
+            address.setLogradouro(request.logradouro());
+
+        if (request.numero() != null)
+            address.setNumero(request.numero());
+
+        if (request.complemento() != null)
+            address.setComplemento(request.complemento());
+
+        if (request.bairro() != null)
+            address.setBairro(request.bairro());
+
+        if (request.cidadeId() != null) {
+            var city = new City();
+            city.setId(request.cidadeId());
+            address.setCidade(city);
+        }
     }
 }

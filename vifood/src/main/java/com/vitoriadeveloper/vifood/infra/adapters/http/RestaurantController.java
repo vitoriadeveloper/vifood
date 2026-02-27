@@ -138,4 +138,15 @@ public class RestaurantController {
         productService.delete(produtoId, restauranteId);
     }
 
+    @PutMapping("/{restauranteId}/abertura")
+    public void openRestaurant(@PathVariable UUID restauranteId) {
+        service.openRestaurant(restauranteId);
+    }
+
+
+    @PutMapping("/{restauranteId}/fechamento")
+    public void closeRestaurant(@PathVariable UUID restauranteId) {
+        service.closeRestaurant(restauranteId);
+    }
+
 }

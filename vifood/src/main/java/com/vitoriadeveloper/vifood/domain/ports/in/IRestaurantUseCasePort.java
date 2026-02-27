@@ -21,4 +21,6 @@ public interface IRestaurantUseCasePort {
     void inactivate(UUID id);
     void associatePaymentMethod(UUID restaurantId, UUID paymentMethodId) throws PaymentMethodNotFoundException, RestaurantNotFoundException;
     void disassociatePaymentMethod(UUID restaurantId, UUID paymentMethodId)throws PaymentMethodNotFoundException, RestaurantNotFoundException;
+    void closeRestaurant(UUID restaurantId);
+    void openRestaurant(UUID restaurantId);
 }

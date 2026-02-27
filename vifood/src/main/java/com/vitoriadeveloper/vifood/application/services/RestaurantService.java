@@ -207,4 +207,22 @@ public class RestaurantService implements IRestaurantUseCasePort {
         repository.save(restaurant);
 
     }
+
+    @Override
+    public void closeRestaurant(UUID restaurantId) {
+        Restaurant restaurant = repository.findById(restaurantId).orElseThrow(() -> new RestaurantNotFoundException(restaurantId));
+
+        restaurant.setAberto(false);
+
+        repository.save(restaurant);
+    }
+
+    @Override
+    public void openRestaurant(UUID restaurantId) {
+        Restaurant restaurant = repository.findById(restaurantId).orElseThrow(() -> new RestaurantNotFoundException(restaurantId));
+
+        restaurant.setAberto(true);
+
+        repository.save(restaurant);
+    }
 }

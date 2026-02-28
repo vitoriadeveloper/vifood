@@ -28,4 +28,12 @@ public class GroupPermission {
     @JoinTable(name = "tb_grupo_permissao", joinColumns = @JoinColumn(name = "grupo_id"),
             inverseJoinColumns = @JoinColumn(name = "permissao_id"))
     private List<UserPermission> permissoes = new ArrayList<>();
+
+    public void addPermission(UserPermission permission) {
+        this.permissoes.add(permission);
+    }
+
+    public void removePermission(UserPermission permission) {
+        this.permissoes.remove(permission);
+    }
 }

@@ -1,14 +1,8 @@
 package com.vitoriadeveloper.vifood.infra.adapters.http;
 
-
-import com.vitoriadeveloper.vifood.application.services.GroupPermissionService;
 import com.vitoriadeveloper.vifood.application.services.PermissionService;
-import com.vitoriadeveloper.vifood.domain.exceptions.PermissionNotFoundException;
 import com.vitoriadeveloper.vifood.infra.adapters.model.dto.request.CreatePermissionRequest;
-import com.vitoriadeveloper.vifood.infra.adapters.model.dto.request.GroupCreatePermissionRequest;
-import com.vitoriadeveloper.vifood.infra.adapters.model.dto.response.GroupPermissionResponse;
 import com.vitoriadeveloper.vifood.infra.adapters.model.dto.response.PermissionResponse;
-import com.vitoriadeveloper.vifood.infra.adapters.model.mapper.GroupPermissionMapper;
 import com.vitoriadeveloper.vifood.infra.adapters.model.mapper.PermissionMapper;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

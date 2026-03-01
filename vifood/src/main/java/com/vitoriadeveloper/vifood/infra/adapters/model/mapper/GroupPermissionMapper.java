@@ -16,7 +16,7 @@ public class GroupPermissionMapper {
     }
 
     public static GroupPermissionResponse toResponse(GroupPermission groupPermission) {
-        return new GroupPermissionResponse(groupPermission.getNome(), groupPermission.getId());
+        return new GroupPermissionResponse(groupPermission.getNome(), groupPermission.getId(), PermissionMapper.toResponseList(groupPermission.getPermissoes()));
     }
 
     public static List<GroupPermissionResponse> toResponseList(List<GroupPermission> groupPermissions) {

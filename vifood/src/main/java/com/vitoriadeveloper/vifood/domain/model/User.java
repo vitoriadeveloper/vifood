@@ -41,4 +41,15 @@ public class User {
     @JoinTable(name = "tb_usuario_grupo", joinColumns = @JoinColumn(name = "usuario_id"),
             inverseJoinColumns = @JoinColumn(name = "grupo_id"))
     private List<GroupPermission> grupos = new ArrayList<>();
+
+
+    public void addUserToGroupPermission(GroupPermission groupPermission) {
+        if(!this.grupos.contains(groupPermission)) {
+            this.grupos.add(groupPermission);
+        }
+    }
+
+    public void removeUserToGroupPermission(GroupPermission groupPermission) {
+        this.grupos.remove(groupPermission);
+    }
 }

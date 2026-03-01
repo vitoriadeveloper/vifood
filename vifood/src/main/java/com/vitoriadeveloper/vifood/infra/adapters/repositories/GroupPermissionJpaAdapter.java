@@ -32,17 +32,14 @@ public class GroupPermissionJpaAdapter implements IGroupPermissionRepositoryPort
         jpaRepository.deleteById(id);
     }
 
-    @Override
-    public void updateById(UUID id, GroupPermission groupPermission) {
-        if (!jpaRepository.existsById(id)) {
-            throw new GroupPermissionNotFoundException(id);
-        }
-        groupPermission.setId(id);
-        jpaRepository.save(groupPermission);
-    }
 
     @Override
     public GroupPermission save(GroupPermission groupPermission) {
         return jpaRepository.save(groupPermission);
+    }
+
+    @Override
+    public Optional<GroupPermission> findByIdAndPermissionId(UUID groupId, UUID permissionId) {
+        return jpaRepository.findByIdAndPermissaoId(groupId, permissionId);
     }
 }

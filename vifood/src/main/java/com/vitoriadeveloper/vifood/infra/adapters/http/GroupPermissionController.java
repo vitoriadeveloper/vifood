@@ -4,7 +4,9 @@ package com.vitoriadeveloper.vifood.infra.adapters.http;
 import com.vitoriadeveloper.vifood.application.services.GroupPermissionService;
 import com.vitoriadeveloper.vifood.infra.adapters.model.dto.request.GroupCreatePermissionRequest;
 import com.vitoriadeveloper.vifood.infra.adapters.model.dto.response.GroupPermissionResponse;
+import com.vitoriadeveloper.vifood.infra.adapters.model.dto.response.PermissionResponse;
 import com.vitoriadeveloper.vifood.infra.adapters.model.mapper.GroupPermissionMapper;
+import com.vitoriadeveloper.vifood.infra.adapters.model.mapper.PermissionMapper;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,6 +21,7 @@ import java.util.UUID;
 public class GroupPermissionController {
     private final GroupPermissionService service;
 
+    // ===================== GRUPOS =====================
     @GetMapping
     public List<GroupPermissionResponse> findAll() {
         var roles = service.findAll();
@@ -52,4 +55,34 @@ public class GroupPermissionController {
         var createdRole = service.save(role);
         return GroupPermissionMapper.toResponse(createdRole);
     }
+
+    // ===================== PERMISSÕES DO GRUPO =====================
+
+    @GetMapping("/{grupoId}/permissoes")
+    public List<PermissionResponse> findAllPermissionsOfGroup(
+            @PathVariable UUID grupoId
+    ) {
+        var group = service.findById(grupoId);
+
+        return PermissionMapper.toResponseList(group.getPermissoes());
+    }
+
+    @PutMapping("/{grupoId}/permissoes/{permissaoId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void associatePermission(
+            @PathVariable UUID grupoId,
+            @PathVariable UUID permissaoId
+    ) {
+        service.associateGroupWithPermission(grupoId, permissaoId);
+    }
+
+    @DeleteMapping("/{grupoId}/permissoes/{permissaoId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void disassociatePermission(
+            @PathVariable UUID grupoId,
+            @PathVariable UUID permissaoId
+    ) {
+        service.disassociateGroupWithPermission(grupoId, permissaoId);
+    }
+
 }

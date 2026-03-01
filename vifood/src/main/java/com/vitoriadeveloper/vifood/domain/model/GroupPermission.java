@@ -30,7 +30,9 @@ public class GroupPermission {
     private List<UserPermission> permissoes = new ArrayList<>();
 
     public void addPermission(UserPermission permission) {
-        this.permissoes.add(permission);
+        if (!this.permissoes.contains(permission)) {
+            this.permissoes.add(permission);
+        }
     }
 
     public void removePermission(UserPermission permission) {

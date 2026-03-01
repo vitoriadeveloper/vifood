@@ -1,18 +1,16 @@
 package com.vitoriadeveloper.vifood.infra.adapters.model.dto.request;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.*;
 
 public record UserCreateRequest(
         @NotBlank
         String nome,
 
         @Email
+        @NotBlank
         String email,
 
-        @Min(6)
+        @Size(min = 6, max = 12)
         @NotNull
         String senha
 

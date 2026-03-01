@@ -11,7 +11,8 @@ public class UserMapper {
                 user.getId(),
                 user.getNome(),
                 user.getEmail(),
-                user.getDataCadastro()
+                user.getDataCadastro(),
+                GroupPermissionMapper.toResponseList(user.getGrupos())
         );
     }
 

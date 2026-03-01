@@ -1,6 +1,5 @@
 package com.vitoriadeveloper.vifood.infra.adapters.repositories;
 
-import com.vitoriadeveloper.vifood.domain.exceptions.GroupPermissionNotFoundException;
 import com.vitoriadeveloper.vifood.domain.model.GroupPermission;
 import com.vitoriadeveloper.vifood.domain.ports.out.IGroupPermissionRepositoryPort;
 import com.vitoriadeveloper.vifood.infra.repositories.GroupPermissionRepository;
@@ -40,6 +39,6 @@ public class GroupPermissionJpaAdapter implements IGroupPermissionRepositoryPort
 
     @Override
     public Optional<GroupPermission> findByIdAndPermissionId(UUID groupId, UUID permissionId) {
-        return jpaRepository.findByIdAndPermissaoId(groupId, permissionId);
+        return jpaRepository.findByIdAndPermissoesId(groupId, permissionId);
     }
 }

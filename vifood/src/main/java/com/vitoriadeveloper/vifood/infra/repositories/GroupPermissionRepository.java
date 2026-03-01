@@ -8,5 +8,5 @@ import java.util.UUID;
 
 @Repository
 public interface GroupPermissionRepository extends CustomJpaRepository<GroupPermission, UUID> {
-    Optional<GroupPermission> findByIdAndPermissaoId(UUID grupoId, UUID permissaoId);
+    Optional<GroupPermission> findByIdAndPermissoesId(UUID grupoId, UUID permissaoId);
 }

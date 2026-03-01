@@ -45,4 +45,14 @@ public class UserController {
     public void delete(@PathVariable UUID id) {
         service.delete(id);
     }
+
+    @PutMapping("/{usuarioId}/{grupoId}")
+    public void associateUserToAGroup(@PathVariable UUID usuarioId, @PathVariable UUID grupoId) {
+        service.associateUserToAGroup(usuarioId, grupoId);
+    }
+
+    @DeleteMapping("/{usuarioId}/{grupoId}")
+    public void disassociateUserToAGroup(@PathVariable UUID usuarioId, @PathVariable UUID grupoId) {
+        service.disassociateUserToAGroup(usuarioId, grupoId);
+    }
 }

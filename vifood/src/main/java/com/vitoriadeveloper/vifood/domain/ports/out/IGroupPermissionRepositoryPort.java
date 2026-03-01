@@ -13,7 +13,8 @@ public interface IGroupPermissionRepositoryPort {
 
     void delete(UUID id);
 
-    void updateById(UUID id, GroupPermission groupPermission);
-
     GroupPermission save(GroupPermission groupPermission);
+
+    Optional<GroupPermission> findByIdAndPermissionId(UUID groupId, UUID permissionId);
+
 }

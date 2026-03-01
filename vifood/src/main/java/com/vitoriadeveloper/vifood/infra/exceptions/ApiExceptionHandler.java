@@ -270,12 +270,25 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<Object> handleBusinessException(BusinessException e) {
         var error = new ErrorResponse(
                 OffsetDateTime.now(),
-                HttpStatus.NOT_FOUND.value(),
+                HttpStatus.BAD_REQUEST.value(),
                 "Regra de negócio violada",
                 e.getMessage(),
                 null
         );
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }
+
+    @ExceptionHandler(PermissionNotFoundException.class)
+    public ResponseEntity<Object> handlePermissionNotFoundException(PermissionNotFoundException e) {
+        var error = new ErrorResponse(
+                OffsetDateTime.now(),
+                HttpStatus.NOT_FOUND.value(),
+                "Permissao não encontrada",
+                e.getMessage(),
+                null
+        );
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+    }
+
 
 }

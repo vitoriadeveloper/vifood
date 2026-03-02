@@ -149,4 +149,9 @@ public class RestaurantController {
         service.closeRestaurant(restauranteId);
     }
 
+    @PutMapping("/{restauranteId}/responsaveis/{responsavelId}")
+    public void associateRestaurantOwner(@PathVariable UUID restauranteId, @PathVariable UUID responsavelId) {
+        service.associateRestaurantOwner(restauranteId, responsavelId);
+    }
+
 }

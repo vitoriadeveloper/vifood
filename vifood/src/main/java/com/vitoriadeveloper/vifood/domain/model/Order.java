@@ -111,5 +111,7 @@ public class Order {
         this.valorTotal = itens.stream()
                 .map(OrderItem::getPrecoTotal)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+        this.valorTotal = valorTotal.add(restaurante.getTaxaFrete());
     }
 }

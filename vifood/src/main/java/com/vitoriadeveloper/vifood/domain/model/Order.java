@@ -1,5 +1,7 @@
 package com.vitoriadeveloper.vifood.domain.model;
 
+import com.vitoriadeveloper.vifood.domain.exceptions.BusinessException;
+import com.vitoriadeveloper.vifood.domain.model.enums.OrderStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.PositiveOrZero;
 import lombok.Getter;
@@ -32,8 +34,9 @@ public class Order {
     @Column(name = "valor_total", nullable = false)
     private BigDecimal valorTotal;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
-    private String status;
+    private OrderStatus status;
 
     @OneToMany(
             mappedBy = "pedido",
@@ -51,4 +54,26 @@ public class Order {
 
     @Embedded
     private Address enderecoEntrega;
+
+    @PrePersist
+    public void prePersistOrderStatus() {
+        if (status == null) {
+            status = OrderStatus.CRIADO;
+        }
+    }
+
+    public void confirmOrder() {
+        if (status != OrderStatus.CRIADO) {
+            throw new BusinessException("Pedido deve estar no status CRIADO para ser confirmado.");
+        }
+        status = OrderStatus.CONFIRMADO;
+    }
+
+    public void cancelOrder() {
+        if (status == OrderStatus.ENTREGUE) {
+            throw new BusinessException("Pedido entregue não pode ser cancelado.");
+        }
+        status = OrderStatus.CANCELADO;
+    }
+
 }

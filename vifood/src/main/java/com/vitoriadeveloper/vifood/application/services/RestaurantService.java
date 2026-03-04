@@ -4,6 +4,7 @@ import com.vitoriadeveloper.vifood.domain.exceptions.*;
 import com.vitoriadeveloper.vifood.domain.filters.RestaurantFilter;
 import com.vitoriadeveloper.vifood.domain.model.Address;
 import com.vitoriadeveloper.vifood.domain.model.Restaurant;
+import com.vitoriadeveloper.vifood.domain.model.User;
 import com.vitoriadeveloper.vifood.domain.ports.in.IRestaurantUseCasePort;
 import com.vitoriadeveloper.vifood.domain.ports.out.ICityRepositoryPort;
 import com.vitoriadeveloper.vifood.domain.ports.out.IKitchenRepositoryPort;
@@ -234,5 +235,23 @@ public class RestaurantService implements IRestaurantUseCasePort {
         restaurant.associateRestaurantOwner(user);
 
         repository.save(restaurant);
+    }
+
+    @Override
+    public void disassociateRestaurantOwner(UUID restaurantId, UUID userId) throws RestaurantNotFoundException, UserNotFoundException {
+        Restaurant restaurant = repository.findById(restaurantId).orElseThrow(() -> new RestaurantNotFoundException(restaurantId));
+
+        var user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
+
+        restaurant.disassociateRestaurantOwner(user);
+
+        repository.save(restaurant);
+    }
+
+    @Override
+    public List<User> findRestaurantOwners(UUID restaurantId) throws RestaurantNotFoundException {
+        return repository.findById(restaurantId)
+                .orElseThrow(() -> new RestaurantNotFoundException(restaurantId))
+                .getResponsaveis();
     }
 }

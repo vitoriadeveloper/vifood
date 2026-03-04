@@ -4,14 +4,17 @@ package com.vitoriadeveloper.vifood.infra.adapters.http;
 import com.vitoriadeveloper.vifood.application.services.ProductService;
 import com.vitoriadeveloper.vifood.application.services.RestaurantService;
 import com.vitoriadeveloper.vifood.domain.filters.RestaurantFilter;
+import com.vitoriadeveloper.vifood.domain.model.User;
 import com.vitoriadeveloper.vifood.infra.adapters.model.dto.request.ProductCreateRequest;
 import com.vitoriadeveloper.vifood.infra.adapters.model.dto.request.ProductUpdateRequest;
 import com.vitoriadeveloper.vifood.infra.adapters.model.dto.request.RestaurantCreateRequest;
 import com.vitoriadeveloper.vifood.infra.adapters.model.dto.request.RestaurantUpdateRequest;
 import com.vitoriadeveloper.vifood.infra.adapters.model.dto.response.ProductResponse;
 import com.vitoriadeveloper.vifood.infra.adapters.model.dto.response.RestaurantResponse;
+import com.vitoriadeveloper.vifood.infra.adapters.model.dto.response.UserResponse;
 import com.vitoriadeveloper.vifood.infra.adapters.model.mapper.ProductMapper;
 import com.vitoriadeveloper.vifood.infra.adapters.model.mapper.RestaurantMapper;
+import com.vitoriadeveloper.vifood.infra.adapters.model.mapper.UserMapper;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -154,4 +157,15 @@ public class RestaurantController {
         service.associateRestaurantOwner(restauranteId, responsavelId);
     }
 
+    @DeleteMapping("/{restauranteId}/responsaveis/{responsavelId}")
+    public void disassociateRestaurantOwner(@PathVariable UUID restauranteId, @PathVariable UUID responsavelId) {
+        service.disassociateRestaurantOwner(restauranteId, responsavelId);
+    }
+
+    @GetMapping("/{restauranteId}/responsaveis")
+    public List<UserResponse> findRestaurantOwners(@PathVariable UUID restauranteId) {
+
+        var owners = service.findRestaurantOwners(restauranteId);
+        return UserMapper.toCollectionList(owners);
+    }
 }

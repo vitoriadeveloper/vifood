@@ -5,6 +5,7 @@ import com.vitoriadeveloper.vifood.domain.exceptions.RestaurantNotFoundException
 import com.vitoriadeveloper.vifood.domain.exceptions.UserNotFoundException;
 import com.vitoriadeveloper.vifood.domain.filters.RestaurantFilter;
 import com.vitoriadeveloper.vifood.domain.model.Restaurant;
+import com.vitoriadeveloper.vifood.domain.model.User;
 
 import java.util.List;
 import java.util.Map;
@@ -25,4 +26,6 @@ public interface IRestaurantUseCasePort {
     void closeRestaurant(UUID restaurantId);
     void openRestaurant(UUID restaurantId);
     void associateRestaurantOwner(UUID restaurantId, UUID userId) throws RestaurantNotFoundException, UserNotFoundException;
+    void disassociateRestaurantOwner(UUID restaurantId, UUID userId) throws RestaurantNotFoundException, UserNotFoundException;
+    List<User> findRestaurantOwners(UUID restaurantId) throws RestaurantNotFoundException;
 }

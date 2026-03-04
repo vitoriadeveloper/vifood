@@ -86,13 +86,17 @@ public class Order {
 
     public void changeStatus(OrderStatus newStatus) {
         if (!canChangeTo(newStatus)) {
-            throw new BusinessException("Transição de status inválida.");
+            throw new BusinessException(String.format(
+                    "Não é possível alterar o status do pedido de %s para %s.",
+                    this.status,
+                    newStatus
+            ));
         }
         this.status = newStatus;
     }
 
     public boolean canChangeTo(OrderStatus newStatus) {
-        return switch (this.status){
+        return switch (this.status) {
             case CRIADO -> newStatus == OrderStatus.CONFIRMADO;
             case CONFIRMADO -> newStatus == OrderStatus.ENTREGUE || newStatus == OrderStatus.CANCELADO;
             case PREPARANDO -> newStatus == OrderStatus.SAIU_PARA_ENTREGA;
@@ -103,7 +107,7 @@ public class Order {
     }
 
 
-    public void calculateTotalValue(){
+    public void calculateTotalValue() {
         this.valorTotal = itens.stream()
                 .map(OrderItem::getPrecoTotal)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);

@@ -41,4 +41,8 @@ public class OrderItem {
     @ManyToOne
     @JoinColumn(name = "id_produto", nullable = false)
     private Product produto;
+
+    public BigDecimal total(){
+        return this.precoUnitario.multiply(BigDecimal.valueOf(this.quantidade));
+    }
 }

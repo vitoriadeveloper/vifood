@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -16,7 +17,6 @@ import java.util.UUID;
 @Entity
 @Table(name = "tb_pedidos")
 @Getter
-@Setter
 public class Order {
 
     @Id
@@ -24,11 +24,8 @@ public class Order {
     @Column(columnDefinition = "uuid", updatable = false, nullable = false)
     private UUID id;
 
-    @Column(name = "id_cliente", nullable = false)
-    private UUID clienteId;
-
     @Column(name = "data_pedido", nullable = false)
-    private Date dataPedido;
+    private OffsetDateTime dataPedido;
 
     @PositiveOrZero
     @Column(name = "valor_total", nullable = false)
@@ -43,6 +40,7 @@ public class Order {
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
+
     private List<OrderItem> itens = new ArrayList<>();
 
     @ManyToOne
@@ -54,6 +52,16 @@ public class Order {
 
     @Embedded
     private Address enderecoEntrega;
+
+
+    public void addItem(OrderItem item) {
+        item.setPedido(this);
+        this.itens.add(item);
+    }
+
+    public void removeItem(OrderItem item) {
+        this.itens.remove(item);
+    }
 
     @PrePersist
     public void prePersistOrderStatus() {
@@ -70,10 +78,34 @@ public class Order {
     }
 
     public void cancelOrder() {
-        if (status == OrderStatus.ENTREGUE) {
-            throw new BusinessException("Pedido entregue não pode ser cancelado.");
+        if (status == OrderStatus.ENTREGUE || status == OrderStatus.CANCELADO) {
+            throw new BusinessException("Pedido não pode ser cancelado.");
         }
         status = OrderStatus.CANCELADO;
     }
 
+    public void changeStatus(OrderStatus newStatus) {
+        if (!canChangeTo(newStatus)) {
+            throw new BusinessException("Transição de status inválida.");
+        }
+        this.status = newStatus;
+    }
+
+    public boolean canChangeTo(OrderStatus newStatus) {
+        return switch (this.status){
+            case CRIADO -> newStatus == OrderStatus.CONFIRMADO;
+            case CONFIRMADO -> newStatus == OrderStatus.ENTREGUE || newStatus == OrderStatus.CANCELADO;
+            case PREPARANDO -> newStatus == OrderStatus.SAIU_PARA_ENTREGA;
+            case SAIU_PARA_ENTREGA -> newStatus == OrderStatus.ENTREGUE;
+
+            default -> false;
+        };
+    }
+
+
+    public void calculateTotalValue(){
+        this.valorTotal = itens.stream()
+                .map(OrderItem::getPrecoTotal)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
 }

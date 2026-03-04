@@ -4,11 +4,7 @@ package com.vitoriadeveloper.vifood.infra.adapters.http;
 import com.vitoriadeveloper.vifood.application.services.ProductService;
 import com.vitoriadeveloper.vifood.application.services.RestaurantService;
 import com.vitoriadeveloper.vifood.domain.filters.RestaurantFilter;
-import com.vitoriadeveloper.vifood.domain.model.User;
-import com.vitoriadeveloper.vifood.infra.adapters.model.dto.request.ProductCreateRequest;
-import com.vitoriadeveloper.vifood.infra.adapters.model.dto.request.ProductUpdateRequest;
-import com.vitoriadeveloper.vifood.infra.adapters.model.dto.request.RestaurantCreateRequest;
-import com.vitoriadeveloper.vifood.infra.adapters.model.dto.request.RestaurantUpdateRequest;
+import com.vitoriadeveloper.vifood.infra.adapters.model.dto.request.*;
 import com.vitoriadeveloper.vifood.infra.adapters.model.dto.response.ProductResponse;
 import com.vitoriadeveloper.vifood.infra.adapters.model.dto.response.RestaurantResponse;
 import com.vitoriadeveloper.vifood.infra.adapters.model.dto.response.UserResponse;
@@ -84,13 +80,13 @@ public class RestaurantController {
     @PutMapping("/{id}/ativar")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void activate(@PathVariable UUID id) {
-        service.activate(id);
+        service.activateRestaurants(id);
     }
 
     @PutMapping("/{id}/inativar")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void inactivate(@PathVariable UUID id) {
-        service.inactivate(id);
+        service.inactivateRestaurants(id);
     }
 
     @PostMapping("/{idRestaurante}/formas-pagamento")
@@ -167,5 +163,17 @@ public class RestaurantController {
 
         var owners = service.findRestaurantOwners(restauranteId);
         return UserMapper.toCollectionList(owners);
+    }
+
+    @PutMapping("/ativacao-em-lote")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void batchActivate(@RequestBody RestaurantBatchRequest request) {
+        service.activateBatch(request.restauranteIds());
+    }
+
+    @PutMapping("/inativacao-em-lote")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void batchInactivate(@RequestBody RestaurantBatchRequest request) {
+        service.inactivateBatch(request.restauranteIds());
     }
 }

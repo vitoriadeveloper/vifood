@@ -45,4 +45,14 @@ public class RestaurantJpaAdapter implements IRestaurantRepositoryPort {
         return jpaRepository.findAll(spec);
     }
 
+    @Override
+    public List<Restaurant> findAllById(List<UUID> ids) {
+        return jpaRepository.findAllById(ids);
+    }
+
+    @Override
+    public void saveAll(List<Restaurant> restaurants) {
+        jpaRepository.saveAll(restaurants);
+    }
+
 }

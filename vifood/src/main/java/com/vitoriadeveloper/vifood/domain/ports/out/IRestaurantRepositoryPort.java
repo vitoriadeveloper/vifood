@@ -9,8 +9,16 @@ import java.util.UUID;
 
 public interface IRestaurantRepositoryPort {
     List<Restaurant> findAll();
+
     Optional<Restaurant> findById(UUID id);
+
     Restaurant save(Restaurant body);
+
     void delete(UUID id);
+
     List<Restaurant> findByFilter(RestaurantFilter filter);
+
+    List<Restaurant> findAllById(List<UUID> ids);
+
+    void saveAll(List<Restaurant> restaurants);
 }

@@ -170,7 +170,7 @@ public class RestaurantService implements IRestaurantUseCasePort {
     }
 
     @Override
-    public void activate(UUID id) {
+    public void activateRestaurants(UUID id) {
         Restaurant restaurant = repository.findById(id).orElseThrow(() -> new RestaurantNotFoundException(id));
 
         restaurant.active();
@@ -178,7 +178,7 @@ public class RestaurantService implements IRestaurantUseCasePort {
     }
 
     @Override
-    public void inactivate(UUID id) {
+    public void inactivateRestaurants(UUID id) {
         Restaurant restaurant = repository.findById(id).orElseThrow(() -> new RestaurantNotFoundException(id));
 
         restaurant.inactive();
@@ -254,4 +254,29 @@ public class RestaurantService implements IRestaurantUseCasePort {
                 .orElseThrow(() -> new RestaurantNotFoundException(restaurantId))
                 .getResponsaveis();
     }
+
+    @Override
+    public void activateBatch(List<UUID> restaurantIds) {
+        var restaurants = repository.findAllById(restaurantIds);
+
+        if (restaurants.size() != restaurantIds.size()) {
+            throw new RestaurantNotFoundException("Alguns restaurantes não foram encontrados\"");
+        }
+        restaurants.forEach(Restaurant::active);
+        repository.saveAll(restaurants);
+    }
+
+    @Override
+    public void inactivateBatch(List<UUID> restaurantIds) {
+        var restaurants = repository.findAllById(restaurantIds);
+        if (restaurants.size() != restaurantIds.size()) {
+            throw new RestaurantNotFoundException("Alguns restaurantes não foram encontrados\"");
+        }
+
+        restaurants.forEach(Restaurant::inactive);
+
+        repository.saveAll(restaurants);
+    }
+
+
 }

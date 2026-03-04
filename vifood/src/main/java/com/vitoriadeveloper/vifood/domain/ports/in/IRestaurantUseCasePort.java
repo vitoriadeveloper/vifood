@@ -13,19 +13,38 @@ import java.util.UUID;
 
 public interface IRestaurantUseCasePort {
     Restaurant create(Restaurant body);
+
     List<Restaurant> findAll();
+
     Restaurant findById(UUID id) throws RestaurantNotFoundException;
+
     Restaurant updateById(UUID id, Restaurant body) throws RestaurantNotFoundException;
+
     void deleteById(UUID id);
+
     void updatePartial(UUID id, Map<String, Object> fields);
+
     List<Restaurant> findByFilter(RestaurantFilter filter);
-    void activate(UUID id);
-    void inactivate(UUID id);
+
+    void activateRestaurants(UUID id);
+
+    void inactivateRestaurants(UUID id);
+
     void associatePaymentMethod(UUID restaurantId, UUID paymentMethodId) throws PaymentMethodNotFoundException, RestaurantNotFoundException;
-    void disassociatePaymentMethod(UUID restaurantId, UUID paymentMethodId)throws PaymentMethodNotFoundException, RestaurantNotFoundException;
+
+    void disassociatePaymentMethod(UUID restaurantId, UUID paymentMethodId) throws PaymentMethodNotFoundException, RestaurantNotFoundException;
+
     void closeRestaurant(UUID restaurantId);
+
     void openRestaurant(UUID restaurantId);
+
     void associateRestaurantOwner(UUID restaurantId, UUID userId) throws RestaurantNotFoundException, UserNotFoundException;
+
     void disassociateRestaurantOwner(UUID restaurantId, UUID userId) throws RestaurantNotFoundException, UserNotFoundException;
+
     List<User> findRestaurantOwners(UUID restaurantId) throws RestaurantNotFoundException;
+
+    void activateBatch(List<UUID> restaurantIds);
+
+    void inactivateBatch(List<UUID> restaurantIds);
 }

@@ -25,7 +25,7 @@ public class Order {
     private UUID id;
 
     @Column(name = "data_pedido", nullable = false)
-    private OffsetDateTime dataPedido;
+    private OffsetDateTime dataPedido = OffsetDateTime.now();
 
     @PositiveOrZero
     @Column(name = "valor_total", nullable = false)
@@ -50,6 +50,7 @@ public class Order {
     @JoinColumn(name = "id_cliente", insertable = false, updatable = false)
     private User cliente;
 
+    @Setter
     @Embedded
     private Address enderecoEntrega;
 
@@ -60,6 +61,7 @@ public class Order {
     }
 
     public void removeItem(OrderItem item) {
+        item.setPedido(null);
         this.itens.remove(item);
     }
 
@@ -98,8 +100,8 @@ public class Order {
     public boolean canChangeTo(OrderStatus newStatus) {
         return switch (this.status) {
             case CRIADO -> newStatus == OrderStatus.CONFIRMADO;
-            case CONFIRMADO -> newStatus == OrderStatus.ENTREGUE || newStatus == OrderStatus.CANCELADO;
-            case PREPARANDO -> newStatus == OrderStatus.SAIU_PARA_ENTREGA;
+            case CONFIRMADO -> newStatus == OrderStatus.PREPARANDO || newStatus == OrderStatus.CANCELADO;
+            case PRONTO -> newStatus == OrderStatus.SAIU_PARA_ENTREGA;
             case SAIU_PARA_ENTREGA -> newStatus == OrderStatus.ENTREGUE;
 
             default -> false;

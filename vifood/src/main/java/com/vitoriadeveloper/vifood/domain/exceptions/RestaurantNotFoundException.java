@@ -7,4 +7,8 @@ public class RestaurantNotFoundException extends BusinessException {
     public RestaurantNotFoundException(UUID id) {
         super("Restaurante de id: " + id + " não encontrado!");
     }
+
+    public RestaurantNotFoundException(String message) {
+        super(message);
+    }
 }

@@ -16,5 +16,4 @@ public interface IGroupPermissionRepositoryPort {
     GroupPermission save(GroupPermission groupPermission);
 
     Optional<GroupPermission> findByIdAndPermissionId(UUID groupId, UUID permissionId);
-
 }

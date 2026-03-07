@@ -43,11 +43,13 @@ public class Order {
 
     private List<OrderItem> itens = new ArrayList<>();
 
+    @Setter
     @ManyToOne
     private Restaurant restaurante;
 
-    @ManyToOne
-    @JoinColumn(name = "id_cliente", insertable = false, updatable = false)
+    @Setter
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_cliente", nullable = true)
     private User cliente;
 
     @Setter
@@ -57,6 +59,7 @@ public class Order {
 
     public void addItem(OrderItem item) {
         item.setPedido(this);
+        item.calculateTotal();
         this.itens.add(item);
     }
 

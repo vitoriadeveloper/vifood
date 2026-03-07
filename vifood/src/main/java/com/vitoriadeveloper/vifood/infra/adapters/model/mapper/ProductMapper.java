@@ -4,6 +4,7 @@ import com.vitoriadeveloper.vifood.domain.model.Product;
 import com.vitoriadeveloper.vifood.infra.adapters.model.dto.request.ProductCreateRequest;
 import com.vitoriadeveloper.vifood.infra.adapters.model.dto.request.ProductUpdateRequest;
 import com.vitoriadeveloper.vifood.infra.adapters.model.dto.response.ProductResponse;
+import com.vitoriadeveloper.vifood.infra.adapters.model.dto.response.ProductSummaryResponse;
 import com.vitoriadeveloper.vifood.infra.adapters.model.dto.response.RestaurantSummaryResponse;
 
 import java.util.List;
@@ -53,5 +54,12 @@ public class ProductMapper {
         if(request.preco() != null){
             product.setPreco(request.preco());
         }
+    }
+
+    public static ProductSummaryResponse toProductSummaryResponse(Product product) {
+        return new ProductSummaryResponse(
+                product.getId(),
+                product.getNome()
+        );
     }
 }

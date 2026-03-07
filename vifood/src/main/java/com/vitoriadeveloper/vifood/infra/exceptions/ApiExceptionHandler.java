@@ -22,6 +22,8 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.time.OffsetDateTime;
+import java.util.Arrays;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @RestControllerAdvice
@@ -166,26 +168,6 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         return ResponseEntity.status(status).body(error);
     }
 
-    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
-    protected ResponseEntity<Object> handleMethodArgumentTypeMismatch(MethodArgumentTypeMismatchException ex, WebRequest request) {
-        String detail = String.format(
-                "O parâmetro de URL '%s' recebeu o valor '%s', que é incompatível com o tipo '%s'.",
-                ex.getName(),
-                ex.getValue(),
-                ex.getRequiredType() != null ? ex.getRequiredType().getSimpleName() : "desconhecido"
-        );
-
-        var error = new ErrorResponse(
-                OffsetDateTime.now(),
-                HttpStatus.BAD_REQUEST.value(),
-                "Parâmetro de URL inválido",
-                detail,
-                null
-        );
-
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
-    }
-
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
         var fields = ex.getBindingResult().getFieldErrors().stream()
@@ -300,5 +282,36 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
                 null
         );
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+    }
+
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    public ResponseEntity<Object> handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException e) {
+        if (e.getRequiredType() != null && e.getRequiredType().isEnum()) {
+
+            Object[] enumValues = e.getRequiredType().getEnumConstants();
+
+            List<String> valoresPossiveis = Arrays.stream(enumValues)
+                    .map(Object::toString)
+                    .toList();
+
+            String message = String.format(
+                    "O parâmetro de URL '%s' recebeu o valor '%s'. Valores válidos são: %s",
+                    e.getName(),
+                    e.getValue(),
+                    valoresPossiveis
+            );
+
+            var error = new ErrorResponse(
+                    OffsetDateTime.now(),
+                    HttpStatus.BAD_REQUEST.value(),
+                    "Parâmetro de URL inválido",
+                    message,
+                    null
+            );
+
+            return ResponseEntity.badRequest().body(error);
+        }
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
 }

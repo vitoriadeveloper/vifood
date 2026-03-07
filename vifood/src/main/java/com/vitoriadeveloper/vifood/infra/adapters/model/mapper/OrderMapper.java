@@ -1,7 +1,6 @@
 package com.vitoriadeveloper.vifood.infra.adapters.model.mapper;
 
 import com.vitoriadeveloper.vifood.domain.model.*;
-import com.vitoriadeveloper.vifood.domain.model.enums.OrderStatus;
 import com.vitoriadeveloper.vifood.infra.adapters.model.dto.request.CreateOrderRequest;
 import com.vitoriadeveloper.vifood.infra.adapters.model.dto.request.UpdateOrderRequest;
 import com.vitoriadeveloper.vifood.infra.adapters.model.dto.response.OrderResponse;
@@ -24,9 +23,9 @@ public class OrderMapper {
     public static Order toDomain(CreateOrderRequest request) {
         Order order = new Order();
         Restaurant restaurant = new Restaurant();
-        restaurant.setId(request.restaurantId());
+        restaurant.setId(request.restauranteId());
         User client = new User();
-        client.setId(request.clientId());
+        client.setId(request.clienteId());
 
         order.setRestaurante(restaurant);
         order.setCliente(client);
@@ -35,8 +34,9 @@ public class OrderMapper {
         request.itens().forEach(item -> {
             OrderItem itemOrder = new OrderItem();
 
+
             Product product = new Product();
-            product.setId(item.productId());
+            product.setId(item.produtoId());
 
             itemOrder.setProduto(product);
             itemOrder.setQuantidade(item.quantidade());
@@ -62,7 +62,7 @@ public class OrderMapper {
                 OrderItem orderItem = new OrderItem();
 
                 Product product = new Product();
-                product.setId(item.productId());
+                product.setId(item.produtoId());
 
                 orderItem.setProduto(product);
                 orderItem.setQuantidade(item.quantidade());

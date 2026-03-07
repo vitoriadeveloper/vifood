@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 public record ItemsResponse(
         Integer quantidade,
         BigDecimal precoTotal,
+        BigDecimal precoUnitario,
         ProductSummaryResponse produto
 
 ) {

@@ -78,8 +78,8 @@ public class OrderController {
         return OrderMapper.toOrderResponse(orderUpdated);
     }
 
-    @GetMapping("/status/{status}")
-    public List<OrderResponse> findByStatus(@PathVariable OrderStatus status) {
+    @GetMapping("/status")
+    public List<OrderResponse> findByStatus(@RequestParam OrderStatus status) {
         List<Order> orders = service.findByStatus(status);
         return orders.stream().map(OrderMapper::toOrderResponse).toList();
     }

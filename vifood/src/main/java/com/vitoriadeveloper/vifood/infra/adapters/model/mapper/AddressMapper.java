@@ -11,6 +11,11 @@ public class AddressMapper {
     }
 
     public static Address toDomain(AddressCreateRequest request) {
+
+        if (request == null) {
+            return null;
+        }
+
         Address address = new Address();
         address.setCep(request.cep());
         address.setLogradouro(request.logradouro());

@@ -59,7 +59,6 @@ public class Order {
 
     public void addItem(OrderItem item) {
         item.setPedido(this);
-        item.calculateTotal();
         this.itens.add(item);
     }
 

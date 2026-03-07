@@ -12,6 +12,7 @@ public class ItemsMapper {
                 .map(item -> new ItemsResponse(
                         item.getQuantidade(),
                         item.getPrecoTotal(),
+                        item.getPrecoUnitario(),
                         ProductMapper.toProductSummaryResponse(item.getProduto())
                 )).toList();
     }

@@ -6,7 +6,7 @@ import java.util.UUID;
 
 public record CreateOrderItemRequest(
         @NotNull
-        UUID productId,
+        UUID produtoId,
 
         @NotNull
         Integer quantidade,

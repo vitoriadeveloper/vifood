@@ -9,10 +9,12 @@ import java.util.UUID;
 public class CityMapper {
 
     public static CityResponse toResponse(City city) {
+        if(city == null) return null;
+
         return new CityResponse(
                 city.getId(),
                 city.getNome(),
-                StateMapper.toResponse(city.getEstado())
+                city.getEstado() != null ? StateMapper.toResponse(city.getEstado()) : null
         );
     }
 

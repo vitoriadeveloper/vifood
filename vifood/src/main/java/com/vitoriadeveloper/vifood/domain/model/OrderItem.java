@@ -1,7 +1,7 @@
 package com.vitoriadeveloper.vifood.domain.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,7 +20,7 @@ public class OrderItem {
     @Column(columnDefinition = "uuid", updatable = false, nullable = false)
     private UUID id;
 
-    @NotBlank
+    @NotNull
     @Column(nullable = false)
     private Integer quantidade;
 
@@ -42,7 +42,7 @@ public class OrderItem {
     @JoinColumn(name = "id_produto", nullable = false)
     private Product produto;
 
-    public BigDecimal total(){
-        return this.precoUnitario.multiply(BigDecimal.valueOf(this.quantidade));
+    public void calculateTotal() {
+        this.precoTotal = this.precoUnitario.multiply(BigDecimal.valueOf(this.quantidade));
     }
 }

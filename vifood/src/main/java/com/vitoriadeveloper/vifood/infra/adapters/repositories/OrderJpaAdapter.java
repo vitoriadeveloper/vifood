@@ -1,6 +1,7 @@
     package com.vitoriadeveloper.vifood.infra.adapters.repositories;
 
     import com.vitoriadeveloper.vifood.domain.model.Order;
+    import com.vitoriadeveloper.vifood.domain.model.enums.OrderStatus;
     import com.vitoriadeveloper.vifood.domain.ports.out.IOrderRepositoryPort;
     import com.vitoriadeveloper.vifood.infra.repositories.OrderRepository;
     import lombok.RequiredArgsConstructor;
@@ -34,4 +35,20 @@
         public void delete(Order order) {
             repository.delete(order);
         }
+
+        @Override
+        public List<Order> findByClientId(UUID clientId) {
+            return repository.findByClienteId(clientId);
+        }
+
+        @Override
+        public List<Order> findByStatus(OrderStatus status) {
+            return repository.findByStatus(status);
+        }
+
+        @Override
+        public List<Order> findByRestaurantId(UUID restaurantId) {
+            return repository.findByRestauranteId(restaurantId);
+        }
+
     }

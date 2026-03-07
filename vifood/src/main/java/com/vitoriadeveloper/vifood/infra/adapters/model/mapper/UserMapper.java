@@ -2,6 +2,7 @@ package com.vitoriadeveloper.vifood.infra.adapters.model.mapper;
 
 import com.vitoriadeveloper.vifood.domain.model.User;
 import com.vitoriadeveloper.vifood.infra.adapters.model.dto.request.UserCreateRequest;
+import com.vitoriadeveloper.vifood.infra.adapters.model.dto.response.ClientSummaryResponse;
 import com.vitoriadeveloper.vifood.infra.adapters.model.dto.response.UserResponse;
 
 import java.util.List;
@@ -29,5 +30,12 @@ public class UserMapper {
 
     public static List<UserResponse> toCollectionList(List<User> users) {
         return users.stream().map(UserMapper::toResponse).toList();
+    }
+
+    public static ClientSummaryResponse toClientSummaryResponse(User user) {
+        return new ClientSummaryResponse(
+                user.getId(),
+                user.getNome()
+        );
     }
 }

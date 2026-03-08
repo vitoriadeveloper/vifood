@@ -82,7 +82,7 @@ public class Order {
     }
 
     public void cancelOrder() {
-        if (status == OrderStatus.ENTREGUE || status == OrderStatus.CANCELADO) {
+        if (status == OrderStatus.ENTREGUE || status == OrderStatus.CANCELADO || status == OrderStatus.SAIU_PARA_ENTREGA) {
             throw new BusinessException("Pedido não pode ser cancelado.");
         }
         status = OrderStatus.CANCELADO;

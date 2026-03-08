@@ -1,14 +1,11 @@
 package com.vitoriadeveloper.vifood.infra.adapters.http;
 
 import com.vitoriadeveloper.vifood.application.services.OrderService;
-import com.vitoriadeveloper.vifood.domain.model.Order;
+import com.vitoriadeveloper.vifood.domain.filters.OrderFilter;
 import com.vitoriadeveloper.vifood.domain.model.enums.OrderStatus;
 import com.vitoriadeveloper.vifood.infra.adapters.model.dto.request.CreateOrderRequest;
 import com.vitoriadeveloper.vifood.infra.adapters.model.dto.request.UpdateOrderRequest;
-import com.vitoriadeveloper.vifood.infra.adapters.model.dto.response.OrderResponse;
-import com.vitoriadeveloper.vifood.infra.adapters.model.dto.response.OrderSummaryByStatus;
-import com.vitoriadeveloper.vifood.infra.adapters.model.dto.response.OrderSummaryClientResponse;
-import com.vitoriadeveloper.vifood.infra.adapters.model.dto.response.OrderSummaryRestaurantResponse;
+import com.vitoriadeveloper.vifood.infra.adapters.model.dto.response.*;
 import com.vitoriadeveloper.vifood.infra.adapters.model.mapper.OrderMapper;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -60,6 +57,7 @@ public class OrderController {
         service.deleteById(pedidoId);
     }
 
+    // #TODO ver necessidade de controller
     @PutMapping("/{pedidoId}/confirmar")
     public OrderResponse confirm(@PathVariable UUID pedidoId) {
         var order = service.findById(pedidoId);
@@ -85,5 +83,11 @@ public class OrderController {
     public List<OrderSummaryByStatus> findByStatus(@RequestParam OrderStatus status) {
         var orders = service.findByStatus(status);
         return orders.stream().map(OrderMapper::toOrderSummaryByStatus).toList();
+    }
+
+    @GetMapping("/pesquisar")
+    public List<OrderFilterSummaryResponse> search(OrderFilter filters) {
+        var orders = service.findByFilter(filters);
+        return orders.stream().map(OrderMapper::toOrderFilterSummaryResponse).toList();
     }
 }

@@ -3,12 +3,7 @@ package com.vitoriadeveloper.vifood.infra.adapters.model.mapper;
 import com.vitoriadeveloper.vifood.domain.model.*;
 import com.vitoriadeveloper.vifood.infra.adapters.model.dto.request.CreateOrderRequest;
 import com.vitoriadeveloper.vifood.infra.adapters.model.dto.request.UpdateOrderRequest;
-import com.vitoriadeveloper.vifood.infra.adapters.model.dto.response.OrderResponse;
-import com.vitoriadeveloper.vifood.infra.adapters.model.dto.response.OrderSummaryByStatus;
-import com.vitoriadeveloper.vifood.infra.adapters.model.dto.response.OrderSummaryClientResponse;
-import com.vitoriadeveloper.vifood.infra.adapters.model.dto.response.OrderSummaryRestaurantResponse;
-
-import java.util.List;
+import com.vitoriadeveloper.vifood.infra.adapters.model.dto.response.*;
 
 public class OrderMapper {
 
@@ -102,6 +97,16 @@ public class OrderMapper {
                 order.getDataPedido(),
                 order.getStatus(),
                 RestaurantMapper.toRestaurantSummaryResponse(order.getRestaurante())
+        );
+    }
+
+    public static OrderFilterSummaryResponse toOrderFilterSummaryResponse(Order order) {
+        return new OrderFilterSummaryResponse(
+                order.getId(),
+                order.getValorTotal(),
+                RestaurantMapper.toRestaurantSummaryResponse(order.getRestaurante()),
+                UserMapper.toClientSummaryResponse(order.getCliente()),
+                order.getStatus()
         );
     }
 }

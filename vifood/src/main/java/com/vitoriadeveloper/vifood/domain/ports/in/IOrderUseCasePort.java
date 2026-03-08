@@ -1,6 +1,7 @@
 package com.vitoriadeveloper.vifood.domain.ports.in;
 
 import com.vitoriadeveloper.vifood.domain.exceptions.OrderNotFoundException;
+import com.vitoriadeveloper.vifood.domain.filters.OrderFilter;
 import com.vitoriadeveloper.vifood.domain.model.Order;
 import com.vitoriadeveloper.vifood.domain.model.enums.OrderStatus;
 
@@ -30,4 +31,5 @@ public interface IOrderUseCasePort {
 
     Order changeStatus(Order orderId, OrderStatus newStatus) throws OrderNotFoundException;
 
+    List<Order> findByFilter(OrderFilter filter);
 }

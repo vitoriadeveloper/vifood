@@ -1,9 +1,11 @@
     package com.vitoriadeveloper.vifood.infra.adapters.repositories;
 
+    import com.vitoriadeveloper.vifood.domain.filters.OrderFilter;
     import com.vitoriadeveloper.vifood.domain.model.Order;
     import com.vitoriadeveloper.vifood.domain.model.enums.OrderStatus;
     import com.vitoriadeveloper.vifood.domain.ports.out.IOrderRepositoryPort;
     import com.vitoriadeveloper.vifood.infra.repositories.OrderRepository;
+    import com.vitoriadeveloper.vifood.infra.repositories.spec.OrderSpecificationBuilder;
     import lombok.RequiredArgsConstructor;
     import org.springframework.stereotype.Component;
 
@@ -14,41 +16,47 @@
     @Component
     @RequiredArgsConstructor
     public class OrderJpaAdapter implements IOrderRepositoryPort {
-        private final OrderRepository repository;
+        private final OrderRepository jpaRepository;
 
         @Override
         public Optional<Order> findById(UUID id) {
-            return repository.findById(id);
+            return jpaRepository.findById(id);
         }
 
         @Override
         public List<Order> findAll() {
-            return repository.findAll();
+            return jpaRepository.findAll();
         }
 
         @Override
         public Order save(Order order) {
-            return repository.save(order);
+            return jpaRepository.save(order);
         }
 
         @Override
         public void delete(Order order) {
-            repository.delete(order);
+            jpaRepository.delete(order);
         }
 
         @Override
         public List<Order> findByClientId(UUID clientId) {
-            return repository.findByClienteId(clientId);
+            return jpaRepository.findByClienteId(clientId);
         }
 
         @Override
         public List<Order> findByStatus(OrderStatus status) {
-            return repository.findByStatus(status);
+            return jpaRepository.findByStatus(status);
         }
 
         @Override
         public List<Order> findByRestaurantId(UUID restaurantId) {
-            return repository.findByRestauranteId(restaurantId);
+            return jpaRepository.findByRestauranteId(restaurantId);
+        }
+
+        @Override
+        public List<Order> findByFilter(OrderFilter filter) {
+            var spec = new OrderSpecificationBuilder(filter);
+            return jpaRepository.findAll(spec);
         }
 
     }

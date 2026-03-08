@@ -1,6 +1,7 @@
 package com.vitoriadeveloper.vifood.application.services;
 
 import com.vitoriadeveloper.vifood.domain.exceptions.OrderNotFoundException;
+import com.vitoriadeveloper.vifood.domain.filters.OrderFilter;
 import com.vitoriadeveloper.vifood.domain.model.*;
 import com.vitoriadeveloper.vifood.domain.model.enums.OrderStatus;
 import com.vitoriadeveloper.vifood.domain.ports.in.IOrderUseCasePort;
@@ -135,5 +136,10 @@ public class OrderService implements IOrderUseCasePort {
         Order order = findById(orderId.getId());
         order.changeStatus(newStatus);
         return repository.save(order);
+    }
+
+    @Override
+    public List<Order> findByFilter(OrderFilter filter){
+        return repository.findByFilter(filter);
     }
 }

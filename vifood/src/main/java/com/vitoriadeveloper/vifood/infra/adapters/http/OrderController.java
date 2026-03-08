@@ -6,6 +6,9 @@ import com.vitoriadeveloper.vifood.domain.model.enums.OrderStatus;
 import com.vitoriadeveloper.vifood.infra.adapters.model.dto.request.CreateOrderRequest;
 import com.vitoriadeveloper.vifood.infra.adapters.model.dto.request.UpdateOrderRequest;
 import com.vitoriadeveloper.vifood.infra.adapters.model.dto.response.OrderResponse;
+import com.vitoriadeveloper.vifood.infra.adapters.model.dto.response.OrderSummaryByStatus;
+import com.vitoriadeveloper.vifood.infra.adapters.model.dto.response.OrderSummaryClientResponse;
+import com.vitoriadeveloper.vifood.infra.adapters.model.dto.response.OrderSummaryRestaurantResponse;
 import com.vitoriadeveloper.vifood.infra.adapters.model.mapper.OrderMapper;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -22,33 +25,33 @@ public class OrderController {
 
     @PostMapping
     public OrderResponse create(@Valid @RequestBody CreateOrderRequest request) {
-        Order order = OrderMapper.toDomain(request);
-        Order orderSaved = service.create(order);
+        var order = OrderMapper.toDomain(request);
+        var orderSaved = service.create(order);
         return OrderMapper.toOrderResponse(orderSaved);
     }
 
     @GetMapping("/{pedidoId}")
     public OrderResponse findById(@PathVariable UUID pedidoId) {
-        Order order = service.findById(pedidoId);
+        var order = service.findById(pedidoId);
         return OrderMapper.toOrderResponse(order);
     }
 
     @GetMapping("/cliente/{clienteId}")
-    public List<OrderResponse> findByClientId(@PathVariable UUID clienteId) {
-        List<Order> orders = service.findByClientId(clienteId);
-        return orders.stream().map(OrderMapper::toOrderResponse).toList();
+    public List<OrderSummaryClientResponse> findByClientId(@PathVariable UUID clienteId) {
+        var orders = service.findByClientId(clienteId);
+        return orders.stream().map(OrderMapper::toOrderSummaryClientResponse).toList();
     }
 
     @GetMapping("/restaurante/{restauranteId}")
-    public List<OrderResponse> findByRestaurantId(@PathVariable UUID restauranteId) {
-        List<Order> orders = service.findByRestaurantId(restauranteId);
-        return orders.stream().map(OrderMapper::toOrderResponse).toList();
+    public List<OrderSummaryRestaurantResponse> findByRestaurantId(@PathVariable UUID restauranteId) {
+        var orders = service.findByRestaurantId(restauranteId);
+        return orders.stream().map(OrderMapper::toOrderSummaryRestaurantResponse).toList();
     }
 
     @PatchMapping("/{pedidoId}")
     public OrderResponse update(@PathVariable UUID pedidoId, @Valid @RequestBody UpdateOrderRequest request) {
-        Order order = OrderMapper.toDomain(request);
-        Order orderUpdated = service.updateById(pedidoId, order);
+        var order = OrderMapper.toDomain(request);
+        var orderUpdated = service.updateById(pedidoId, order);
         return OrderMapper.toOrderResponse(orderUpdated);
     }
 
@@ -59,28 +62,28 @@ public class OrderController {
 
     @PutMapping("/{pedidoId}/confirmar")
     public OrderResponse confirm(@PathVariable UUID pedidoId) {
-        Order order = service.findById(pedidoId);
-        Order orderConfirmed = service.confirm(order);
+        var order = service.findById(pedidoId);
+        var orderConfirmed = service.confirm(order);
         return OrderMapper.toOrderResponse(orderConfirmed);
     }
 
     @PutMapping("/{pedidoId}/cancelar")
     public OrderResponse cancel(@PathVariable UUID pedidoId) {
-        Order order = service.findById(pedidoId);
-        Order orderCanceled = service.cancel(order);
+        var order = service.findById(pedidoId);
+        var orderCanceled = service.cancel(order);
         return OrderMapper.toOrderResponse(orderCanceled);
     }
 
     @PatchMapping("/{pedidoId}/status")
     public OrderResponse changeStatus(@PathVariable UUID pedidoId, @RequestParam OrderStatus status) {
-        Order order = service.findById(pedidoId);
-        Order orderUpdated = service.changeStatus(order, status);
+        var order = service.findById(pedidoId);
+        var orderUpdated = service.changeStatus(order, status);
         return OrderMapper.toOrderResponse(orderUpdated);
     }
 
     @GetMapping("/status")
-    public List<OrderResponse> findByStatus(@RequestParam OrderStatus status) {
-        List<Order> orders = service.findByStatus(status);
-        return orders.stream().map(OrderMapper::toOrderResponse).toList();
+    public List<OrderSummaryByStatus> findByStatus(@RequestParam OrderStatus status) {
+        var orders = service.findByStatus(status);
+        return orders.stream().map(OrderMapper::toOrderSummaryByStatus).toList();
     }
 }

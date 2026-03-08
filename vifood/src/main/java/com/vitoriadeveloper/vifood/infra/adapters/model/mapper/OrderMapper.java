@@ -4,6 +4,11 @@ import com.vitoriadeveloper.vifood.domain.model.*;
 import com.vitoriadeveloper.vifood.infra.adapters.model.dto.request.CreateOrderRequest;
 import com.vitoriadeveloper.vifood.infra.adapters.model.dto.request.UpdateOrderRequest;
 import com.vitoriadeveloper.vifood.infra.adapters.model.dto.response.OrderResponse;
+import com.vitoriadeveloper.vifood.infra.adapters.model.dto.response.OrderSummaryByStatus;
+import com.vitoriadeveloper.vifood.infra.adapters.model.dto.response.OrderSummaryClientResponse;
+import com.vitoriadeveloper.vifood.infra.adapters.model.dto.response.OrderSummaryRestaurantResponse;
+
+import java.util.List;
 
 public class OrderMapper {
 
@@ -73,5 +78,30 @@ public class OrderMapper {
         }
 
         return order;
+    }
+
+    public static OrderSummaryClientResponse toOrderSummaryClientResponse(Order order) {
+        return new OrderSummaryClientResponse(
+                order.getId(),
+                order.getDataPedido(),
+                order.getValorTotal(),
+                order.getStatus()
+        );
+    }
+
+    public static  OrderSummaryRestaurantResponse toOrderSummaryRestaurantResponse(Order order) {
+        return new OrderSummaryRestaurantResponse(
+                order.getId(),
+                order.getCliente().getNome()
+        );
+    }
+
+    public static OrderSummaryByStatus toOrderSummaryByStatus(Order order) {
+        return new OrderSummaryByStatus(
+                order.getId(),
+                order.getDataPedido(),
+                order.getStatus(),
+                RestaurantMapper.toRestaurantSummaryResponse(order.getRestaurante())
+        );
     }
 }

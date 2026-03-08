@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -62,7 +63,8 @@ public class OrderService implements IOrderUseCasePort {
     @Transactional
     @Override
     public void deleteById(UUID id) throws OrderNotFoundException {
-        var order = findById(id);
+        Order order = findById(id);
+        order.cancelOrder();
         repository.delete(order);
     }
 
@@ -70,13 +72,11 @@ public class OrderService implements IOrderUseCasePort {
     @Override
     public Order updateById(UUID id, Order request) throws OrderNotFoundException {
         var existingOrder = findById(id);
-        if (request.getEnderecoEntrega() != null) {
-            existingOrder.setEnderecoEntrega(request.getEnderecoEntrega());
-        }
-
         if (!request.getItens().isEmpty()) {
 
-            existingOrder.getItens().clear();
+            for (OrderItem item : new ArrayList<>(existingOrder.getItens())) {
+                existingOrder.removeItem(item);
+            }
 
             for (OrderItem item : request.getItens()) {
 

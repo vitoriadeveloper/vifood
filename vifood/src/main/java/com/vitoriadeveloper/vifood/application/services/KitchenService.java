@@ -2,6 +2,8 @@ package com.vitoriadeveloper.vifood.application.services;
 
 import com.vitoriadeveloper.vifood.domain.exceptions.KitchenNotFoundException;
 import com.vitoriadeveloper.vifood.domain.model.Kitchen;
+import com.vitoriadeveloper.vifood.domain.model.Pagination;
+import com.vitoriadeveloper.vifood.domain.model.PaginationRequest;
 import com.vitoriadeveloper.vifood.domain.ports.in.IKitchenUseCasePort;
 import com.vitoriadeveloper.vifood.domain.ports.out.IKitchenRepositoryPort;
 
@@ -12,7 +14,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 
-import java.util.List;
 import java.util.UUID;
 
 @Validated
@@ -28,8 +29,8 @@ public class KitchenService implements IKitchenUseCasePort {
     }
 
     @Override
-    public List<Kitchen> findAll() {
-        return repository.findAll();
+    public Pagination<Kitchen> findAll(PaginationRequest paginationRequest) {
+        return repository.findAll(paginationRequest);
     }
 
     @Override

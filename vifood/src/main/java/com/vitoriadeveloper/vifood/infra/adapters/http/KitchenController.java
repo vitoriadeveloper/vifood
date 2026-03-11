@@ -2,14 +2,15 @@ package com.vitoriadeveloper.vifood.infra.adapters.http;
 
 import com.vitoriadeveloper.vifood.application.services.KitchenService;
 import com.vitoriadeveloper.vifood.domain.model.Kitchen;
+import com.vitoriadeveloper.vifood.domain.model.PaginationRequest;
 import com.vitoriadeveloper.vifood.infra.adapters.model.dto.response.KitchenResponse;
+import com.vitoriadeveloper.vifood.infra.adapters.model.dto.response.PaginationResponse;
 import com.vitoriadeveloper.vifood.infra.adapters.model.mapper.KitchenMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -25,8 +26,12 @@ public class KitchenController {
     }
 
     @GetMapping
-    public List<KitchenResponse> findAll() {
-        return KitchenMapper.toCollectionResponse(service.findAll());
+    public PaginationResponse<KitchenResponse> findAll(
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "10") int size
+    ) {
+        var paginationRequest = new PaginationRequest(page, size);
+        return KitchenMapper.toCollectionResponse(service.findAll(paginationRequest));
     }
 
     @GetMapping({"/{id}"})

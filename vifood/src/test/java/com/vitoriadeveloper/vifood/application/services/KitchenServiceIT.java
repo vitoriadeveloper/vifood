@@ -2,6 +2,7 @@ package com.vitoriadeveloper.vifood.application.services;
 
 import com.vitoriadeveloper.vifood.domain.exceptions.KitchenNotFoundException;
 import com.vitoriadeveloper.vifood.domain.model.Kitchen;
+import com.vitoriadeveloper.vifood.domain.model.PaginationRequest;
 import jakarta.transaction.Transactional;
 import jakarta.validation.ConstraintViolationException;
 import org.junit.jupiter.api.Test;
@@ -65,11 +66,12 @@ public class KitchenServiceIT {
         service.create(kitchen2);
 
         // action
-        var kitchens = service.findAll();
+        var paginationRequest = new PaginationRequest(0, 10);
+        var kitchens = service.findAll(paginationRequest);
 
         // assert
         assertNotNull(kitchens);
-        assertEquals(2, kitchens.size());
+        assertEquals(2, kitchens.content().size());
     }
 
     @Test

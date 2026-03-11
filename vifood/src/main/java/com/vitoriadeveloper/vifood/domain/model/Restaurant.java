@@ -69,6 +69,11 @@ public class Restaurant {
     @OneToMany(mappedBy = "restaurante")
     private List<Product> produtos = new ArrayList<>();
 
+    @ManyToMany
+    @JoinTable(name = "tb_restaurante_responsaveis", joinColumns = @JoinColumn(name = "restaurante_id"),
+            inverseJoinColumns = @JoinColumn(name = "responsavel_id"))
+    private List<User> responsaveis = new ArrayList<>();
+
     public void open() {
         if (!this.ativo) {
             throw new BusinessException("Restaurante inativo não pode abrir");
@@ -80,11 +85,22 @@ public class Restaurant {
         this.aberto = false;
     }
 
-    public void inactive(){
+    public void inactive() {
         this.ativo = false;
     }
 
-    public void active(){
+    public void active() {
         this.ativo = true;
+    }
+
+    public void associateRestaurantOwner(User user) {
+        this.responsaveis.add(user);
+    }
+
+    public void disassociateRestaurantOwner(User user) {
+        if (!this.ativo) {
+            throw new BusinessException(("Restaurante inativo não pode desassociar responsável"));
+        }
+        this.responsaveis.remove(user);
     }
 }

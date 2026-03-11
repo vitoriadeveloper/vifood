@@ -5,6 +5,7 @@ import com.vitoriadeveloper.vifood.infra.adapters.model.dto.request.AddressUpdat
 import com.vitoriadeveloper.vifood.infra.adapters.model.dto.request.RestaurantCreateRequest;
 import com.vitoriadeveloper.vifood.infra.adapters.model.dto.request.RestaurantUpdateRequest;
 import com.vitoriadeveloper.vifood.infra.adapters.model.dto.response.RestaurantResponse;
+import com.vitoriadeveloper.vifood.infra.adapters.model.dto.response.RestaurantSummaryResponse;
 
 import java.util.List;
 
@@ -129,5 +130,12 @@ public class RestaurantMapper {
             city.setId(request.cidadeId());
             address.setCidade(city);
         }
+    }
+
+    public static RestaurantSummaryResponse toRestaurantSummaryResponse(Restaurant restaurant) {
+        return new RestaurantSummaryResponse(
+                restaurant.getId(),
+                restaurant.getNome()
+        );
     }
 }

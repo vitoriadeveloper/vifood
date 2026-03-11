@@ -1,16 +1,15 @@
 package com.vitoriadeveloper.vifood.application.services;
 
-import com.vitoriadeveloper.vifood.domain.exceptions.CityNotFoundException;
-import com.vitoriadeveloper.vifood.domain.exceptions.KitchenNotFoundException;
-import com.vitoriadeveloper.vifood.domain.exceptions.PaymentMethodNotFoundException;
-import com.vitoriadeveloper.vifood.domain.exceptions.RestaurantNotFoundException;
+import com.vitoriadeveloper.vifood.domain.exceptions.*;
 import com.vitoriadeveloper.vifood.domain.filters.RestaurantFilter;
 import com.vitoriadeveloper.vifood.domain.model.Address;
 import com.vitoriadeveloper.vifood.domain.model.Restaurant;
+import com.vitoriadeveloper.vifood.domain.model.User;
 import com.vitoriadeveloper.vifood.domain.ports.in.IRestaurantUseCasePort;
 import com.vitoriadeveloper.vifood.domain.ports.out.ICityRepositoryPort;
 import com.vitoriadeveloper.vifood.domain.ports.out.IKitchenRepositoryPort;
 import com.vitoriadeveloper.vifood.domain.ports.out.IRestaurantRepositoryPort;
+import com.vitoriadeveloper.vifood.domain.ports.out.IUserRepositoryPort;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,6 +28,7 @@ public class RestaurantService implements IRestaurantUseCasePort {
     private final IKitchenRepositoryPort kitchenRepository;
     private final ICityRepositoryPort cityRepository;
     private final PaymentMethodService paymentMethodService;
+    private final IUserRepositoryPort userRepository;
 
     @Transactional
     @Override
@@ -170,7 +170,7 @@ public class RestaurantService implements IRestaurantUseCasePort {
     }
 
     @Override
-    public void activate(UUID id) {
+    public void activateRestaurants(UUID id) {
         Restaurant restaurant = repository.findById(id).orElseThrow(() -> new RestaurantNotFoundException(id));
 
         restaurant.active();
@@ -178,7 +178,7 @@ public class RestaurantService implements IRestaurantUseCasePort {
     }
 
     @Override
-    public void inactivate(UUID id) {
+    public void inactivateRestaurants(UUID id) {
         Restaurant restaurant = repository.findById(id).orElseThrow(() -> new RestaurantNotFoundException(id));
 
         restaurant.inactive();
@@ -225,4 +225,58 @@ public class RestaurantService implements IRestaurantUseCasePort {
 
         repository.save(restaurant);
     }
+
+    @Override
+    public void associateRestaurantOwner(UUID restaurantId, UUID userId) throws RestaurantNotFoundException, UserNotFoundException {
+        Restaurant restaurant = repository.findById(restaurantId).orElseThrow(() -> new RestaurantNotFoundException(restaurantId));
+
+        var user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
+
+        restaurant.associateRestaurantOwner(user);
+
+        repository.save(restaurant);
+    }
+
+    @Override
+    public void disassociateRestaurantOwner(UUID restaurantId, UUID userId) throws RestaurantNotFoundException, UserNotFoundException {
+        Restaurant restaurant = repository.findById(restaurantId).orElseThrow(() -> new RestaurantNotFoundException(restaurantId));
+
+        var user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
+
+        restaurant.disassociateRestaurantOwner(user);
+
+        repository.save(restaurant);
+    }
+
+    @Override
+    public List<User> findRestaurantOwners(UUID restaurantId) throws RestaurantNotFoundException {
+        return repository.findById(restaurantId)
+                .orElseThrow(() -> new RestaurantNotFoundException(restaurantId))
+                .getResponsaveis();
+    }
+
+    @Override
+    public void activateBatch(List<UUID> restaurantIds) {
+        var restaurants = repository.findAllById(restaurantIds);
+
+        if (restaurants.size() != restaurantIds.size()) {
+            throw new RestaurantNotFoundException("Alguns restaurantes não foram encontrados\"");
+        }
+        restaurants.forEach(Restaurant::active);
+        repository.saveAll(restaurants);
+    }
+
+    @Override
+    public void inactivateBatch(List<UUID> restaurantIds) {
+        var restaurants = repository.findAllById(restaurantIds);
+        if (restaurants.size() != restaurantIds.size()) {
+            throw new RestaurantNotFoundException("Alguns restaurantes não foram encontrados\"");
+        }
+
+        restaurants.forEach(Restaurant::inactive);
+
+        repository.saveAll(restaurants);
+    }
+
+
 }

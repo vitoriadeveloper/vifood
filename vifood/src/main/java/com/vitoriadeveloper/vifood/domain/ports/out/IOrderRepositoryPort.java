@@ -2,6 +2,8 @@ package com.vitoriadeveloper.vifood.domain.ports.out;
 
 import com.vitoriadeveloper.vifood.domain.filters.OrderFilter;
 import com.vitoriadeveloper.vifood.domain.model.Order;
+import com.vitoriadeveloper.vifood.domain.model.Pagination;
+import com.vitoriadeveloper.vifood.domain.model.PaginationRequest;
 import com.vitoriadeveloper.vifood.domain.model.enums.OrderStatus;
 
 import java.util.List;
@@ -23,6 +25,6 @@ public interface IOrderRepositoryPort {
 
     List<Order> findByRestaurantId(UUID restaurantId);
 
-    List<Order> findByFilter(OrderFilter filter);
+    Pagination<Order> findByFilter(OrderFilter filter, PaginationRequest paginationRequest);
 
 }

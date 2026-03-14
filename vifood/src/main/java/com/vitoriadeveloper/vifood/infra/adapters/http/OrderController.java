@@ -2,6 +2,7 @@ package com.vitoriadeveloper.vifood.infra.adapters.http;
 
 import com.vitoriadeveloper.vifood.application.services.OrderService;
 import com.vitoriadeveloper.vifood.domain.filters.OrderFilter;
+import com.vitoriadeveloper.vifood.domain.model.PaginationRequest;
 import com.vitoriadeveloper.vifood.domain.model.enums.OrderStatus;
 import com.vitoriadeveloper.vifood.infra.adapters.model.dto.request.CreateOrderRequest;
 import com.vitoriadeveloper.vifood.infra.adapters.model.dto.request.UpdateOrderRequest;
@@ -9,6 +10,8 @@ import com.vitoriadeveloper.vifood.infra.adapters.model.dto.response.*;
 import com.vitoriadeveloper.vifood.infra.adapters.model.mapper.OrderMapper;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -86,8 +89,21 @@ public class OrderController {
     }
 
     @GetMapping("/pesquisar")
-    public List<OrderFilterSummaryResponse> search(OrderFilter filters) {
-        var orders = service.findByFilter(filters);
-        return orders.stream().map(OrderMapper::toOrderFilterSummaryResponse).toList();
+    public PaginationResponse<OrderFilterSummaryResponse> search(OrderFilter filters, @PageableDefault(size = 10) Pageable pageable) {
+        var paginationRequest = new PaginationRequest(pageable.getPageNumber(), pageable.getPageSize());
+        var ordersPage = service.findByFilter(filters, paginationRequest);
+        var dados = ordersPage.content().stream().map(OrderMapper::toOrderFilterSummaryResponse).toList();
+
+        return new PaginationResponse<>(
+                dados,
+                ordersPage.pageNumber(),
+                ordersPage.pageSize(),
+                ordersPage.totalElements(),
+                ordersPage.totalPages(),
+                ordersPage.first(),
+                ordersPage.last(),
+                ordersPage.hasNext(),
+                ordersPage.hasPrevious()
+        );
     }
 }

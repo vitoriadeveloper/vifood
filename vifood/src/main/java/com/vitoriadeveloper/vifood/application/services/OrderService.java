@@ -139,7 +139,7 @@ public class OrderService implements IOrderUseCasePort {
     }
 
     @Override
-    public List<Order> findByFilter(OrderFilter filter){
-        return repository.findByFilter(filter);
+    public Pagination<Order> findByFilter(OrderFilter filter, PaginationRequest page){
+        return repository.findByFilter(filter, page);
     }
 }

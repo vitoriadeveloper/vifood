@@ -1,7 +1,7 @@
 package com.vitoriadeveloper.vifood.infra.adapters.model.mapper;
 
 import com.vitoriadeveloper.vifood.domain.model.Kitchen;
-import com.vitoriadeveloper.vifood.domain.model.Pagination;
+import com.vitoriadeveloper.vifood.domain.model.dto.Pagination;
 import com.vitoriadeveloper.vifood.infra.adapters.model.dto.response.KitchenResponse;
 import com.vitoriadeveloper.vifood.infra.adapters.model.dto.response.PaginationResponse;
 

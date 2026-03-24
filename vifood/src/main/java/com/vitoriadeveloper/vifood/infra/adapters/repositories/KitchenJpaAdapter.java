@@ -1,8 +1,8 @@
 package com.vitoriadeveloper.vifood.infra.adapters.repositories;
 
 import com.vitoriadeveloper.vifood.domain.model.Kitchen;
-import com.vitoriadeveloper.vifood.domain.model.Pagination;
-import com.vitoriadeveloper.vifood.domain.model.PaginationRequest;
+import com.vitoriadeveloper.vifood.domain.model.dto.Pagination;
+import com.vitoriadeveloper.vifood.domain.model.dto.PaginationRequest;
 import com.vitoriadeveloper.vifood.domain.ports.out.IKitchenRepositoryPort;
 import com.vitoriadeveloper.vifood.infra.repositories.KitchenRepository;
 import lombok.RequiredArgsConstructor;

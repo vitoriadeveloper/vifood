@@ -1,8 +1,8 @@
 package com.vitoriadeveloper.vifood.domain.ports.out;
 
 import com.vitoriadeveloper.vifood.domain.model.Kitchen;
-import com.vitoriadeveloper.vifood.domain.model.Pagination;
-import com.vitoriadeveloper.vifood.domain.model.PaginationRequest;
+import com.vitoriadeveloper.vifood.domain.model.dto.Pagination;
+import com.vitoriadeveloper.vifood.domain.model.dto.PaginationRequest;
 
 import java.util.Optional;
 import java.util.UUID;

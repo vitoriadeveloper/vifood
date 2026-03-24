@@ -3,6 +3,8 @@ package com.vitoriadeveloper.vifood.application.services;
 import com.vitoriadeveloper.vifood.domain.exceptions.OrderNotFoundException;
 import com.vitoriadeveloper.vifood.domain.filters.OrderFilter;
 import com.vitoriadeveloper.vifood.domain.model.*;
+import com.vitoriadeveloper.vifood.domain.model.dto.Pagination;
+import com.vitoriadeveloper.vifood.domain.model.dto.PaginationRequest;
 import com.vitoriadeveloper.vifood.domain.model.enums.OrderStatus;
 import com.vitoriadeveloper.vifood.domain.ports.in.IOrderUseCasePort;
 import com.vitoriadeveloper.vifood.domain.ports.out.IOrderRepositoryPort;

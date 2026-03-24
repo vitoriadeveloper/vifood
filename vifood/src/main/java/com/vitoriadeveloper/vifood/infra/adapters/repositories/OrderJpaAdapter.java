@@ -2,8 +2,8 @@ package com.vitoriadeveloper.vifood.infra.adapters.repositories;
 
 import com.vitoriadeveloper.vifood.domain.filters.OrderFilter;
 import com.vitoriadeveloper.vifood.domain.model.Order;
-import com.vitoriadeveloper.vifood.domain.model.Pagination;
-import com.vitoriadeveloper.vifood.domain.model.PaginationRequest;
+import com.vitoriadeveloper.vifood.domain.model.dto.Pagination;
+import com.vitoriadeveloper.vifood.domain.model.dto.PaginationRequest;
 import com.vitoriadeveloper.vifood.domain.model.enums.OrderStatus;
 import com.vitoriadeveloper.vifood.domain.ports.out.IOrderRepositoryPort;
 import com.vitoriadeveloper.vifood.infra.repositories.OrderRepository;

@@ -2,8 +2,8 @@ package com.vitoriadeveloper.vifood.application.services;
 
 import com.vitoriadeveloper.vifood.domain.exceptions.KitchenNotFoundException;
 import com.vitoriadeveloper.vifood.domain.model.Kitchen;
-import com.vitoriadeveloper.vifood.domain.model.Pagination;
-import com.vitoriadeveloper.vifood.domain.model.PaginationRequest;
+import com.vitoriadeveloper.vifood.domain.model.dto.Pagination;
+import com.vitoriadeveloper.vifood.domain.model.dto.PaginationRequest;
 import com.vitoriadeveloper.vifood.domain.ports.in.IKitchenUseCasePort;
 import com.vitoriadeveloper.vifood.domain.ports.out.IKitchenRepositoryPort;
 

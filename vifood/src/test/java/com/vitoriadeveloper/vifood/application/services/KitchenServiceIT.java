@@ -2,7 +2,7 @@ package com.vitoriadeveloper.vifood.application.services;
 
 import com.vitoriadeveloper.vifood.domain.exceptions.KitchenNotFoundException;
 import com.vitoriadeveloper.vifood.domain.model.Kitchen;
-import com.vitoriadeveloper.vifood.domain.model.PaginationRequest;
+import com.vitoriadeveloper.vifood.domain.model.dto.PaginationRequest;
 import jakarta.transaction.Transactional;
 import jakarta.validation.ConstraintViolationException;
 import org.junit.jupiter.api.Test;

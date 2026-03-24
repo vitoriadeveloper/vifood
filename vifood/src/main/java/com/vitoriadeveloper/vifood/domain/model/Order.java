@@ -89,6 +89,10 @@ public class Order {
     }
 
     public void changeStatus(OrderStatus newStatus) {
+        System.out.println("STATUS ATUAL = " + this.status);
+        System.out.println("NOVO STATUS = " + newStatus);
+        System.out.println("PODE TROCAR = " + canChangeTo(newStatus));
+
         if (!canChangeTo(newStatus)) {
             throw new BusinessException(String.format(
                     "Não é possível alterar o status do pedido de %s para %s.",
@@ -96,6 +100,7 @@ public class Order {
                     newStatus
             ));
         }
+
         this.status = newStatus;
     }
 
@@ -103,9 +108,9 @@ public class Order {
         return switch (this.status) {
             case CRIADO -> newStatus == OrderStatus.CONFIRMADO;
             case CONFIRMADO -> newStatus == OrderStatus.PREPARANDO || newStatus == OrderStatus.CANCELADO;
+            case PREPARANDO -> newStatus == OrderStatus.PRONTO;
             case PRONTO -> newStatus == OrderStatus.SAIU_PARA_ENTREGA;
             case SAIU_PARA_ENTREGA -> newStatus == OrderStatus.ENTREGUE;
-
             default -> false;
         };
     }

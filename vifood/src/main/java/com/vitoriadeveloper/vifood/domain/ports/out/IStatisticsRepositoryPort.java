@@ -1,7 +1,10 @@
 package com.vitoriadeveloper.vifood.domain.ports.out;
 
-import java.util.UUID;
+import com.vitoriadeveloper.vifood.domain.filters.StatisticsFilter;
+import com.vitoriadeveloper.vifood.domain.model.DailySales;
 
-public interface IStatisticsRepositoryPort {
-        void getDailySalesByRestaurantId(UUID restaurantId, String dataInicio, String dataFim);
+import java.util.List;
+
+public interface IStatisticsRepositoryPort  {
+    List<DailySales> getDailySalesByRestaurantId(StatisticsFilter filters);
 }

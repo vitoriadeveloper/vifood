@@ -1,4 +1,4 @@
-package com.vitoriadeveloper.vifood.domain.model;
+package com.vitoriadeveloper.vifood.domain.model.dto;
 
 import java.util.List;
 

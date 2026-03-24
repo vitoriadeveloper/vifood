@@ -1,4 +1,4 @@
-package com.vitoriadeveloper.vifood.domain.model;
+package com.vitoriadeveloper.vifood.domain.model.dto;
 
 public record PaginationRequest(
     int page,

@@ -19,11 +19,11 @@ public class StatisticsController {
 
     @GetMapping("/vendas-diarias")
     public List<StatisticsResponse> consultarVendasDiarias(
-            @RequestParam(required = false) LocalDate dataCriacaoInicio,
-            @RequestParam(required = false) LocalDate dataCriacaoFim,
+            @RequestParam(required = false) LocalDate dataInicio,
+            @RequestParam(required = false) LocalDate dataFim,
             @RequestParam(required = false) UUID restauranteId
     ) {
-        var toRequestDomain = StatisticsMapper.toDomain(restauranteId, dataCriacaoInicio, dataCriacaoFim);
+        var toRequestDomain = StatisticsMapper.toDomain(restauranteId, dataInicio, dataFim);
         var result = statisticsService.getDailySales(toRequestDomain);
         return StatisticsMapper.toResponseList(result);
     }

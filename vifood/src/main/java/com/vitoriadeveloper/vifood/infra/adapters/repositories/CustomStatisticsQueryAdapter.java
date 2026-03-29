@@ -12,7 +12,6 @@ import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
@@ -25,10 +24,11 @@ public class CustomStatisticsQueryAdapter implements StatisticsQueryRepository {
 
     @Override
     public List<DailySales> getDailySalesByRestaurantId(StatisticsFilter filters) {
+
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
         CriteriaQuery<DailySales> query = builder.createQuery(DailySales.class);
         Root<Order> root = query.from(Order.class);
-    // TODO - verificar porque não esta filtrando por data passada no padrao 2026-03-23 nem no formato 23/03/2026
+
         Expression<LocalDate> dataExp = builder.function(
                 "DATE",
                 LocalDate.class,
@@ -42,19 +42,17 @@ public class CustomStatisticsQueryAdapter implements StatisticsQueryRepository {
         if (filters.getRestauranteId() != null) {
             predicates.add(builder.equal(root.get("restaurante").get("id"), filters.getRestauranteId()));
         }
+
+        ZoneOffset utcOffset = ZoneOffset.UTC;
+
         if (filters.getDataInicio() != null) {
-            predicates.add(builder.greaterThanOrEqualTo(root.get("dataPedido"),
-                    filters.getDataInicio().atStartOfDay().atOffset(root.get("dataPedido").getJavaType() == null
-                            ? ZoneOffset.UTC : OffsetDateTime.now().getOffset())));
+            OffsetDateTime dataInicioWithTime = filters.getDataInicio().atStartOfDay().atOffset(utcOffset);
+            predicates.add(builder.greaterThanOrEqualTo(root.get("dataPedido"), dataInicioWithTime));
         }
 
         if (filters.getDataFim() != null) {
-            predicates.add(
-                    builder.lessThanOrEqualTo(
-                            root.get("dataPedido"),
-                            filters.getDataFim().atTime(LocalTime.MAX).atOffset(OffsetDateTime.now().getOffset())
-                    )
-            );
+            OffsetDateTime dataFimWithTime = filters.getDataFim().plusDays(1).atStartOfDay().atOffset(utcOffset);
+            predicates.add(builder.lessThan(root.get("dataPedido"), dataFimWithTime));
         }
 
         query.select(
@@ -71,6 +69,7 @@ public class CustomStatisticsQueryAdapter implements StatisticsQueryRepository {
         query.orderBy(builder.asc(dataExp));
 
         TypedQuery<DailySales> typedQuery = entityManager.createQuery(query);
+
         return typedQuery.getResultList();
     }
 }

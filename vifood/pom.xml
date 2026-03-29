@@ -96,7 +96,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
 
-			<!-- Integration Tests -->
+			<!-- Integration Test -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>

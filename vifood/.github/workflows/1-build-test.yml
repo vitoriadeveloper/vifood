@@ -32,33 +32,33 @@ jobs:
     name: Create PR to develop
     needs: build-and-test
     runs-on: ubuntu-latest
+    if: success()
     permissions:
-      contents: write
+      contents: read
       pull-requests: write
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
-      - name: Create Pull Request
+      - name: Create Pull Request to develop
         uses: peter-evans/create-pull-request@v5
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          commit-message: 'chore: merge ${{ github.ref_name }} to develop'
-          title: 'Merge ${{ github.ref_name }} to develop'
+          title: '[AUTO] Merge ${{ github.ref_name }} to develop'
           body: |
-            ## PR Automática - CI/CD Pipeline
+            ## 🤖 PR Automática - CI/CD Pipeline
             
-            Origem: `${{ github.ref_name }}`
-            Destino: `develop`
+            **Branch de origem:** `${{ github.ref_name }}`
+            **Destino:** `develop`
             
+            ### ✅ Status
             - Build: ✅ Passou
             - Testes: ✅ Passaram
             
-            Commits inclusos:
-            - ${{ github.event.head_commit.message }}
-          branch: ${{ github.ref_name }}
+            Esta PR foi criada automaticamente pela pipeline CI/CD.
           base: develop
+          head: ${{ github.ref_name }}
           delete-branch: false
           draft: false
+
+

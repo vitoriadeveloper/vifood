@@ -1,4 +1,4 @@
-name: 4. Deploy
+name: 4. Build and Package
 
 on:
   push:
@@ -8,11 +8,10 @@ on:
 
 permissions:
   contents: read
-  packages: write
 
 jobs:
-  build-and-publish:
-    name: Build and Publish Docker Image
+  build-package:
+    name: Build and Package JAR
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -25,17 +24,21 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
-      - name: Build application JAR
+      - name: Build application with Maven
         run: mvn clean package -DskipTests
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
-      - name: Build Docker image
-        run: |
-          docker build -t vifood:latest -t vifood:${{ github.sha }} .
-        continue-on-error: true
+      - name: Upload JAR artifact
+        uses: actions/upload-artifact@v3
+        if: success()
+        with:
+          name: vifood-jar
+          path: target/*.jar
+          retention-days: 30
 
       - name: Log build completion
-        run: echo "Build completed successfully for commit ${{ github.sha }}"
+        run: |
+          echo "✅ Build completed successfully"
+          echo "Commit: ${{ github.sha }}"
+          ls -lh target/*.jar || echo "No JAR found"
+
 

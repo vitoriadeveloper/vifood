@@ -8,16 +8,39 @@ on:
       - closed
 
 permissions:
-  contents: write
+  contents: read
   pull-requests: write
 
 jobs:
-  call-pr-to-main:
-    name: Criando PR de develop para main
-    if: ${{ github.event.pull_request.merged == true }}
-    uses: barbarastefany/reusable-workflows/.github/workflows/4-pr-to-main.yml@main
-    with:
-      base-branch: 'develop'
-      target-branch: 'main'
-      merged-pr-number: ${{ github.event.pull_request.number }}
-    secrets: inherit
+  create-pr-to-main:
+    name: Create PR develop to main
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout develop branch
+        uses: actions/checkout@v4
+        with:
+          ref: develop
+
+      - name: Create Pull Request to main
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          title: '[AUTO] Release: Merge develop to main'
+          body: |
+            ## 🤖 PR Automática - Release Pipeline
+            
+            **Branch de origem:** `develop`
+            **Destino:** `main`
+            
+            PR mergeada que disparou este release:
+            - #${{ github.event.pull_request.number }}
+            - Autor: @${{ github.event.pull_request.user.login }}
+            
+            Esta PR contém todas as mudanças prontas para produção.
+          base: main
+          head: develop
+          delete-branch: false
+          draft: false
+          labels: 'release'
+

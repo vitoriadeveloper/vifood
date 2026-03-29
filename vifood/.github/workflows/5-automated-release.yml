@@ -1,0 +1,68 @@
+name: 5. Automated Release
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'pom.xml'
+
+permissions:
+  contents: write
+
+jobs:
+  create-release:
+    name: Create Release and Tag
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Extract version from pom.xml
+        id: version
+        run: |
+          VERSION=$(grep '<version>' pom.xml | head -1 | sed 's/.*<version>\(.*\)<\/version>.*/\1/')
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "✓ Version: $VERSION"
+
+      - name: Check if tag exists
+        id: tag_check
+        run: |
+          if git rev-parse "v${{ steps.version.outputs.version }}" >/dev/null 2>&1; then
+            echo "exists=true" >> $GITHUB_OUTPUT
+            echo "Tag already exists"
+          else
+            echo "exists=false" >> $GITHUB_OUTPUT
+            echo "Tag is new"
+          fi
+
+      - name: Create tag and release
+        if: steps.tag_check.outputs.exists == 'false'
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const version = '${{ steps.version.outputs.version }}';
+            const tagName = `v${version}`;
+            
+            // Create tag
+            github.rest.git.createRef({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: `refs/tags/${tagName}`,
+              sha: context.sha
+            });
+            
+            // Create release
+            github.rest.repos.createRelease({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              tag_name: tagName,
+              name: `Release ${version}`,
+              body: `## 🚀 Release ${version}\n\n**Commit:** ${context.sha.substring(0, 7)}\n\n### Changes\nThis release includes all changes from the develop branch.`,
+              draft: false,
+              prerelease: false
+            });
+            
+            console.log(`✅ Release ${version} created successfully`);
+
+

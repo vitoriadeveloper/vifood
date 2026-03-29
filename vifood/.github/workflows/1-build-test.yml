@@ -6,23 +6,59 @@ on:
       - 'feature/**'
 
 jobs:
-  call-build-test:
+  build-and-test:
     name: Build & Test
+    runs-on: ubuntu-latest
     permissions:
       contents: read
-    uses: barbarastefany/reusable-workflows/.github/workflows/1-build-test.yml@main
-    with:
-      java-version: '17'
-    secrets: inherit
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-  call-pr-to-develop:
-    name: Cria PR de feature para develop
-    needs: call-build-test
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Build with Maven
+        run: mvn clean compile -DskipTests
+
+      - name: Run tests
+        run: mvn test
+
+  create-pr-to-develop:
+    name: Create PR to develop
+    needs: build-and-test
+    runs-on: ubuntu-latest
     permissions:
       contents: write
       pull-requests: write
-    uses: barbarastefany/reusable-workflows/.github/workflows/2-pr-to-develop.yml@main
-    with:
-      base-branch: ${{ github.ref_name }}
-      target-branch: 'develop'
-    secrets: inherit
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: 'chore: merge ${{ github.ref_name }} to develop'
+          title: 'Merge ${{ github.ref_name }} to develop'
+          body: |
+            ## PR Automática - CI/CD Pipeline
+            
+            Origem: `${{ github.ref_name }}`
+            Destino: `develop`
+            
+            - Build: ✅ Passou
+            - Testes: ✅ Passaram
+            
+            Commits inclusos:
+            - ${{ github.event.head_commit.message }}
+          branch: ${{ github.ref_name }}
+          base: develop
+          delete-branch: false
+          draft: false

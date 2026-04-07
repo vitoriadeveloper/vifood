@@ -8,4 +8,5 @@ import java.util.List;
 
 public interface IStatisticsUseCasePort {
     List<DailySales> getDailySales(StatisticsFilter filters) throws RestaurantNotFoundException;
+    byte[] getDailySalesByPdf(StatisticsFilter filters);
 }

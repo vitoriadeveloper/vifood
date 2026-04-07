@@ -86,6 +86,26 @@
             <artifactId>flyway-database-postgresql</artifactId>
             <version>10.15.0</version>
         </dependency>
+        <!-- Flying Saucer -->
+        <dependency>
+            <groupId>org.xhtmlrenderer</groupId>
+            <artifactId>flying-saucer-pdf</artifactId>
+            <version>9.1.22</version>
+        </dependency>
+
+        <!-- iText (necessário pro FS) -->
+        <dependency>
+            <groupId>com.lowagie</groupId>
+            <artifactId>itext</artifactId>
+            <version>2.1.7</version>
+        </dependency>
+
+        <!--        thymeleaf-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-thymeleaf</artifactId>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -96,7 +116,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
 
-			<!-- Integration Tests -->
+            <!-- Integration Test -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>

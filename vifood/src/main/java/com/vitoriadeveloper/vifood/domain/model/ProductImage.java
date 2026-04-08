@@ -9,6 +9,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @Entity
+@Table(name = "tb_produto_imagens")
 public class ProductImage {
     @Id
     private UUID id;

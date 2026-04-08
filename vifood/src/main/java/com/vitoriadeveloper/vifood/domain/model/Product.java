@@ -43,6 +43,6 @@ public class Product {
     @JoinColumn(nullable = false, name = "restaurante_id")
     private Restaurant restaurante;
 
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "product", orphanRemoval = true)
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "product", orphanRemoval = true, optional = true)
     private ProductImage fotoProduto;
 }

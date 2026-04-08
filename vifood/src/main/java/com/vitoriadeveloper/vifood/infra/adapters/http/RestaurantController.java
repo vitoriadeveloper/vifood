@@ -8,9 +8,11 @@ import com.vitoriadeveloper.vifood.infra.adapters.model.dto.request.*;
 import com.vitoriadeveloper.vifood.infra.adapters.model.dto.response.ProductResponse;
 import com.vitoriadeveloper.vifood.infra.adapters.model.dto.response.RestaurantResponse;
 import com.vitoriadeveloper.vifood.infra.adapters.model.dto.response.UserResponse;
+import com.vitoriadeveloper.vifood.infra.adapters.model.mapper.ProductImageMapper;
 import com.vitoriadeveloper.vifood.infra.adapters.model.mapper.ProductMapper;
 import com.vitoriadeveloper.vifood.infra.adapters.model.mapper.RestaurantMapper;
 import com.vitoriadeveloper.vifood.infra.adapters.model.mapper.UserMapper;
+import com.vitoriadeveloper.vifood.infra.utils.ImageValidator;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -21,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 
 @Validated
@@ -30,6 +33,8 @@ import java.util.UUID;
 public class RestaurantController {
     private final RestaurantService service;
     private final ProductService productService;
+    private final ProductImageMapper productImageMapper;
+    private final ImageValidator imageValidator;
 
     // # APENAS RESTAURANTES #
     @PostMapping
@@ -140,13 +145,20 @@ public class RestaurantController {
         productService.delete(produtoId, restauranteId);
     }
 
-    @PutMapping("{restauranteId}/produtos/{produtoId}/foto")
+    @PutMapping(value = "/{restauranteId}/produtos/{produtoId}/foto", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public void addOrUpdateImageUpload(
             @PathVariable UUID restauranteId,
             @PathVariable UUID produtoId,
-            @Valid @RequestParam ProductImageUpdateOrCreateRequest body
+            @Valid @ModelAttribute ProductImageUpdateOrCreateRequest body
 
-    ){}
+    ) {
+        imageValidator.validate(body.arquivo());
+        var domain = productImageMapper.toDomain(body);
+        String originalFilename = Optional.ofNullable(body.arquivo().getOriginalFilename())
+                .orElse("image");
+        productService.addOrUpdateProductImage(restauranteId, produtoId, domain, originalFilename);
+
+    }
 
     // # ABERTURA E FECHAMENTO DE RESTAURANT #
     @PutMapping("/{restauranteId}/abertura")

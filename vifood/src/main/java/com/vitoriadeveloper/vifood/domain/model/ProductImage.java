@@ -1,9 +1,6 @@
 package com.vitoriadeveloper.vifood.domain.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.MapsId;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -21,5 +18,6 @@ public class ProductImage {
 
     @OneToOne
     @MapsId
+    @JoinColumn(name = "product_id")
     private Product product;
 }

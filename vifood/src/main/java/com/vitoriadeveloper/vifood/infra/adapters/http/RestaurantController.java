@@ -17,6 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Map;
@@ -30,7 +31,7 @@ public class RestaurantController {
     private final RestaurantService service;
     private final ProductService productService;
 
-
+    // # APENAS RESTAURANTES #
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public RestaurantResponse create(@Valid @RequestBody RestaurantCreateRequest body) {
@@ -89,6 +90,7 @@ public class RestaurantController {
         service.inactivateRestaurants(id);
     }
 
+    // # FORMAS DE PAGAMENTO DE RESTAURANTES #
     @PostMapping("/{idRestaurante}/formas-pagamento")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void associatePaymentMethod(@PathVariable UUID idRestaurante, @RequestParam UUID idFormaPagamento) {
@@ -101,6 +103,7 @@ public class RestaurantController {
         service.disassociatePaymentMethod(idRestaurante, idFormaPagamento);
     }
 
+    // # PRODUTOS DE UM RESTAURANTES #
     @GetMapping("/{restauranteId}/produtos")
     public List<ProductResponse> findProductsByRestaurantId(@PathVariable UUID restauranteId) {
         var products = productService.findByRestaurantId(restauranteId);
@@ -137,6 +140,14 @@ public class RestaurantController {
         productService.delete(produtoId, restauranteId);
     }
 
+    @PutMapping("{restauranteId}/produtos/{produtoId}/foto")
+    public void addOrUpdateImageUpload(
+            @PathVariable UUID restauranteId,
+            @PathVariable UUID produtoId
+
+    ){}
+
+    // # ABERTURA E FECHAMENTO DE RESTAURANT #
     @PutMapping("/{restauranteId}/abertura")
     public void openRestaurant(@PathVariable UUID restauranteId) {
         service.openRestaurant(restauranteId);
@@ -153,6 +164,7 @@ public class RestaurantController {
         service.associateRestaurantOwner(restauranteId, responsavelId);
     }
 
+    // # RESPONSAVEIS RESTAURANTES #
     @DeleteMapping("/{restauranteId}/responsaveis/{responsavelId}")
     public void disassociateRestaurantOwner(@PathVariable UUID restauranteId, @PathVariable UUID responsavelId) {
         service.disassociateRestaurantOwner(restauranteId, responsavelId);
@@ -165,6 +177,7 @@ public class RestaurantController {
         return UserMapper.toCollectionList(owners);
     }
 
+    // # ACOES EM LOTE PARA RESTAURANTES #
     @PutMapping("/ativacao-em-lote")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void batchActivate(@RequestBody RestaurantBatchRequest request) {
@@ -176,4 +189,6 @@ public class RestaurantController {
     public void batchInactivate(@RequestBody RestaurantBatchRequest request) {
         service.inactivateBatch(request.restauranteIds());
     }
+
+
 }

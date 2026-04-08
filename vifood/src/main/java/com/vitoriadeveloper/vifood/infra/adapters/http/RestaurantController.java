@@ -143,7 +143,8 @@ public class RestaurantController {
     @PutMapping("{restauranteId}/produtos/{produtoId}/foto")
     public void addOrUpdateImageUpload(
             @PathVariable UUID restauranteId,
-            @PathVariable UUID produtoId
+            @PathVariable UUID produtoId,
+            @Valid @RequestParam ProductImageUpdateOrCreateRequest body
 
     ){}
 

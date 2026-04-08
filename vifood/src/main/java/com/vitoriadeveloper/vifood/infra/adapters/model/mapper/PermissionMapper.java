@@ -3,9 +3,11 @@ package com.vitoriadeveloper.vifood.infra.adapters.model.mapper;
 import com.vitoriadeveloper.vifood.domain.model.UserPermission;
 import com.vitoriadeveloper.vifood.infra.adapters.model.dto.request.CreatePermissionRequest;
 import com.vitoriadeveloper.vifood.infra.adapters.model.dto.response.PermissionResponse;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+@Component
 public class PermissionMapper {
 
     public static UserPermission toDomain(CreatePermissionRequest request) {

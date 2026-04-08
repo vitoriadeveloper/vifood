@@ -14,9 +14,19 @@ import java.util.List;
 @AllArgsConstructor
 public class StatisticsService implements IStatisticsUseCasePort {
     private final IStatisticsRepositoryPort repository;
+    private final PdfService pdfService;
 
     @Override
     public List<DailySales> getDailySales(StatisticsFilter filters) throws RestaurantNotFoundException {
         return repository.getDailySalesByRestaurantId(filters);
     }
+
+    @Override
+    public byte[] getDailySalesByPdf(StatisticsFilter filters) {
+        List<DailySales> dailySales = repository.getDailySalesByRestaurantId(filters);
+
+        return pdfService.generatePdf(dailySales);
+    }
+
+
 }

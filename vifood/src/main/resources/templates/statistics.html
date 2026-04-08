@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8"/>
+    <style>
+        body { font-family: Arial; }
+        table { width: 100%; border-collapse: collapse; }
+        td, th { border: 1px solid #ddd; padding: 8px; }
+    </style>
+    <title></title>
+</head>
+<body>
+
+<h1>Vendas Diárias</h1>
+
+<table>
+    <tr>
+        <th>Data</th>
+        <th>Total de Vendas</th>
+        <th>Faturamento</th>
+    </tr>
+
+    <tr th:each="sale : ${dailySales}">
+        <td th:text="${#temporals.format(sale.data, 'dd/MM/yyyy')}"></td>
+        <td th:text="${sale.totalVendas}"></td>
+        <td th:text="${sale.totalFaturado}"></td>
+    </tr>
+
+</table>
+
+</body>
+</html>
